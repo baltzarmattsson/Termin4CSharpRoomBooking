@@ -12,7 +12,7 @@ namespace Termin4CSharp.Model
         public int Id { get; set; }
         public string Email { get; set; }
         public string Phone_nbr { get; set; }
-        //List <int> roles 
+        List<int> roles = new List<int>(); 
 
         public Person(string Name, int Id, string Email, string Phone_nbr)
         {

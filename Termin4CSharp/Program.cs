@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Termin4CSharp.DataAccessLayer;
 
 namespace Termin4CSharp {
     static class Program {
@@ -11,9 +12,16 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            Application.EnableVisualStyles();
+            /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1()); */
+
+
+            Connector.getConnection(); 
+            
+
+
+
         }
     }
 }

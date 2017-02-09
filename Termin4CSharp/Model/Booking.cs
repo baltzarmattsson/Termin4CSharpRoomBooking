@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model
 {
-    class Booking
+    class Booking : IModel
     {
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }

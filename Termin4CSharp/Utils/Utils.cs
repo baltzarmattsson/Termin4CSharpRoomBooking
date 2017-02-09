@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 namespace Termin4CSharp.Utils {
     class Utils { 
 
+        public static void Main(string[] args) {
+            GetAttributeInfo("a".GetType());
+        }
+
         public static Dictionary<string, object> GetAttributeInfo(Type t) {
 
             MethodInfo[] mi = t.GetMethods();

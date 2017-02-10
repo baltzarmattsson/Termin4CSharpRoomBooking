@@ -68,7 +68,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(string.Format("select {0} from {1}", modelKeys, tableName));
                     break;
                 case QueryType.REMOVE:
-                    sqlBuilder.Append(string.Format("delete from {0}"));
+                    sqlBuilder.Append(string.Format("delete from {0}", tableName));
                     break;
                 case QueryType.UPDATE:
                     sqlBuilder.Append(string.Format("update {0} set {1}", tableName, modelKeys));

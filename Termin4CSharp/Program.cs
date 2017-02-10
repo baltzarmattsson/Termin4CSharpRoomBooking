@@ -32,7 +32,7 @@ namespace Termin4CSharp {
             book.Purpose = "new purpose";
             Dictionary<string, object> whereParams = new Dictionary<string, object>();
             whereParams["id"] = 1003;
-            Utils.IModelToQuery(null, QueryType.UPDATE, book, whereParams);
+            Utils.IModelToQuery(null, QueryType.REMOVE, book, whereParams);
 
         }
     }

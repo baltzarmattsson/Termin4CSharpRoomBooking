@@ -8,7 +8,7 @@ namespace Termin4CSharp.Model
 {
     class Booking : IModel
     {
-        public int Id { get; set; } //Removing this for now since db has autoincrement id //Baltzar
+        public int Id { get; set; }
         public DateTime Timestamp { get; set; }
         public String Purpose { get; set; }
         public DateTime Start_time { get; set; }

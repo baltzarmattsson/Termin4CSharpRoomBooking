@@ -18,8 +18,7 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, "([g|s]et)|(ToString|Equals|GetHashCode|GetType|.ctor)"));
-            //Console.WriteLine(string.Join(", ", names));
+                        .Where(x => !Regex.IsMatch(x, "([g|s]et)|(ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute)"));
 
             foreach (string attName in names) {
                 PropertyInfo pi = t.GetProperty(attName);
@@ -28,7 +27,7 @@ namespace Termin4CSharp {
             return attributeValues;
         }
 
-        public static string IModelToQuery(SqlCommand sqlCommand, QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
             if (tableName == null) {
@@ -87,18 +86,14 @@ namespace Termin4CSharp {
                 }
                 sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
             }
+            
+            SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
+            Utils.FillSqlCmd(cmd, modelAttributes);
+            if (optWhereParams != null && optWhereParams.Count > 0)
+                Utils.FillSqlCmd(cmd, optWhereParams, true);
 
-            using (SqlCommand cmd = new SqlCommand(sqlBuilder.ToString(), Connector.getConnection())) {
-
-                Utils.FillSqlCmd(cmd, modelAttributes);
-                if (optWhereParams != null && optWhereParams.Count > 0)
-                    Utils.FillSqlCmd(cmd, optWhereParams, true);
-
-                Console.WriteLine(sqlBuilder.ToString());
-                cmd.ExecuteNonQuery();
-                
-            }
-            return null;
+            Console.WriteLine(sqlBuilder.ToString());
+            return cmd;
         }
 
         private static bool IdIsAutoIncrementInDb(IModel model) {

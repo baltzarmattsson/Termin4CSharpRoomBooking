@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
@@ -22,7 +23,7 @@ namespace Termin4CSharp {
             //Person p = new Person("Namnnn", 1337, "email@@", "+4600");
             //Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
             //Room r = new Room(b, "1337", 134141, 0);
-            Booking book = new Booking(1, DateTime.Now, "purporse", DateTime.Now, DateTime.Now);
+            Booking book = new Booking(1006, DateTime.Now, "purporse", DateTime.Now, DateTime.Now);
 
             //object[] toBeAddedToDb = { p, b, r, book, book, book, book };
 
@@ -32,7 +33,13 @@ namespace Termin4CSharp {
             book.Purpose = "new purpose";
             Dictionary<string, object> whereParams = new Dictionary<string, object>();
             whereParams["id"] = 1003;
-            Utils.IModelToQuery(null, QueryType.REMOVE, book, whereParams);
+
+            DAL dal = new DAL();
+            dal.Add(book);
+            whereParams = new Dictionary<string, object>();
+            whereParams["id"] = book.Id;
+            Thread.Sleep(5000);
+            dal.Remove(book, whereParams);
 
         }
     }

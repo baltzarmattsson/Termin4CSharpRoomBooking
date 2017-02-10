@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model {
-    interface IModel { 
+    interface IModel {
+
+        string GetIdentifyingAttribute();
     }
 }

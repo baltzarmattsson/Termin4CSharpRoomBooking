@@ -14,5 +14,9 @@ namespace Termin4CSharp.Model
         {
             this.Type = type;
         }
+
+        public string GetIdentifyingAttribute() {
+            return Type;
+        }
     }
 }

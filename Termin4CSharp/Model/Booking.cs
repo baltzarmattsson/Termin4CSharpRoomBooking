@@ -22,5 +22,9 @@ namespace Termin4CSharp.Model
             this.Start_time = start_time;
             this.End_time = end_time;
         }
+
+        public string GetIdentifyingAttribute() {
+            return Id.ToString();
+        }
     }
 }

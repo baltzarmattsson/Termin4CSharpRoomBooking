@@ -9,12 +9,12 @@ namespace Termin4CSharp.Model
     class Person : IModel
     {
         public string Name { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; }
         public string PhoneNbr { get; set; }
         List<int> roles = new List<int>(); 
 
-        public Person(string name, int id, string email, string phoneNbr)
+        public Person(string name, string id, string email, string phoneNbr)
         {
             this.Name = name;
             this.Id = id;
@@ -24,6 +24,10 @@ namespace Termin4CSharp.Model
 
         public override string ToString() {
             return string.Format("{0} {1} {2} {3}", Name, Id, Email, PhoneNbr);
+        }
+
+        public string GetIdentifyingAttribute() {
+            return Id;
         }
     }
 }

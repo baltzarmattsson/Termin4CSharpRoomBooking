@@ -24,6 +24,10 @@ namespace Termin4CSharp.Model
         public override string ToString() {
             return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }
+
+        public string GetIdentifyingAttribute() {
+            return Name;
+        }
     }
 }
 

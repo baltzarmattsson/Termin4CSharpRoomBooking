@@ -21,5 +21,9 @@ namespace Termin4CSharp.Model
             this.Capacity = capacity;
             this.Floor = floor;
         }
+
+        public string GetIdentifyingAttribute() {
+            return Id;
+        }
     }
 }

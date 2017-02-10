@@ -47,7 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Class1.cs" />
-    <Compile Include="Model\Class1.cs" />
+    <Compile Include="Model\Booking.cs" />
+    <Compile Include="Model\Building.cs" />
+    <Compile Include="Model\IController.cs" />
+    <Compile Include="Model\Institution.cs" />
+    <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\IView.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Resource.cs" />
+    <Compile Include="Model\Room.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="View\Class1.cs" />
     <Compile Include="View\Form1.cs">

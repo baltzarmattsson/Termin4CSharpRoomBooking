@@ -10,9 +10,9 @@ namespace Termin4CSharp.Model
     {
         public string Name { get; set; }
 
-        public Institution(string Name)
+        public Institution(string name)
         {
-            this.Name = Name;
+            this.Name = name;
         }
     }
 }

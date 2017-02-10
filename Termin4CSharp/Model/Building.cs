@@ -13,7 +13,7 @@ namespace Termin4CSharp.Model
         public DateTime Avail_start { get; set; }
         public DateTime Avail_end { get; set; }
 
-        public Building(string name, string address, DateTime av_start, DateTime av_end) // rätt med void?
+        public Building(string name, string address, DateTime av_start, DateTime av_end)
         {
             this.Name = name;
             this.Address = address;

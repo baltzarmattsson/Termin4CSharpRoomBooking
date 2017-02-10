@@ -15,14 +15,14 @@ namespace Termin4CSharp.Model
         public DateTime Start_time { get; set; }
         public DateTime End_time { get; set; }
 
-        public Booking(int Id, DateTime Timestamp, Person Responsible, String Purpose, DateTime Start_time, DateTime End_Time)
+        public Booking(int id, DateTime timestamp, Person responsible, String purpose, DateTime start_time, DateTime end_time)
         {
-            this.Id = Id;
-            this.Timestamp = Timestamp;
-            this.Responsible = Responsible;
-            this.Purpose = Purpose;
-            this.Start_time = Start_time;
-            this.End_time = End_time;
+            this.Id = id;
+            this.Timestamp = timestamp;
+            this.Responsible = responsible;
+            this.Purpose = purpose;
+            this.Start_time = start_time;
+            this.End_time = end_time;
         }
     }
 }

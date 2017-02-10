@@ -28,21 +28,30 @@ namespace Termin4CSharp {
             return attributeValues;
         }
 
-        public static string IModelToQuery(SqlCommand sqlCommand, QueryType queryType, IModel model, Dictionary<string, string> whereParams, string optTableName = null) {
+        public static string IModelToQuery(SqlCommand sqlCommand, QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
-            if (tableName == null) 
+            if (tableName == null) {
                 throw new Exception(String.Format("Table could not be found! IModel: {0} optTableName: {1}", model.GetType(), optTableName));
+            } else if ((queryType == QueryType.REMOVE || queryType == QueryType.UPDATE) && (optWhereParams == null || optWhereParams.Count < 1))
+                throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName((typeof(QueryType), queryType), tableName));
             
             StringBuilder sqlBuilder = new StringBuilder();
             Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
 
             string modelKeys = "", modelValues = "";
-            foreach (KeyValuePair<string, object> attKeyVal in modelAttributes) {
-                modelKeys += attKeyVal.Key + ", ";
-                modelValues += "@" + attKeyVal.Key + ", ";
+            foreach (string key in modelAttributes.Keys) {
+                // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
+                if (queryType == QueryType.UPDATE) {
+                    modelKeys += key.ToLower() + " = @" + key;
+                // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
+                } else {
+                    modelKeys += key.ToLower() + ", ";
+                    modelValues += "@" + key + ", ";
+
+                }
             }
-            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
+            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2);       //removing ", "
             modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
 
             switch (queryType) {
@@ -50,46 +59,66 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(string.Format("insert into {0} ({1}) values ({2})", tableName, modelKeys, modelValues));
                     break;
                 case QueryType.GET:
-                    sqlBuilder.Append("select ");
+                    sqlBuilder.Append(string.Format("select {0} from {1}", modelKeys, tableName));
                     break;
                 case QueryType.REMOVE:
-                    sqlBuilder.Append("delete ");
+                    sqlBuilder.Append(string.Format("delete from {0}"));
                     break;
                 case QueryType.UPDATE:
-                    sqlBuilder.Append("update ");
+                    sqlBuilder.Append(string.Format("update {0} set {1}", tableName, modelKeys));
                     break;
             }
-            using (SqlCommand cmd = new SqlCommand(sqlBuilder.ToString(), Connector.getConnection())) {
-                Console.WriteLine("test");
-                foreach (KeyValuePair<string, object> attKV in modelAttributes) {
-                    string key = "@" + attKV.Key.ToLower();
-                    object val = attKV.Value;
 
-                    /**     TEXT        **/
-                    if (val is string)
-                        cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
-
-                    /**     NUMBERS     **/
-                    else if (val is Int32)
-                        cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
-                    else if (val is Int64)
-                        cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
-                    else if (val is double)
-                        cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
-                    else if (val is decimal)
-                        cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-
-                    /**     DATETIME    **/
-                    else if (val is DateTime)
-                        cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-
-                    /**     BOOL        **/
-                    else if (val is bool)
-                        cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
-
-                    Console.WriteLine(val.GetType() + " " + val.ToString());
+            // Adding where conditions, if there are any
+            if (optWhereParams.Count > 0) {
+                string eqOperator = Utils.WhereConditionToString(optWhereCondition);
+                sqlBuilder.Append(" where ");
+                foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
+                    string key = whereKV.Key.ToLower();
+                    string val = "@@" + whereKV.Key;
+                    sqlBuilder.Append(key + " " + eqOperator + " " + val);
+                    sqlBuilder.Append(" and ");
                 }
-                Console.Write("");
+                sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
+            }
+
+            using (SqlCommand cmd = new SqlCommand(sqlBuilder.ToString(), Connector.getConnection())) {
+
+                Utils.FillSqlCmd(cmd, modelAttributes);
+                if (optWhereParams != null && optWhereParams.Count > 0)
+                    Utils.FillSqlCmd(cmd, optWhereParams);
+
+
+
+                //foreach (KeyValuePair<string, object> attKV in modelAttributes) {
+                //    string key = "@" + attKV.Key.ToLower();
+                //    object val = attKV.Value;
+
+                //    /**     TEXT        **/
+                //    if (val is string)
+                //        cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+
+                //    /**     NUMBERS     **/
+                //    else if (val is Int32)
+                //        cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
+                //    else if (val is Int64)
+                //        cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
+                //    else if (val is double)
+                //        cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
+                //    else if (val is decimal)
+                //        cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
+
+                //    /**     DATETIME    **/
+                //    else if (val is DateTime)
+                //        cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
+
+                //    /**     BOOL        **/
+                //    else if (val is bool)
+                //        cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
+
+                //    Console.WriteLine(val.GetType() + " " + val.ToString());
+                //}
+                //Console.Write("");
                 cmd.ExecuteNonQuery();
             }
 
@@ -97,13 +126,41 @@ namespace Termin4CSharp {
             return null;
         }
 
-        private static string[] IModelToQueryParams(SqlCommand sqlCommand, IModel model) {
-            Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
-            foreach (KeyValuePair<string, object> attPair in modelAttributes) {
+        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false) {
+            foreach (KeyValuePair<string, object> attKV in queryParams) {
 
+                string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
+                object val = attKV.Value;
+
+                /*      NULL        **/
+                if (val == null)
+                    cmd.Parameters.AddWithValue(key, DBNull.Value);
+
+                /**     TEXT        **/
+                else if (val is string)
+                    cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+
+                /**     NUMBERS     **/
+                else if (val is Int32)
+                    cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
+                else if (val is Int64)
+                    cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
+                else if (val is double)
+                    cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
+                else if (val is decimal)
+                    cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
+
+                /**     DATETIME    **/
+                else if (val is DateTime)
+                    cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
+
+                /**     BOOL        **/
+                else if (val is bool)
+                    cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
+
+                else
+                    throw new Exception("Type not implemented: " + val.GetType());
             }
-
-            return null;
         }
 
         private static string IModelTableName(IModel model) {
@@ -125,6 +182,22 @@ namespace Termin4CSharp {
                 retTable = DbFields.ResourceTable;
             
             return retTable;
+        }
+
+        private static string WhereConditionToString(WhereCondition whereCondition) {
+            string op = "==";
+            switch (whereCondition) {
+                case WhereCondition.EQUAL:
+                    op = "==";
+                    break;
+                case WhereCondition.LIKE:
+                    op = "like";
+                    break;
+                case WhereCondition.PERCENTAGE:
+                    op = "%";
+                    break;
+            }
+            return op;
         }
     }
 }

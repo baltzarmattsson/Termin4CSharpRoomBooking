@@ -13,12 +13,12 @@ namespace Termin4CSharp.Model
         public DateTime Avail_start { get; set; }
         public DateTime Avail_end { get; set; }
 
-        public Building(string name, string address, DateTime av_start, DateTime av_end)
+        public Building(string name, string address, DateTime avail_start, DateTime avail_end)
         {
             this.Name = name;
             this.Address = address;
-            this.Avail_start = av_start;
-            this.Avail_end = av_end;
+            this.Avail_start = avail_start;
+            this.Avail_end = avail_end;
         }
 
         public override string ToString() {

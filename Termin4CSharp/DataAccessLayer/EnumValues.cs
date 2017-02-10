@@ -11,6 +11,10 @@ namespace Termin4CSharp.DataAccessLayer {
         ADD, REMOVE, UPDATE, GET
     }
 
+    enum WhereCondition {
+        EQUAL, LIKE, PERCENTAGE
+    }
+
     //public class QueryType {
     //    public const string Add = "insert";
     //    public const string Remove = "delete";

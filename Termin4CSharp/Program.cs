@@ -24,7 +24,7 @@ namespace Termin4CSharp {
             Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
             Console.WriteLine(b);
             Room r = new Room(b, "1337", 134141, 0);
-            string test = Utils.IModelToQuery(null, QueryType.ADD, r, null);
+            string test = Utils.IModelToQuery(null, QueryValues.ADD, r, null);
 
         }
     }

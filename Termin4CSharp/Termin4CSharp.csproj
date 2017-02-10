@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Class1.cs" />
+    <Compile Include="DataAccessLayer\DbFields.cs" />
+    <Compile Include="DataAccessLayer\QueryType.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="Model\Building.cs" />
@@ -89,9 +91,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

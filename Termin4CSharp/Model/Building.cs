@@ -10,15 +10,19 @@ namespace Termin4CSharp.Model
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public DateTime Av_start { get; set; }
-        public DateTime Av_end { get; set; }
+        public DateTime Avail_start { get; set; }
+        public DateTime Avail_end { get; set; }
 
-        public Building(string Name, string Address, DateTime Av_start, DateTime Av_end) // rätt med void?
+        public Building(string name, string address, DateTime av_start, DateTime av_end) // rätt med void?
         {
-            this.Name = Name;
-            this.Address = Address;
-            this.Av_start = Av_start;
-            this.Av_end = this.Av_end;
+            this.Name = name;
+            this.Address = address;
+            this.Avail_start = av_start;
+            this.Avail_end = av_end;
+        }
+
+        public override string ToString() {
+            return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }
     }
 }

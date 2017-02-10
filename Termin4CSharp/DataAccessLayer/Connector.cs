@@ -28,7 +28,7 @@ namespace Termin4CSharp.DataAccessLayer
                 SqlConnection conn = new SqlConnection(URL);
                 conn.Open();
                 Console.WriteLine("Connection open!"); 
-                conn.Close(); 
+                //conn.Close(); 
                 return conn;
                 
             } catch (Exception e)

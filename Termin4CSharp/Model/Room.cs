@@ -8,16 +8,18 @@ namespace Termin4CSharp.Model
 {
     class Room : IModel
     {
+        public string BName { get; set; }
         public string Id { get; set; }
         public int Capacity { get; set; }
         public int Floor { get; set; }
         List<int> RoomTypes = new List<int>();
 
-        public Room(string Id, int Capacity, int Floor)
+        public Room(Building building, string id, int capacity, int floor)
         {
-            this.Id = Id;
-            this.Capacity = Capacity;
-            this.Floor = Floor;
+            this.BName = building.Name;
+            this.Id = id;
+            this.Capacity = capacity;
+            this.Floor = floor;
         }
     }
 }

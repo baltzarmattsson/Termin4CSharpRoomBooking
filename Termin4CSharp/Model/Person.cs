@@ -26,8 +26,10 @@ namespace Termin4CSharp.Model
             return string.Format("{0} {1} {2} {3}", Name, Id, Email, PhoneNbr);
         }
 
-        public string GetIdentifyingAttribute() {
-            return Id;
+        public Dictionary<string, object> GetIdentifyingAttributes() {
+            var dict = new Dictionary<string, object>();
+            dict["Id"] = this.Id;
+            return dict;
         }
     }
 }

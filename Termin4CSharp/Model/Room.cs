@@ -22,8 +22,10 @@ namespace Termin4CSharp.Model
             this.Floor = floor;
         }
 
-        public string GetIdentifyingAttribute() {
-            return Id;
+        public Dictionary<string, object> GetIdentifyingAttributes() {
+            var dict = new Dictionary<string, object>();
+            dict["Id"] = this.Id;
+            return dict;
         }
     }
 }

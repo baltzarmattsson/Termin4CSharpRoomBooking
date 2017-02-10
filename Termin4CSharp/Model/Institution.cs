@@ -15,8 +15,10 @@ namespace Termin4CSharp.Model
             this.Name = name;
         }
 
-        public string GetIdentifyingAttribute() {
-            return Name;
+        public Dictionary<string, object> GetIdentifyingAttributes() {
+            var dict = new Dictionary<string, object>();
+            dict["Name"] = this.Name;
+            return dict;
         }
     }
 }

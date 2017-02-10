@@ -30,16 +30,18 @@ namespace Termin4CSharp {
             //foreach (IModel o in toBeAddedToDb)
             //    Utils.IModelToQuery(null, QueryType.ADD, o, null);
 
-            book.Purpose = "new purpose";
-            Dictionary<string, object> whereParams = new Dictionary<string, object>();
-            whereParams["id"] = 1003;
+            //book.Purpose = "new purpose";
+            //whereParams["id"] = 1003;
 
             DAL dal = new DAL();
-            dal.Add(book);
-            whereParams = new Dictionary<string, object>();
-            whereParams["id"] = book.Id;
-            Thread.Sleep(5000);
-            dal.Remove(book, whereParams);
+            //dal.Add(book);
+            //whereParams = new Dictionary<string, object>();
+            //whereParams["id"] = book.Id;
+            //Thread.Sleep(5000);
+            //dal.Remove(book, whereParams);
+            var whereParams = new Dictionary<string, object>();
+            whereParams["id"] = 1007;
+            dal.Get(book, whereParams);
 
         }
     }

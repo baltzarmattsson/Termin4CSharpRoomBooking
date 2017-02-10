@@ -11,41 +11,33 @@ namespace Termin4CSharp.DataAccessLayer {
 
         public void Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
-            cmd.Connection = Connector.getConnection();
-            try {
+            using (cmd.Connection = Connector.getConnection()) {
                 cmd.ExecuteNonQuery();
-            } finally {
-                cmd.Connection.Close();
             }
         }
 
         public void Remove(IModel model, Dictionary<string, object> whereParams, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.REMOVE, model, whereParams, tableName, optWhereCondition);
-            cmd.Connection = Connector.getConnection();
-            try {
+            using (cmd.Connection = Connector.getConnection()) {
                 cmd.ExecuteNonQuery();
-            } finally {
-                cmd.Connection.Close();
             }
         }
 
         public void Get(IModel model, Dictionary<string, object> whereParams, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
-            cmd.Connection = Connector.getConnection();
-            try {
-                cmd.ExecuteNonQuery();
-            } finally {
-                cmd.Connection.Close();
+            SqlDataReader dr = null;
+            using (cmd.Connection = Connector.getConnection()) {
+                dr = cmd.ExecuteReader();
+                while (dr.HasRows) {
+                    Console.WriteLine(string.Join(", ", dr.GetEnumerator().Current.ToString()));
+                }
             }
         }
 
         public void Update(IModel model, Dictionary<string, object> whereParams, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.UPDATE, model, whereParams, tableName, optWhereCondition);
-            cmd.Connection = Connector.getConnection();
-            try {
+            using (cmd.Connection = Connector.getConnection()) {
                 cmd.ExecuteNonQuery();
-            } finally {
-                cmd.Connection.Close();
             }
         }
 

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model {
     interface IModel {
-
-        string GetIdentifyingAttribute();
+        Dictionary<string, object> GetIdentifyingAttributes();
     }
 }

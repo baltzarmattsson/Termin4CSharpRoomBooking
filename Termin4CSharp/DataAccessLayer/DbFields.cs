@@ -13,7 +13,7 @@ namespace Termin4CSharp.DataAccessLayer {
         public const string PersonTable = "Person";
         public const string RoomTable = "Room";
         public const string BuildingTable = "Building";
-        public const string BookingTable = "Bookings";
+        public const string BookingTable = "Booking";
         public const string InstitutionTable = "Institution";
         public const string ResourceTable = "Resource";
         public const string InstBuildTable = "Institution_Building";

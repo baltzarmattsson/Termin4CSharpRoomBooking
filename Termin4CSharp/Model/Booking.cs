@@ -8,18 +8,16 @@ namespace Termin4CSharp.Model
 {
     class Booking : IModel
     {
-        public int Id { get; set; }
+        public int Id { get; set; } //Removing this for now since db has autoincrement id //Baltzar
         public DateTime Timestamp { get; set; }
-        public Person Responsible { get; set; }
         public String Purpose { get; set; }
         public DateTime Start_time { get; set; }
         public DateTime End_time { get; set; }
 
-        public Booking(int id, DateTime timestamp, Person responsible, String purpose, DateTime start_time, DateTime end_time)
+        public Booking(int id, DateTime timestamp, String purpose, DateTime start_time, DateTime end_time)
         {
             this.Id = id;
             this.Timestamp = timestamp;
-            this.Responsible = responsible;
             this.Purpose = purpose;
             this.Start_time = start_time;
             this.End_time = end_time;

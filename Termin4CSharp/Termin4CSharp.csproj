@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Controller\Class1.cs" />
     <Compile Include="DataAccessLayer\DbFields.cs" />
-    <Compile Include="DataAccessLayer\QueryType.cs" />
+    <Compile Include="DataAccessLayer\EnumValues.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="Model\Building.cs" />

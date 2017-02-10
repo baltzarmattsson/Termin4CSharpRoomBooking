@@ -19,12 +19,20 @@ namespace Termin4CSharp {
 
 
             //Connector.getConnection(); 
-            Person p = new Person("Namnnn", 1337, "email@@", "+4600");
-            Console.WriteLine(p);
-            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
-            Console.WriteLine(b);
-            Room r = new Room(b, "1337", 134141, 0);
-            string test = Utils.IModelToQuery(null, QueryValues.ADD, r, null);
+            //Person p = new Person("Namnnn", 1337, "email@@", "+4600");
+            //Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
+            //Room r = new Room(b, "1337", 134141, 0);
+            Booking book = new Booking(1, DateTime.Now, "purporse", DateTime.Now, DateTime.Now);
+
+            //object[] toBeAddedToDb = { p, b, r, book, book, book, book };
+
+            //foreach (IModel o in toBeAddedToDb)
+            //    Utils.IModelToQuery(null, QueryType.ADD, o, null);
+
+            book.Purpose = "new purpose";
+            Dictionary<string, object> whereParams = new Dictionary<string, object>();
+            whereParams["id"] = 1003;
+            Utils.IModelToQuery(null, QueryType.UPDATE, book, whereParams);
 
         }
     }

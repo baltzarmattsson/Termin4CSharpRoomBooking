@@ -34,16 +34,21 @@ namespace Termin4CSharp {
             if (tableName == null) {
                 throw new Exception(String.Format("Table could not be found! IModel: {0} optTableName: {1}", model.GetType(), optTableName));
             } else if ((queryType == QueryType.REMOVE || queryType == QueryType.UPDATE) && (optWhereParams == null || optWhereParams.Count < 1))
-                throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName((typeof(QueryType), queryType), tableName));
+                throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName(typeof(QueryType), queryType), tableName));
             
             StringBuilder sqlBuilder = new StringBuilder();
             Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
 
             string modelKeys = "", modelValues = "";
             foreach (string key in modelAttributes.Keys) {
+
+                // If the id is autoincrementing, we're skipping inserting/updating this value
+                if (key.Equals("id", StringComparison.InvariantCultureIgnoreCase) && Utils.IdIsAutoIncrementInDb(model))
+                    continue;
+
                 // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
                 if (queryType == QueryType.UPDATE) {
-                    modelKeys += key.ToLower() + " = @" + key;
+                    modelKeys += key.ToLower() + " = @" + key + ", ";
                 // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
                 } else {
                     modelKeys += key.ToLower() + ", ";
@@ -52,7 +57,8 @@ namespace Termin4CSharp {
                 }
             }
             modelKeys = modelKeys.Substring(0, modelKeys.Length - 2);       //removing ", "
-            modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
+            if (modelValues.Length > 2)
+                modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
 
             switch (queryType) {
                 case QueryType.ADD:
@@ -70,7 +76,7 @@ namespace Termin4CSharp {
             }
 
             // Adding where conditions, if there are any
-            if (optWhereParams.Count > 0) {
+            if (optWhereParams != null && optWhereParams.Count > 0) {
                 string eqOperator = Utils.WhereConditionToString(optWhereCondition);
                 sqlBuilder.Append(" where ");
                 foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
@@ -86,44 +92,20 @@ namespace Termin4CSharp {
 
                 Utils.FillSqlCmd(cmd, modelAttributes);
                 if (optWhereParams != null && optWhereParams.Count > 0)
-                    Utils.FillSqlCmd(cmd, optWhereParams);
+                    Utils.FillSqlCmd(cmd, optWhereParams, true);
 
-
-
-                //foreach (KeyValuePair<string, object> attKV in modelAttributes) {
-                //    string key = "@" + attKV.Key.ToLower();
-                //    object val = attKV.Value;
-
-                //    /**     TEXT        **/
-                //    if (val is string)
-                //        cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
-
-                //    /**     NUMBERS     **/
-                //    else if (val is Int32)
-                //        cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
-                //    else if (val is Int64)
-                //        cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
-                //    else if (val is double)
-                //        cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
-                //    else if (val is decimal)
-                //        cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-
-                //    /**     DATETIME    **/
-                //    else if (val is DateTime)
-                //        cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-
-                //    /**     BOOL        **/
-                //    else if (val is bool)
-                //        cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
-
-                //    Console.WriteLine(val.GetType() + " " + val.ToString());
-                //}
-                //Console.Write("");
+                Console.WriteLine(sqlBuilder.ToString());
                 cmd.ExecuteNonQuery();
+                
             }
-
-            //Console.WriteLine(sb.ToString());
             return null;
+        }
+
+        private static bool IdIsAutoIncrementInDb(IModel model) {
+            bool isAuto = false;
+            if (model is Booking)
+                isAuto = true;
+            return isAuto;
         }
 
         private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false) {
@@ -135,11 +117,9 @@ namespace Termin4CSharp {
                 /*      NULL        **/
                 if (val == null)
                     cmd.Parameters.AddWithValue(key, DBNull.Value);
-
                 /**     TEXT        **/
                 else if (val is string)
                     cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
-
                 /**     NUMBERS     **/
                 else if (val is Int32)
                     cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
@@ -149,11 +129,9 @@ namespace Termin4CSharp {
                     cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
                 else if (val is decimal)
                     cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-
                 /**     DATETIME    **/
                 else if (val is DateTime)
                     cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-
                 /**     BOOL        **/
                 else if (val is bool)
                     cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
@@ -185,10 +163,10 @@ namespace Termin4CSharp {
         }
 
         private static string WhereConditionToString(WhereCondition whereCondition) {
-            string op = "==";
+            string op = "=";
             switch (whereCondition) {
                 case WhereCondition.EQUAL:
-                    op = "==";
+                    op = "=";
                     break;
                 case WhereCondition.LIKE:
                     op = "like";

@@ -9,6 +9,7 @@ namespace Termin4CSharp.Model.DbHelpers {
 
         public string RoomId { get; set; }
         public string ResId { get; set; }
+        public Room_Resource() { }
         public Room_Resource(string roomId, string resId) {
             this.RoomId = roomId;
             this.ResId = resId;

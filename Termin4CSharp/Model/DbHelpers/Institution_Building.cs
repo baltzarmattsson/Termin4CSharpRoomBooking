@@ -9,7 +9,7 @@ namespace Termin4CSharp.Model {
 
         public string iName { get; set; }
         public string bName { get; set; }
-
+        public Institution_Building() { }
         public Institution_Building(string iName, string bName) {
             this.iName = iName;
             this.bName = bName;

@@ -23,12 +23,21 @@ namespace Termin4CSharp.DataAccessLayer {
             }
         }
 
+<<<<<<< HEAD
+        public void Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+=======
         public IModel Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+>>>>>>> baltzar
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
             SqlDataReader dr = null;
             using (cmd.Connection = Connector.getConnection()) {
                 dr = cmd.ExecuteReader();
-
+<<<<<<< HEAD
+                while (dr.HasRows) {
+                    var a = Utils.GetAttributeInfo(model).Select(x => x.Key);
+                    foreach (var aa in a)
+                        Console.WriteLine(dr[aa]);
+=======
                 //while (dr.Read())
                 //        Console.WriteLine(dr["id"] as int? ?? default(int));
                 //if (TypesMap.Con)
@@ -36,6 +45,7 @@ namespace Termin4CSharp.DataAccessLayer {
                     foreach (string key in Utils.GetAttributeInfo(model).Keys)
                         Console.Write(dr[key] + "\t");
                     Console.WriteLine();
+>>>>>>> baltzar
                 }
             }
             return null;

@@ -80,7 +80,11 @@ namespace Termin4CSharp {
                 sqlBuilder.Append(" where ");
 
                 // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
+<<<<<<< HEAD
+                if (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)
+=======
                 if ((optWhereParams == null || optWhereParams.Count == 0) && (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET))
+>>>>>>> baltzar
                     optWhereParams = model.GetIdentifyingAttributes();
 
                 foreach (KeyValuePair<string, object> whereKV in optWhereParams) {

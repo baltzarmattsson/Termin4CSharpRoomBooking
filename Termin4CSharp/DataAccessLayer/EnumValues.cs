@@ -12,7 +12,7 @@ namespace Termin4CSharp.DataAccessLayer {
     }
 
     enum WhereCondition {
-        EQUAL, LIKE, PERCENTAGE
+        EQUAL, LIKE
     }
 
     //public class QueryType {

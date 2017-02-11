@@ -30,6 +30,16 @@ namespace Termin4CSharp {
             Booking book2 = new Booking(1011, DateTime.Now, r2, p2, "purporse", DateTime.Now, DateTime.Now);
 
             object[] toBeAddedToDb = { p, p2, b, b2, r, r2, book, book, book, book, book2, book2, book2 };
+<<<<<<< HEAD
+
+            DAL dal = new DAL();
+            foreach (IModel o in toBeAddedToDb)
+                dal.Add(o);
+
+            object[] toBeDeletedFromDb = { p2, b2, r2, book, book, book, book, book2, book2, book2 };
+            foreach (IModel o in toBeDeletedFromDb)
+                dal.Remove(o);
+=======
 
             DAL dal = new DAL();
             //foreach (IModel o in toBeAddedToDb)
@@ -48,6 +58,7 @@ namespace Termin4CSharp {
             object[] toBeDeletedFromDb = { p2, b2, r2, book, book, book, book, book2, book2, book2 };
             //foreach (IModel o in toBeDeletedFromDb)
             //    dal.Remove(o);
+>>>>>>> baltzar
 
         }
     }

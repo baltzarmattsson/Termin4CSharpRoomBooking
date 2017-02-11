@@ -167,8 +167,7 @@ namespace Termin4CSharp {
             //Console.WriteLine();
         }
 
-
-        private static string IModelTableName(IModel model) {
+      private static string IModelTableName(IModel model) {
             if (model == null)
                 return null;
             string retTable = null;

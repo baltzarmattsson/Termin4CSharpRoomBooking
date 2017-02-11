@@ -32,8 +32,8 @@ namespace Termin4CSharp {
 
             if (tableName == null) {
                 throw new Exception(String.Format("Table could not be found! IModel: {0} optTableName: {1}", model.GetType(), optTableName));
-            } else if ((queryType == QueryType.REMOVE || queryType == QueryType.UPDATE) && (optWhereParams == null || optWhereParams.Count < 1))
-                throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName(typeof(QueryType), queryType), tableName));
+            } //else if ((queryType == QueryType.REMOVE || queryType == QueryType.UPDATE) && (optWhereParams == null || optWhereParams.Count < 1))
+                //throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName(typeof(QueryType), queryType), tableName));
             
             StringBuilder sqlBuilder = new StringBuilder();
             Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
@@ -74,10 +74,15 @@ namespace Termin4CSharp {
                     break;
             }
 
-            // Adding where conditions, if there are any
-            if (optWhereParams != null && optWhereParams.Count > 0) {
+            // Adding where conditions, if there are any values in the optWhereParams, OR, adding the IModels identifying attribute if it's an UPDATE or REMOVE-query
+            if ((optWhereParams != null && optWhereParams.Count > 0) || (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)) {
                 string eqOperator = Utils.WhereConditionToString(optWhereCondition);
                 sqlBuilder.Append(" where ");
+
+                // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
+                if (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)
+                    optWhereParams = model.GetIdentifyingAttributes();
+
                 foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
                     string key = whereKV.Key.ToLower();
                     string val = "@@" + whereKV.Key;
@@ -85,7 +90,9 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(" and ");
                 }
                 sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
+
             }
+            
             
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             Utils.FillSqlCmd(cmd, modelAttributes);

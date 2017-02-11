@@ -20,28 +20,24 @@ namespace Termin4CSharp {
 
 
             //Connector.getConnection(); 
-            //Person p = new Person("Namnnn", 1337, "email@@", "+4600");
-            //Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
-            //Room r = new Room(b, "1337", 134141, 0);
-            Booking book = new Booking(1006, DateTime.Now, "purporse", DateTime.Now, DateTime.Now);
+            Person p = new Person("Namnnn", "1337", "email@@", "+4600");
+            Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
+            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
+            Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now);
+            Room r = new Room(b, "1337", 134141, 0);
+            Room r2 = new Room(b2, "1337r2", 13414122, 0);
+            Booking book = new Booking(1010, DateTime.Now, r, p, "purporse", DateTime.Now, DateTime.Now);
+            Booking book2 = new Booking(1011, DateTime.Now, r2, p2, "purporse", DateTime.Now, DateTime.Now);
 
-            //object[] toBeAddedToDb = { p, b, r, book, book, book, book };
-
-            //foreach (IModel o in toBeAddedToDb)
-            //    Utils.IModelToQuery(null, QueryType.ADD, o, null);
-
-            //book.Purpose = "new purpose";
-            //whereParams["id"] = 1003;
+            object[] toBeAddedToDb = { p, p2, b, b2, r, r2, book, book, book, book, book2, book2, book2 };
 
             DAL dal = new DAL();
-            //dal.Add(book);
-            //whereParams = new Dictionary<string, object>();
-            //whereParams["id"] = book.Id;
-            //Thread.Sleep(5000);
-            //dal.Remove(book, whereParams);
-            var whereParams = new Dictionary<string, object>();
-            whereParams["id"] = 1007;
-            dal.Get(book, whereParams);
+            foreach (IModel o in toBeAddedToDb)
+                dal.Add(o);
+
+            object[] toBeDeletedFromDb = { p2, b2, r2, book, book, book, book, book2, book2, book2 };
+            foreach (IModel o in toBeDeletedFromDb)
+                dal.Remove(o);
 
         }
     }

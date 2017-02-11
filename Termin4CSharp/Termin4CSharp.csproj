@@ -53,9 +53,14 @@
     <Compile Include="Model\Booking.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="Model\Building.cs" />
+    <Compile Include="Model\DbHelpers\Login.cs" />
+    <Compile Include="Model\DbHelpers\Role.cs" />
+    <Compile Include="Model\DbHelpers\RoomType.cs" />
+    <Compile Include="Model\DbHelpers\Room_Resource.cs" />
     <Compile Include="Model\IController.cs" />
     <Compile Include="Model\Institution.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\DbHelpers\Institution_Building.cs" />
     <Compile Include="Model\IView.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Resource.cs" />

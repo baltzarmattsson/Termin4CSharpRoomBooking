@@ -10,6 +10,7 @@ namespace Termin4CSharp.Model
     {
         public string Name { get; set; }
 
+        public Institution() { }
         public Institution(string name)
         {
             this.Name = name;

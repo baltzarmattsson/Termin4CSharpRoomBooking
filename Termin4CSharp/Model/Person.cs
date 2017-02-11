@@ -12,8 +12,9 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public string Email { get; set; }
         public string PhoneNbr { get; set; }
-        List<int> roles = new List<int>(); 
+        List<int> roles = new List<int>();
 
+        public Person() { }
         public Person(string name, string id, string email, string phoneNbr)
         {
             this.Name = name;

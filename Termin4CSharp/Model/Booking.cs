@@ -16,6 +16,7 @@ namespace Termin4CSharp.Model
         public DateTime Start_time { get; set; }
         public DateTime End_time { get; set; }
 
+        public Booking() { }
         public Booking(int id, DateTime timestamp, Room room, Person person, string purpose, DateTime start_time, DateTime end_time)
         {
             this.Id = id;

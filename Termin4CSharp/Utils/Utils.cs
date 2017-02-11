@@ -26,6 +26,19 @@ namespace Termin4CSharp {
             }
             return attributeValues;
         }
+        public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr) {
+            Type t = model.GetType();
+            var attributeInfo = Utils.GetAttributeInfo(model);
+            ConstructorInfo constructorInfo = t.GetConstructor(Type.EmptyTypes);
+            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            foreach (string key in attributeInfo.Keys)
+                instance.GetType().GetProperty(key).SetValue(instance, dr[key], null);
+
+            dynamic test = Convert.ChangeType(instance, t);
+            return test;
+            
+        }
+
 
         public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
@@ -103,7 +116,7 @@ namespace Termin4CSharp {
             //Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
-
+        
         private static bool IdIsAutoIncrementInDb(IModel model) {
             bool isAuto = false;
             if (model is Booking)

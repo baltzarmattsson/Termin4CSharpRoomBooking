@@ -14,6 +14,8 @@ namespace Termin4CSharp.Model
         public int Floor { get; set; }
         List<int> RoomTypes = new List<int>();
 
+        public Room() { }
+
         public Room(Building building, string id, int capacity, int floor)
         {
             this.BName = building.Name;

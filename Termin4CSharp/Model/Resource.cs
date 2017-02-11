@@ -10,6 +10,7 @@ namespace Termin4CSharp.Model
     {
         public string Type { get; set; }
 
+        public Resource() { }
         public Resource(string type)
         {
             this.Type = type;

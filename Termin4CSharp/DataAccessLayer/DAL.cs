@@ -23,20 +23,20 @@ namespace Termin4CSharp.DataAccessLayer {
             }
         }
 
-        public IModel Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
             SqlDataReader dr = null;
+            var resultList = new List<IModel>();
             using (cmd.Connection = Connector.getConnection()) {
                 dr = cmd.ExecuteReader();
-
-                //while (dr.Read())
-                //        Console.WriteLine(dr["id"] as int? ?? default(int));
-                //if (TypesMap.Con)
+                
                 while (dr.Read()) {
                     Console.Write("RESULTS {0}: ", model.GetType().ToString().Split('.')[2]);
-                    foreach (string key in Utils.GetAttributeInfo(model).Keys)
-                        Console.Write("\t{0} = {1}\t", key, dr[key]);
-                    Console.WriteLine();
+                    //foreach (string key in Utils.GetAttributeInfo(model).Keys) {
+                    //Console.Write("\t{0} = {1}\t", key, dr[key]);
+                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
+                    //}
+                    Console.WriteLine(parsedModel);
                 }
             }
             return null;

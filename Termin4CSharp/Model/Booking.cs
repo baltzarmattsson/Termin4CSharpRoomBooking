@@ -33,5 +33,9 @@ namespace Termin4CSharp.Model
             dict["Id"] = this.Id;
             return dict;
         }
+
+        public override string ToString() {
+            return string.Format("{0} {1} {2} {3} {4} {5} {6}", Id, Timestamp, RoomId, PersonId, Purpose, Start_time, End_time);
+        }
     }
 }

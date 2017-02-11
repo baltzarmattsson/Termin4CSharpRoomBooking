@@ -65,6 +65,11 @@
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Room.cs" />
+    <Compile Include="tempdbDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>tempdbDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="View\Class1.cs" />
     <Compile Include="View\Form1.cs">
@@ -93,6 +98,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="tempdbDataSet.xsc">
+      <DependentUpon>tempdbDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="tempdbDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>tempdbDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="tempdbDataSet.xss">
+      <DependentUpon>tempdbDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -9,19 +9,22 @@ namespace Termin4CSharp.DataAccessLayer
 {
     class Connector
     {
-        private static readonly string USERNAME = "DB_A15DA9_termin4_admin",
-                                       PASSWORD = "Termin41337",
-                                       DATABASE = "DB_A15DA9_termin4",
-                                       SERVER = "sql5030.smarterasp.net",
+        //private static readonly string USERNAME = "DB_A15DA9_termin4_admin",
+        //                               PASSWORD = "Termin41337",
+        //                               DATABASE = "DB_A15DA9_termin4",
+        //                               SERVER = "sql5030.smarterasp.net",
 
-                                       URL = "user id = " + USERNAME + ";" +
-                                             "password="  + PASSWORD + ";" +
-                                             "server= "   + SERVER   + ";" +
-                                             "Integrated security=false;"  + // false since it's not dependant on SSIP
-                                             "database="  + DATABASE + ";" + 
-                                             "connection timeout=30";
+        //                               URL = "user id = " + USERNAME + ";" +
+        //                                     "password="  + PASSWORD + ";" +
+        //                                     "server= "   + SERVER   + ";" +
+        //                                     "Integrated security=false;"  + // false since it's not dependant on SSIP
+        //                                     "database="  + DATABASE + ";" + 
+        //                                     "connection timeout=30";
 
-      public static SqlConnection getConnection()
+        //Baltzar local
+        private static readonly string URL = "Data Source=DESKTOP-STUECFJ;Initial Catalog=tempdb;Integrated Security=True";
+
+        public static SqlConnection getConnection()
         {
             try
             {

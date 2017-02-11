@@ -22,14 +22,13 @@ namespace Termin4CSharp.Model
             this.Avail_end = avail_end;
         }
 
-        public override string ToString() {
-            return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
-        }
-
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
             dict["Name"] = this.Name;
             return dict;
+        }
+        public override string ToString() {
+            return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }
     }
 }

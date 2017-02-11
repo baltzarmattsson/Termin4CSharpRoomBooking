@@ -11,12 +11,12 @@ namespace Termin4CSharp.Model
         public string BName { get; set; }
         public string Id { get; set; }
         public int Capacity { get; set; }
-        public int Floor { get; set; }
+        public string Floor { get; set; }
         List<int> RoomTypes = new List<int>();
 
         public Room() { }
 
-        public Room(Building building, string id, int capacity, int floor)
+        public Room(Building building, string id, int capacity, string floor)
         {
             this.BName = building.Name;
             this.Id = id;
@@ -28,6 +28,10 @@ namespace Termin4CSharp.Model
             var dict = new Dictionary<string, object>();
             dict["Id"] = this.Id;
             return dict;
+        }
+
+        public override string ToString() {
+            return string.Format("{0} {1} {2} {3}", BName, Id, Capacity, Floor);
         }
     }
 }

@@ -31,15 +31,17 @@ namespace Termin4CSharp.DataAccessLayer {
                 dr = cmd.ExecuteReader();
                 
                 while (dr.Read()) {
-                    Console.Write("RESULTS {0}: ", model.GetType().ToString().Split('.')[2]);
+                    //Console.Write("RESULTS {0}: ", model.GetType().ToString().Split('.')[2]);
                     //foreach (string key in Utils.GetAttributeInfo(model).Keys) {
-                    //Console.Write("\t{0} = {1}\t", key, dr[key]);
-                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
+                    //    Console.Write("\t{0} = {1}\t", key, dr[key]);
                     //}
-                    Console.WriteLine(parsedModel);
+                    //Console.WriteLine();
+                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
+                    //Console.WriteLine("PARSED: " + parsedModel);
+                    resultList.Add(parsedModel);
                 }
             }
-            return null;
+            return resultList;
         }
 
         public void Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {

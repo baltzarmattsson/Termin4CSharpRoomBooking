@@ -21,5 +21,9 @@ namespace Termin4CSharp.Model
             dict["Name"] = this.Name;
             return dict;
         }
+
+        public override string ToString() {
+            return string.Format("{0}", Name);
+        }
     }
 }

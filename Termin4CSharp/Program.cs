@@ -39,11 +39,11 @@ namespace Termin4CSharp {
             //    Console.WriteLine(o);
             //    dal.Get(o);
             //}
-            var optParams = new Dictionary<string, object>();
-            optParams["id"] = "%";
+            //var optParams = new Dictionary<string, object>();
+            //optParams["id"] = "%";
 
             foreach (IModel o in toBeAddedToDb)
-                dal.Get(o, whereParams: optParams, optWhereCondition: WhereCondition.LIKE);
+                dal.Get(o);
 
             object[] toBeDeletedFromDb = { p2, b2, r2, book, book, book, book, book2, book2, book2 };
             //foreach (IModel o in toBeDeletedFromDb)

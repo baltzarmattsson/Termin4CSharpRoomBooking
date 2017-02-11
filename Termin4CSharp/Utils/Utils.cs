@@ -92,14 +92,15 @@ namespace Termin4CSharp {
                 sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
 
             }
-            
-            
+
+
+            //Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
 
-            Console.WriteLine(sqlBuilder.ToString());
+            //Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
 
@@ -141,8 +142,9 @@ namespace Termin4CSharp {
                 else
                     throw new Exception("Type not implemented: " + val.GetType());
 
-                Console.WriteLine("{0} {1}", val.ToString(), val.GetType());
+                //Console.Write("{0} {1}\t", key, val.ToString());
             }
+            //Console.WriteLine();
         }
 
         private static string IModelTableName(IModel model) {

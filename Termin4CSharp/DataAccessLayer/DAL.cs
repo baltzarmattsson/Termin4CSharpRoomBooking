@@ -33,8 +33,9 @@ namespace Termin4CSharp.DataAccessLayer {
                 //        Console.WriteLine(dr["id"] as int? ?? default(int));
                 //if (TypesMap.Con)
                 while (dr.Read()) {
+                    Console.Write("RESULTS {0}: ", model.GetType().ToString().Split('.')[2]);
                     foreach (string key in Utils.GetAttributeInfo(model).Keys)
-                        Console.Write(dr[key] + "\t");
+                        Console.Write("\t{0} = {1}\t", key, dr[key]);
                     Console.WriteLine();
                 }
             }

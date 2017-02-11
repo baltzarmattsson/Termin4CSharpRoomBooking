@@ -31,12 +31,13 @@ namespace Termin4CSharp {
             var attributeInfo = Utils.GetAttributeInfo(model);
             ConstructorInfo constructorInfo = t.GetConstructor(Type.EmptyTypes);
             object instance = constructorInfo.Invoke(Type.EmptyTypes);
-            foreach (string key in attributeInfo.Keys)
-                instance.GetType().GetProperty(key).SetValue(instance, dr[key], null);
+            foreach (string key in attributeInfo.Keys) {
+                var value = Convert.ChangeType(dr[key], attributeInfo[key].GetType());
+                instance.GetType().GetProperty(key).SetValue(instance, value, null);
+            }
 
-            dynamic test = Convert.ChangeType(instance, t);
-            return test;
-            
+            dynamic castedInstance = Convert.ChangeType(instance, t);
+            return castedInstance;            
         }
 
 

@@ -28,15 +28,15 @@ namespace Termin4CSharp {
             return attributeValues;
         }
         public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr) {
-            Type t = model.GetType();
+            Type modelType = model.GetType();
             var attributeInfo = Utils.GetAttributeInfo(model);
-            ConstructorInfo constructorInfo = t.GetConstructor(Type.EmptyTypes);
+            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
             object instance = constructorInfo.Invoke(Type.EmptyTypes);
             foreach (string key in attributeInfo.Keys) {
                 var value = dr[key];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }
-            dynamic castedInstance = Convert.ChangeType(instance, t);
+            dynamic castedInstance = Convert.ChangeType(instance, modelType);
             return castedInstance;
         }
         public static object SqlTypeConverter(SqlDataReader dr, string key) {

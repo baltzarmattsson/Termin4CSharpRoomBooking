@@ -24,7 +24,7 @@ namespace Termin4CSharp.DataAccessLayer
         //Baltzar local
         private static readonly string URL = "Data Source=DESKTOP-STUECFJ;Initial Catalog=tempdb;Integrated Security=True";
 
-        public static SqlConnection getConnection()
+        public static SqlConnection GetConnection()
         {
             try
             {

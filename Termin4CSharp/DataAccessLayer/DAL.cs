@@ -11,14 +11,14 @@ namespace Termin4CSharp.DataAccessLayer {
 
         public void Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
-            using (cmd.Connection = Connector.getConnection()) {
+            using (cmd.Connection = Connector.GetConnection()) {
                 cmd.ExecuteNonQuery();
             }
         }
 
         public void Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.REMOVE, model, whereParams, tableName, optWhereCondition);
-            using (cmd.Connection = Connector.getConnection()) {
+            using (cmd.Connection = Connector.GetConnection()) {
                 cmd.ExecuteNonQuery();
             }
         }
@@ -27,7 +27,7 @@ namespace Termin4CSharp.DataAccessLayer {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
             SqlDataReader dr = null;
             var resultList = new List<IModel>();
-            using (cmd.Connection = Connector.getConnection()) {
+            using (cmd.Connection = Connector.GetConnection()) {
                 dr = cmd.ExecuteReader();
                 
                 while (dr.Read()) {
@@ -46,7 +46,7 @@ namespace Termin4CSharp.DataAccessLayer {
 
         public void Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.UPDATE, model, whereParams, tableName, optWhereCondition);
-            using (cmd.Connection = Connector.getConnection()) {
+            using (cmd.Connection = Connector.GetConnection()) {
                 cmd.ExecuteNonQuery();
             }
         }

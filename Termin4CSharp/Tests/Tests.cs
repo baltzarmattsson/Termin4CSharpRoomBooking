@@ -30,7 +30,6 @@ namespace Termin4CSharp.Tests {
                 Assert.AreEqual(retrievedBuilding, b);
                 Assert.AreEqual(retrievedRoom, r);
 
-
                 // Testing update
                 p.Name = "newtestname";
                 p.Email = "newtestemail";

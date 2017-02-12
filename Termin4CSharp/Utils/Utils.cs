@@ -39,6 +39,11 @@ namespace Termin4CSharp {
             dynamic castedInstance = Convert.ChangeType(instance, modelType);
             return castedInstance;
         }
+
+        public static bool DateCompare(DateTime dOne, DateTime dTwo) {
+            return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
+        }
+
         public static object SqlTypeConverter(SqlDataReader dr, string key) {
 
             var type = dr.GetValue(dr.GetOrdinal(key));
@@ -136,6 +141,8 @@ namespace Termin4CSharp {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
+                if (val is IModel)
+                    val = ((IModel)val).GetIdentifyingAttributes().First();
 
                 /*      NULL        **/
                 if (val == null)

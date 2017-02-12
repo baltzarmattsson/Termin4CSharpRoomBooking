@@ -33,5 +33,11 @@ namespace Termin4CSharp.Model
         public override string ToString() {
             return string.Format("{0} {1} {2} {3}", BName, Id, Capacity, Floor);
         }
+        public override bool Equals(object obj) {
+            var other = obj as Room;
+            if (other == null)
+                return false;
+            return this.BName.Equals(other.BName) && this.Id.Equals(other.Id) && this.Capacity == other.Capacity && this.Floor.Equals(other.Floor);
+        }
     }
 }

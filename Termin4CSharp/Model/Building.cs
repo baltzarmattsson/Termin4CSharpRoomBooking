@@ -30,6 +30,12 @@ namespace Termin4CSharp.Model
         public override string ToString() {
             return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }
+        public override bool Equals(object obj) {
+            var other = obj as Building;
+            if (other == null)
+                return false;
+            return this.Name.Equals(other.Name) && this.Address.Equals(other.Address) && Utils.DateCompare(this.Avail_start, other.Avail_start) && Utils.DateCompare(this.Avail_end, other.Avail_end);
+        }
     }
 }
 

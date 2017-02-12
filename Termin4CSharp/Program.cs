@@ -29,18 +29,27 @@ namespace Termin4CSharp {
             Booking book = new Booking(1017, DateTime.Now, r, p, "purporse", DateTime.Now, DateTime.Now);
             Booking book2 = new Booking(1018, DateTime.Now, r2, p2, "purporse", DateTime.Now, DateTime.Now);
 
-            object[] toBeAddedToDb = { p, p2, b, b2, r, r2, book, book, book, book, book, book, book2, book2, book2, book2, book2 };
+            //object[] toBeAddedToDb = { p, p2, b, b2, r, r2, book, book, book, book, book, book, book2, book2, book2, book2, book2 };
 
             DAL dal = new DAL();
-            foreach (IModel o in toBeAddedToDb)
-                dal.Add(o);
+            dal.Remove(b);
+            dal.Add(b);
+            Building retBuild = dal.Get(b).First() as Building;
+            dal.Remove(b);
+            Console.WriteLine(b.Equals(retBuild));
+            Console.WriteLine();
 
-            foreach (IModel o in toBeAddedToDb)
-                dal.Get(o);
+            //foreach (IModel o in toBeAddedToDb)
+            //    dal.Add(o);
 
-            object[] toBeDeletedFromDb = { p2, b2, r2, book2 };
-            foreach (IModel o in toBeDeletedFromDb)
-                dal.Remove(o);
+            //foreach (IModel o in toBeAddedToDb)
+            //    dal.Get(o);
+
+            //Console.WriteLine(dal.Get(p).First());
+
+            //object[] toBeDeletedFromDb = { p2, b2, r2, book2 };
+            //foreach (IModel o in toBeDeletedFromDb)
+            //    dal.Remove(o);
 
             //var wheres = new Dictionary<string, object>();
             //wheres["id"] = "%";

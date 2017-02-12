@@ -25,5 +25,12 @@ namespace Termin4CSharp.Model
         public override string ToString() {
             return string.Format("{0}", Name);
         }
+
+        public override bool Equals(object obj) {
+            var other = obj as Person;
+            if (other == null)
+                return false;
+            return this.Name.Equals(other.Name);
+        }
     }
 }

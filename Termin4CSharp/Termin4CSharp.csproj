@@ -86,6 +86,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\GUIMain.resx">
+      <DependentUpon>GUIMain.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="DataAccessLayer\DAL.cs.orig" />
     <None Include="Model\Building.cs.orig" />
     <None Include="Model\Person.cs.orig" />

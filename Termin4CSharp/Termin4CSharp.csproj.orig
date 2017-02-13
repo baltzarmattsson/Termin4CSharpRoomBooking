@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Class1.cs" />
-<<<<<<< HEAD
     <Compile Include="DataAccessLayer\DAL.cs" />
     <Compile Include="DataAccessLayer\DbFields.cs" />
     <Compile Include="DataAccessLayer\EnumValues.cs" />
@@ -66,15 +66,16 @@
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Room.cs" />
-=======
-    <Compile Include="Model\Class1.cs" />
+<<<<<<< HEAD
     <Compile Include="UI\GUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\GUI.Designer.cs">
       <DependentUpon>GUI.cs</DependentUpon>
     </Compile>
->>>>>>> ebba
+=======
+    <Compile Include="Tests\Tests.cs" />
+>>>>>>> baltzar
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="View\Class1.cs" />
     <Compile Include="View\Form1.cs">
@@ -89,7 +90,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\GUI.resx">
+    <EmbeddedResource Include="View\GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -106,7 +107,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Resources\" />
+=======
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+>>>>>>> baltzar
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

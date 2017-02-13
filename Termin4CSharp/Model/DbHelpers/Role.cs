@@ -8,6 +8,7 @@ namespace Termin4CSharp.Model.DbHelpers {
     class Role : IModel {
 
         public int Id { get; set; }
+        public Role() { }
         public Role(int id) {
             this.Id = id;
         }

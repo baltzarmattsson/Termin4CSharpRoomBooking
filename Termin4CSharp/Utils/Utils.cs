@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
+using Termin4CSharp.Model.DbHelpers;
 
 namespace Termin4CSharp {
     class Utils {
@@ -26,14 +27,37 @@ namespace Termin4CSharp {
             }
             return attributeValues;
         }
+        public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr) {
+            Type modelType = model.GetType();
+            var attributeInfo = Utils.GetAttributeInfo(model);
+            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
+            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            foreach (string key in attributeInfo.Keys) {
+                var value = dr[key];
+                instance.GetType().GetProperty(key).SetValue(instance, value, null);
+            }
+            dynamic castedInstance = Convert.ChangeType(instance, modelType);
+            return castedInstance;
+        }
+
+        public static bool DateCompare(DateTime dOne, DateTime dTwo) {
+            return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
+        }
+
+        public static object SqlTypeConverter(SqlDataReader dr, string key) {
+
+            var type = dr.GetValue(dr.GetOrdinal(key));
+            Console.WriteLine(type);
+
+            return type;
+        }
+
 
         public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
-            if (tableName == null) {
+            if (tableName == null)
                 throw new Exception(String.Format("Table could not be found! IModel: {0} optTableName: {1}", model.GetType(), optTableName));
-            } //else if ((queryType == QueryType.REMOVE || queryType == QueryType.UPDATE) && (optWhereParams == null || optWhereParams.Count < 1))
-                //throw new Exception(String.Format("Cannot {0} from {1} when optWhereParams is null/Count < 1", Enum.GetName(typeof(QueryType), queryType), tableName));
             
             StringBuilder sqlBuilder = new StringBuilder();
             Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
@@ -41,8 +65,8 @@ namespace Termin4CSharp {
             string modelKeys = "", modelValues = "";
             foreach (string key in modelAttributes.Keys) {
 
-                // If the id is autoincrementing, we're skipping inserting/updating this value
-                if (key.Equals("id", StringComparison.InvariantCultureIgnoreCase) && Utils.IdIsAutoIncrementInDb(model))
+                // For non-GET-queries, if the id is autoincrementing, we're skipping inserting/updating this value
+                if (queryType != QueryType.GET && key.Equals("id", StringComparison.InvariantCultureIgnoreCase) && Utils.IdIsAutoIncrementInDb(model))
                     continue;
 
                 // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
@@ -55,7 +79,7 @@ namespace Termin4CSharp {
 
                 }
             }
-            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2);       //removing ", "
+            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
             if (modelValues.Length > 2)
                 modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
 
@@ -92,17 +116,19 @@ namespace Termin4CSharp {
                 sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
 
             }
+
             
-            
+            //Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
-            Utils.FillSqlCmd(cmd, modelAttributes);
+            if (queryType != QueryType.GET)
+                Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
 
-            Console.WriteLine(sqlBuilder.ToString());
+            //Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
-
+        
         private static bool IdIsAutoIncrementInDb(IModel model) {
             bool isAuto = false;
             if (model is Booking)
@@ -115,6 +141,8 @@ namespace Termin4CSharp {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
+                if (val is IModel)
+                    val = ((IModel)val).GetIdentifyingAttributes().First();
 
                 /*      NULL        **/
                 if (val == null)
@@ -141,11 +169,12 @@ namespace Termin4CSharp {
                 else
                     throw new Exception("Type not implemented: " + val.GetType());
 
-                Console.WriteLine("{0} {1}", val.ToString(), val.GetType());
+                //Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
             }
+            //Console.WriteLine();
         }
 
-        private static string IModelTableName(IModel model) {
+      private static string IModelTableName(IModel model) {
             if (model == null)
                 return null;
             string retTable = null;
@@ -162,7 +191,17 @@ namespace Termin4CSharp {
                 retTable = DbFields.InstitutionTable;
             else if (model is Resource)
                 retTable = DbFields.ResourceTable;
-            
+            else if (model is Institution_Building)
+                retTable = DbFields.InstBuildTable;
+            else if (model is Room_Resource)
+                retTable = DbFields.RoomResourceTable;
+            else if (model is Role)
+                retTable = DbFields.PersonRoleTable;
+            else if (model is Login)
+                retTable = DbFields.LoginTable;
+            else if (model is RoomType)
+                retTable = DbFields.RoomTypeTable;
+
             return retTable;
         }
 

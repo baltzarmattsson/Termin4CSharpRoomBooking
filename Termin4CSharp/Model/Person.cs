@@ -16,12 +16,10 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public string Email { get; set; }
         public string PhoneNbr { get; set; }
-<<<<<<< HEAD
-        //List <int> roles 
-=======
-        List<int> roles = new List<int>(); 
+        
 >>>>>>> 9d21af75eaedf8c5433772e40dbdd0be5052d37f
 
+        public Person() { }
         public Person(string name, string id, string email, string phoneNbr)
         {
             this.Name = name;
@@ -38,6 +36,13 @@ namespace Termin4CSharp.Model
             var dict = new Dictionary<string, object>();
             dict["Id"] = this.Id;
             return dict;
+        }
+
+        public override bool Equals(object obj) {
+            var other = obj as Person;
+            if (other == null)
+                return false;
+            return this.Name.Equals(other.Name) && this.Id.Equals(other.Id) && this.Email.Equals(other.Email) && this.PhoneNbr.Equals(other.PhoneNbr);
         }
     }
 }

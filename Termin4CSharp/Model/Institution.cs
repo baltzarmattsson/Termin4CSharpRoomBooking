@@ -14,6 +14,7 @@ namespace Termin4CSharp.Model
     {
         public string Name { get; set; }
 
+        public Institution() { }
         public Institution(string name)
         {
             this.Name = name;
@@ -23,6 +24,17 @@ namespace Termin4CSharp.Model
             var dict = new Dictionary<string, object>();
             dict["Name"] = this.Name;
             return dict;
+        }
+
+        public override string ToString() {
+            return string.Format("{0}", Name);
+        }
+
+        public override bool Equals(object obj) {
+            var other = obj as Person;
+            if (other == null)
+                return false;
+            return this.Name.Equals(other.Name);
         }
     }
 }

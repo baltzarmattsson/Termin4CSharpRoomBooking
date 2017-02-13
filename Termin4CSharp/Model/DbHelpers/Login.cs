@@ -8,7 +8,7 @@ namespace Termin4CSharp.Model.DbHelpers {
     class Login : IModel {
         public string PersonId { get; set; }
         public string Password { get; set; }
-
+        public Login() { }
         public Login(string personId, string password) {
             this.PersonId = personId;
             this.Password = password;

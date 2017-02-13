@@ -10,6 +10,8 @@ namespace Termin4CSharp.Model.DbHelpers {
         public int Id { get; set; }
         public string Type { get; set; }
 
+        public RoomType() { }
+
         public RoomType(int id, string type) {
             this.Id = id;
             this.Type = type;

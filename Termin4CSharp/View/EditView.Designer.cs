@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomRangeSelectorControl;
+using System;
 using System.Windows.Forms;
 using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
@@ -29,6 +30,7 @@ namespace Termin4CSharp.View {
         /// </summary>
         private void InitializeComponent() {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -47,14 +49,26 @@ namespace Termin4CSharp.View {
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "EditView";
             this.Text = "EditView";
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         private void LoadModel(IModel model) {
+
+            Label mainTitleLabel = new Label();
+            mainTitleLabel.Size = new System.Drawing.Size(1500, 50);
+            mainTitleLabel.Font = new System.Drawing.Font("Helvetica", 20);
+            
+            // Sätt Redigering/uppdatering/skapa ny dynamiskt vvvv
+            mainTitleLabel.Text = string.Format("Redigering: {0} ", model.GetType().Name);
+            this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
+
             Console.WriteLine("Private: loading: " + model.GetType());
             var attributes = Utils.GetAttributeInfo(model);
             Label attributeName = null;
+            int indexCounter = 0;
             foreach (var kv in attributes) {
                 var value = kv.Value;
                 attributeName = new Label();
@@ -63,24 +77,34 @@ namespace Termin4CSharp.View {
                 // DateTime
                 if (value is DateTime) {
                     DateTimePicker datePicker = new DateTimePicker();
-                    datePicker.Value = value == null ? default(DateTime) : (DateTime)value;
+                    datePicker.Width = 500;
+                    datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
+                    datePicker.Name = "id" + indexCounter;
                     this.flowLayoutPanel1.Controls.Add(datePicker);
+                    flowLayoutPanel1.SetFlowBreak(datePicker, true);
                 // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                     NumberTextBox numTextBox = new NumberTextBox();
+                    numTextBox.Width = 500;
                     numTextBox.Text = value == null ? "" : value.ToString();
+                    numTextBox.Name = "id" + indexCounter;
                     this.flowLayoutPanel1.Controls.Add(numTextBox);
+                    flowLayoutPanel1.SetFlowBreak(numTextBox, true);
                 // Else
                 } else {
                     TextBox textBox = new TextBox();
+                    textBox.Width = 500;
                     textBox.Text = value == null ? "" : value.ToString();
+                    textBox.Name = "id" + indexCounter;
                     this.flowLayoutPanel1.Controls.Add(textBox);
+                    flowLayoutPanel1.SetFlowBreak(textBox, true);
                 }
+                indexCounter++;
             }
         }
 
         #endregion
-
+        private delegate void Testss();
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

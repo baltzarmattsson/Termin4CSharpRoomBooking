@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model {
     interface IController {
+
+        void NotifyExceptionToView();
     }
 }

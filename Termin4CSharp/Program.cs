@@ -17,7 +17,8 @@ namespace Termin4CSharp {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUIMain()); 
+            Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
+            Application.Run(new EditView(new Building())); 
 
 
             /*

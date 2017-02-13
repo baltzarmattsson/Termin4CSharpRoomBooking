@@ -15,11 +15,7 @@ namespace Termin4CSharp.DataAccessLayer {
         EQUAL, LIKE
     }
 
-    //public class QueryType {
-    //    public const string Add = "insert";
-    //    public const string Remove = "delete";
-    //    public const string Update = "update";
-    //    public const string Get = "select";
-
-    //}
+    enum SqlExceptionCode {
+        PK_RESTRAINT, FK_RESTRAINT
+    }
 }

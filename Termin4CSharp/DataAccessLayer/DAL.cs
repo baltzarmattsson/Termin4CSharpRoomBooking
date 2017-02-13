@@ -9,6 +9,8 @@ using Termin4CSharp.Model;
 namespace Termin4CSharp.DataAccessLayer {
     class DAL {
 
+        public IController Controller { get; set; }
+
         public void Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             using (cmd.Connection = Connector.GetConnection()) {
@@ -50,6 +52,16 @@ namespace Termin4CSharp.DataAccessLayer {
                 cmd.ExecuteNonQuery();
             }
         }
+
+        //private void HandleSqlException(SqlException sqle) {
+
+        //    //if (sqle.ErrorCode == )
+
+        //    //handling DbFields.SqlCode
+
+        //    //if (this.Controller != null)
+        //    //    this.Controller.NotifyExceptionToView();
+        //}
 
     }
 }

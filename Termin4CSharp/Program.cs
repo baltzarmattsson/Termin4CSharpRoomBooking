@@ -17,14 +17,10 @@ namespace Termin4CSharp {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Person p = new Person("Namnnn", "1337", "email@@", "+4600");
-            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
-            //EditView v = new EditView(p);
-            Application.Run(new EditView(new Room()));
-            Application.Run(new EditView(p));
-            Application.Run(new EditView(b));
+            Application.Run(new GUIMain()); 
 
-            /**
+
+            /*
             //Connector.getConnection(); 
             Person p = new Person("Namnnn", "1337", "email@@", "+4600");
             Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
@@ -66,7 +62,7 @@ namespace Termin4CSharp {
 
             //foreach (IModel m in rrr)
             //    Console.WriteLine("a");
-            **/
+*/
 
         }
     }

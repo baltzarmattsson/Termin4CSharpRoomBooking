@@ -95,13 +95,12 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\EditView.resx">
-      <DependentUpon>EditView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\GUIMain.resx">
       <DependentUpon>GUIMain.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DataAccessLayer\DAL.cs.orig" />
+<EmbeddedResource Include="View\EditView.resx">
+      <DependentUpon>EditView.cs</DependentUpon>
+    </EmbeddedResource>    <None Include="DataAccessLayer\DAL.cs.orig" />
     <None Include="Model\Building.cs.orig" />
     <None Include="Model\Person.cs.orig" />
     <None Include="Model\Room.cs.orig" />

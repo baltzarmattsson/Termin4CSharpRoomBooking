@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Termin4CSharp.Model
 {
     class Building : IModel
->>>>>>> 9d21af75eaedf8c5433772e40dbdd0be5052d37f
     {
         public string Name { get; set; }
         public string Address { get; set; }

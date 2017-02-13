@@ -79,7 +79,7 @@ namespace Termin4CSharp {
 
                 }
             }
-            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2);       //removing ", "
+            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
             if (modelValues.Length > 2)
                 modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
 

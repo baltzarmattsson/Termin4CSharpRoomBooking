@@ -21,5 +21,4 @@ namespace Termin4CSharp.DataAccessLayer {
         public const string LoginTable = "Login";
 
     }
-
 }

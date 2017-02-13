@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model
 {
+<<<<<<< HEAD
     class Building : IModel
+=======
+<<<<<<< HEAD
+    class Budilding
+=======
+    class Budilding : IModel
 >>>>>>> 9d21af75eaedf8c5433772e40dbdd0be5052d37f
+>>>>>>> ebba
     {
         public string Name { get; set; }
         public string Address { get; set; }

@@ -52,7 +52,7 @@ namespace Termin4CSharp.Tests {
                 Assert.AreEqual(retrievedBuilding, b);
                 Assert.AreEqual(retrievedRoom, r);
             } finally {
-                // Testing remove
+                // Testing remove 
                 dal.Remove(p);
                 dal.Remove(b);
                 dal.Remove(r);

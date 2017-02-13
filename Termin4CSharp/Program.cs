@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
+using Termin4CSharp.View;
 
 namespace Termin4CSharp {
     static class Program {
@@ -14,11 +15,14 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            /*Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1()); */
+            Person p = new Person("Namnnn", "1337", "email@@", "+4600");
+            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
+            //EditView v = new EditView(p);
+            Application.Run(new EditView(new Room()));
 
-
+            /**
             //Connector.getConnection(); 
             Person p = new Person("Namnnn", "1337", "email@@", "+4600");
             Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
@@ -60,7 +64,7 @@ namespace Termin4CSharp {
 
             //foreach (IModel m in rrr)
             //    Console.WriteLine("a");
-
+            **/
 
         }
     }

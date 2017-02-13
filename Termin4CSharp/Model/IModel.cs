@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model {
-    interface IModel {
+    public interface IModel {
         Dictionary<string, object> GetIdentifyingAttributes();
     }
 }

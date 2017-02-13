@@ -64,10 +64,10 @@ namespace Termin4CSharp.View {
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.hej = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -236,7 +236,7 @@ namespace Termin4CSharp.View {
             // 
             // vScrollBar4
             // 
-            this.vScrollBar4.Location = new System.Drawing.Point(791, 136);
+            this.vScrollBar4.Location = new System.Drawing.Point(768, 136);
             this.vScrollBar4.Name = "vScrollBar4";
             this.vScrollBar4.Size = new System.Drawing.Size(20, 307);
             this.vScrollBar4.TabIndex = 21;
@@ -244,17 +244,17 @@ namespace Termin4CSharp.View {
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.hej,
             this.columnHeader1,
             this.columnHeader2,
-            this.columnHeader3});
-            this.listView1.Location = new System.Drawing.Point(272, 136);
+            this.columnHeader3,
+            this.columnHeader4});
+            this.listView1.Location = new System.Drawing.Point(249, 136);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(539, 307);
             this.listView1.TabIndex = 20;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.Columns.Add("File type", 20, HorizontalAlignment.Left);
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -433,6 +433,27 @@ namespace Termin4CSharp.View {
             this.tabPage3.UseVisualStyleBackColor = true;
             this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 129;
+            this.columnHeader1.Text = "Byggnad";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Width = 129;
+            this.columnHeader2.Text = "Rum";
+
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Width = 129;
+            this.columnHeader3.Text = "Tidslinje";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Width = 129;
+            this.columnHeader4.Text = "Antal platser";
+            // 
             // GUIMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,9 +512,9 @@ namespace Termin4CSharp.View {
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.VScrollBar vScrollBar4;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader hej;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
+        private ColumnHeader columnHeader4;
     }
 }

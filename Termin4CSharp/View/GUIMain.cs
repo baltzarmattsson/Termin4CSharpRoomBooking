@@ -135,5 +135,10 @@ namespace Termin4CSharp.View
         {
 
         }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

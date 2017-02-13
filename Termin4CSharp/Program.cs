@@ -21,6 +21,8 @@ namespace Termin4CSharp {
             Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
             //EditView v = new EditView(p);
             Application.Run(new EditView(new Room()));
+            Application.Run(new EditView(p));
+            Application.Run(new EditView(b));
 
             /**
             //Connector.getConnection(); 

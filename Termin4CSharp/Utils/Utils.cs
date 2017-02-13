@@ -128,7 +128,110 @@ namespace Termin4CSharp {
             //Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
-        
+
+        public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
+
+            if (model == null)
+                return null;
+            string retName = key;
+
+            if (model is Person) {
+                switch (key.ToLower()) {
+                    case "name":
+                        break;
+                    case "id":
+                        break;
+                    case "phonenbr":
+                        break;
+                    case "email":
+                        break;
+                }
+            } else if (model is Room) {
+                switch (key.ToLower()) {
+                    case "bname":
+                        break;
+                    case "capacity":
+                        break;
+                    case "floor":
+                        break;
+                    case "id":
+                        break;
+                }
+            } else if (model is Building) { 
+                switch (key.ToLower()) {
+                    case "address":
+                        break;
+                    case "avail_end":
+                        break;
+                    case "avail_start":
+                        break;
+                    case "name":
+                        break;
+                }
+            } else if (model is Booking) {
+                switch (key.ToLower()) {
+                    case "id":
+                        break;
+                    case "personid":
+                        break;
+                    case "purpose":
+                        break;
+                    case "roomid":
+                        break;
+                    case "start_time":
+                        break;
+                    case "end_time":
+                        break;
+                }
+            }
+            else if (model is Institution) {
+                switch (key.ToLower()) {
+                    case "name":
+                        break;
+                }
+            } else if (model is Resource) {
+                switch (key.ToLower()) {
+                    case "type":
+                        break;
+                }
+            } else if (model is Institution_Building) {
+                switch (key.ToLower()) {
+                    case "bname":
+                        break;
+                    case "iname":
+                        break;
+                }
+            } else if (model is Room_Resource) {
+                switch (key.ToLower()) {
+                    case "resid":
+                        break;
+                    case "roomid":
+                        break;
+                }
+            } else if (model is Role) {
+                switch (key.ToLower()) {
+                    case "id":
+                        break;
+                }
+            } else if (model is Login) {
+                switch (key.ToLower()) {
+                    case "password":
+                        break;
+                    case "personid":
+                        break;
+                }
+            } else if (model is RoomType) {
+                switch (key.ToLower()) {
+                    case "id":
+                        break;
+                    case "type":
+                        break;
+                }
+            }
+
+            return retName;
+        }
+
         private static bool IdIsAutoIncrementInDb(IModel model) {
             bool isAuto = false;
             if (model is Booking)

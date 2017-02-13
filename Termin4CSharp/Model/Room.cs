@@ -12,17 +12,17 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public int Capacity { get; set; }
         public string Floor { get; set; }
-
-        List<int> RoomTypes = new List<int>();
+        public int RoomType { get; set; }
 
         public Room() { }
 
-        public Room(Building building, string id, int capacity, string floor)
+        public Room(Building building, string id, int capacity, string floor, int roomType)
         {
             this.BName = building.Name;
             this.Id = id;
             this.Capacity = capacity;
             this.Floor = floor;
+            this.RoomType = roomType;
         }
 
         public Dictionary<string, object> GetIdentifyingAttributes() {

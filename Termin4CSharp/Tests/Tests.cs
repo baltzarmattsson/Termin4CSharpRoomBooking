@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Termin4CSharp.Model;
 using Termin4CSharp.DataAccessLayer;
+using Termin4CSharp.Model.DbHelpers;
 
 namespace Termin4CSharp.Tests {
     [TestClass]
@@ -14,7 +15,8 @@ namespace Termin4CSharp.Tests {
         public void DALAddGetUpdateRemove() {
             Person p = new Person("testname", "testid", "testemail", "testphonenbr");
             Building b = new Building("testname", "testaddress", DateTime.Now, DateTime.Now);
-            Room r = new Room(b, "testid", 134141, "0");
+            RoomType rt = new RoomType(113377, "testtype");
+            Room r = new Room(b, "testid", 134141, "0", 113377);
             
             // Testing add
             DAL dal = new DAL();

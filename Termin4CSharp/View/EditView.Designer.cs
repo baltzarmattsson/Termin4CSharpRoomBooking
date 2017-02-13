@@ -54,35 +54,30 @@ namespace Termin4CSharp.View {
         private void LoadModel(IModel model) {
             Console.WriteLine("Private: loading: " + model.GetType());
             var attributes = Utils.GetAttributeInfo(model);
-            Label l = null;
+            Label attributeName = null;
             foreach (var kv in attributes) {
                 var value = kv.Value;
-                l = new Label();
-                l.Text = kv.Key;
-                this.flowLayoutPanel1.Controls.Add(l);
-                object control = null;
+                attributeName = new Label();
+                attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
+                this.flowLayoutPanel1.Controls.Add(attributeName);
+                // DateTime
                 if (value is DateTime) {
                     DateTimePicker datePicker = new DateTimePicker();
                     datePicker.Value = value == null ? default(DateTime) : (DateTime)value;
-                    this.flowLayoutPanel1.Controls.Add((DateTimePicker)control);
+                    this.flowLayoutPanel1.Controls.Add(datePicker);
+                // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                     NumberTextBox numTextBox = new NumberTextBox();
                     numTextBox.Text = value == null ? "" : value.ToString();
                     this.flowLayoutPanel1.Controls.Add(numTextBox);
+                // Else
                 } else {
                     TextBox textBox = new TextBox();
                     textBox.Text = value == null ? "" : value.ToString();
                     this.flowLayoutPanel1.Controls.Add(textBox);
                 }
-
             }
         }
-
-        private delegate void NumList(object x, EventHandler y);
-        private void NumberListener(object sender, EventHandler e) {
-            Console.WriteLine("Changed?");
-        }
-
 
         #endregion
 

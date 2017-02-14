@@ -27,7 +27,13 @@ namespace Termin4CSharp {
             //else
             //    fetched = b2;
 
-            Building fetched = new Building("Buildbuild", "buildaddress", DateTime.Now, DateTime.Now, new List<Room>());
+            Building fetched = new Building("Buildbuild", "buildaddress", DateTime.Now, DateTime.Now, null);
+            Room r = new Room(fetched, "1337", 134141, "0", null);
+            Room r2 = new Room(fetched, "1337r2", 13414122, "0", null);
+            var rooms = new List<Room>();
+            rooms.Add(r);
+            rooms.Add(r2);
+            fetched.Room = rooms;
 
             EditView ev = new EditView(fetched);
             EditViewController c = new EditViewController(ev);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
@@ -29,7 +30,6 @@ namespace Termin4CSharp.View {
         /// </summary>
         private void InitializeComponent() {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -48,8 +48,6 @@ namespace Termin4CSharp.View {
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "EditView";
             this.Text = "EditView";
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -74,6 +72,8 @@ namespace Termin4CSharp.View {
                 attributeName = new Label();
                 attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
                 this.flowLayoutPanel1.Controls.Add(attributeName);
+
+                // TODO - städa , gör en Control object och sedan använd denna generiskt till t.ex. Width och Name
                 // DateTime
                 if (value is DateTime) {
                     DateTimePicker datePicker = new DateTimePicker();
@@ -82,7 +82,7 @@ namespace Termin4CSharp.View {
                     datePicker.Name = kv.Key;
                     this.flowLayoutPanel1.Controls.Add(datePicker);
                     flowLayoutPanel1.SetFlowBreak(datePicker, true);
-                // Numbers
+                    // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                     NumberTextBox numTextBox = new NumberTextBox();
                     numTextBox.Width = 500;
@@ -92,8 +92,18 @@ namespace Termin4CSharp.View {
                         numTextBox.Enabled = false;
                     this.flowLayoutPanel1.Controls.Add(numTextBox);
                     flowLayoutPanel1.SetFlowBreak(numTextBox, true);
+                } else if (value is System.Collections.Generic.List<Room>) {
+                    CheckedListBox checkListBox = new CheckedListBox();
+                    foreach (var item in (List<Room>)value)
+                        checkListBox.Items.Add(item);
+                    checkListBox.Width = 500;
+                    checkListBox.Name = kv.Key;
+                    this.flowLayoutPanel1.Controls.Add(checkListBox);
+                    flowLayoutPanel1.SetFlowBreak(checkListBox, true);
+                
                 // Else
                 } else {
+                    Console.WriteLine(value.GetType());
                     TextBox textBox = new TextBox();
                     textBox.Width = 500;
                     textBox.Text = value == null ? "" : value.ToString();

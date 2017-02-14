@@ -37,14 +37,24 @@ namespace Termin4CSharp {
 
             foreach (string attributeName in attributeInfo.Keys) {
                 var value = dr[attributeName] == DBNull.Value ? null : dr[attributeName];
-                if (attributeInfo.ContainsKey(attributeName) && attributeInfo[attributeName] is IModel) {
-                    IModel referencedModel = attributeInfo[attributeName] as IModel;
-                    KeyValuePair<string, object> asd = referencedModel.GetIdentifyingAttributes().First();
-                    string idAtt = asd.Value as string;
-                    string idKey = asd.Key;
+                // If value is an IModel or a list of IModels
+                if (attributeInfo.ContainsKey(attributeName) && (attributeInfo[attributeName] is IModel || attributeInfo[attributeName] is List<IModel>)) {
+                    bool modelIsList = attributeInfo[attributeName] is List<IModel>;
+                    IModel referencedModel = null;
+                    if (modelIsList)
+                        referencedModel = ((List<IModel>)attributeInfo[attributeName]).First() as IModel;
+                    else
+                        referencedModel = attributeInfo[attributeName] as IModel;
+
+                    KeyValuePair<string, object> refModelIdKV = referencedModel.GetIdentifyingAttributes().First();
+                    string idAtt = refModelIdKV.Value as string;
+                    string idKey = refModelIdKV.Key;
                     if (value != null) {
                         IModel dynamicIModel = Utils.CreateDynamicIModel(referencedModel, idKey, idAtt);
-                        value = new DAL().Get(dynamicIModel).First();
+                        if (modelIsList)
+                            value = new DAL().Get(dynamicIModel);
+                        else
+                            value = new DAL().Get(dynamicIModel).First();
                     }
                 }
                 instance.GetType().GetProperty(attributeName).SetValue(instance, value, null);

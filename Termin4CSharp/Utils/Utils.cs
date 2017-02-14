@@ -7,9 +7,11 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.Model.DbHelpers;
+using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp {
     class Utils {
@@ -32,10 +34,25 @@ namespace Termin4CSharp {
             var attributeInfo = Utils.GetAttributeInfo(model);
             ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
             object instance = constructorInfo.Invoke(Type.EmptyTypes);
+
             foreach (string key in attributeInfo.Keys) {
                 var value = dr[key];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }
+            dynamic castedInstance = Convert.ChangeType(instance, modelType);
+            return castedInstance;
+        }
+
+        public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
+            Type modelType = model.GetType();
+            var attributeInfo = Utils.GetAttributeInfo(model);
+            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
+            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+
+            foreach (string key in attributeInfo.Keys) {
+                var value = controlValues[key];
+                instance.GetType().GetProperty(key).SetValue(instance, value, null);
+            }            
             dynamic castedInstance = Convert.ChangeType(instance, modelType);
             return castedInstance;
         }

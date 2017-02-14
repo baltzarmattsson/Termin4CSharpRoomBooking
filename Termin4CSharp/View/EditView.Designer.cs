@@ -1,5 +1,4 @@
-﻿using CustomRangeSelectorControl;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
@@ -68,8 +67,8 @@ namespace Termin4CSharp.View {
             Console.WriteLine("Private: loading: " + model.GetType());
             var attributes = Utils.GetAttributeInfo(model);
             Label attributeName = null;
-            int indexCounter = 0;
             foreach (var kv in attributes) {
+                bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key);
                 var value = kv.Value;
                 attributeName = new Label();
                 attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
@@ -79,7 +78,7 @@ namespace Termin4CSharp.View {
                     DateTimePicker datePicker = new DateTimePicker();
                     datePicker.Width = 500;
                     datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-                    datePicker.Name = "id" + indexCounter;
+                    datePicker.Name = kv.Key;
                     this.flowLayoutPanel1.Controls.Add(datePicker);
                     flowLayoutPanel1.SetFlowBreak(datePicker, true);
                 // Numbers
@@ -87,7 +86,9 @@ namespace Termin4CSharp.View {
                     NumberTextBox numTextBox = new NumberTextBox();
                     numTextBox.Width = 500;
                     numTextBox.Text = value == null ? "" : value.ToString();
-                    numTextBox.Name = "id" + indexCounter;
+                    numTextBox.Name = kv.Key;
+                    if (isIdentifyingAttribute)
+                        numTextBox.Enabled = false;
                     this.flowLayoutPanel1.Controls.Add(numTextBox);
                     flowLayoutPanel1.SetFlowBreak(numTextBox, true);
                 // Else
@@ -95,16 +96,48 @@ namespace Termin4CSharp.View {
                     TextBox textBox = new TextBox();
                     textBox.Width = 500;
                     textBox.Text = value == null ? "" : value.ToString();
-                    textBox.Name = "id" + indexCounter;
+                    textBox.Name = kv.Key;
+                    if (isIdentifyingAttribute)
+                        textBox.Enabled = false;
                     this.flowLayoutPanel1.Controls.Add(textBox);
                     flowLayoutPanel1.SetFlowBreak(textBox, true);
                 }
-                indexCounter++;
             }
+
+            // Adding responselabel
+            this.responseLabel = new Label();
+            this.responseLabel.Text = "";
+            this.responseLabel.Size = new System.Drawing.Size(1000, 50);
+            this.responseLabel.Font = new System.Drawing.Font("Helvetica", 12);
+            flowLayoutPanel1.Controls.Add(this.responseLabel);
+            flowLayoutPanel1.SetFlowBreak(this.responseLabel, true);
+
+            // Adding savebutton
+            this.saveButton = new Button();
+            this.saveButton.Text = "Spara";
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            flowLayoutPanel1.Controls.Add(this.saveButton);
+
+            // Adding deletebutton
+            this.deleteButton = new Button();
+            this.deleteButton.Text = "Ta bort";
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            flowLayoutPanel1.Controls.Add(this.deleteButton);
+
+            // Adding closebutton
+            this.closeButton = new Button();
+            this.closeButton.Text = "Stäng";
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            flowLayoutPanel1.Controls.Add(this.closeButton);
+
         }
 
         #endregion
-        private delegate void Testss();
+
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private Label responseLabel;
+        private Button saveButton;
+        private Button deleteButton;
+        private Button closeButton;
     }
 }

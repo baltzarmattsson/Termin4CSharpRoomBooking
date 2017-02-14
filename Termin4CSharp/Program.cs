@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Termin4CSharp.Controller;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.View;
@@ -18,7 +19,10 @@ namespace Termin4CSharp {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
-            Application.Run(new EditView(new Building())); 
+            Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now);
+            EditView ev = new EditView(b2);
+            EditViewController c = new EditViewController(ev);
+            Application.Run(ev);
 
 
             /*

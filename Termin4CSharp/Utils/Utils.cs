@@ -35,12 +35,11 @@ namespace Termin4CSharp {
             ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
             object instance = constructorInfo.Invoke(Type.EmptyTypes);
 
-            foreach (string key in attributeInfo.Keys) {
-                var value = dr[key] == DBNull.Value ? null : dr[key];
-                if (attributeInfo.ContainsKey(key) && attributeInfo[key] is IModel) {
-                    IModel referencedModel = attributeInfo[key] as IModel;
+            foreach (string attributeName in attributeInfo.Keys) {
+                var value = dr[attributeName] == DBNull.Value ? null : dr[attributeName];
+                if (attributeInfo.ContainsKey(attributeName) && attributeInfo[attributeName] is IModel) {
+                    IModel referencedModel = attributeInfo[attributeName] as IModel;
                     KeyValuePair<string, object> asd = referencedModel.GetIdentifyingAttributes().First();
-                    //KeyValuePair<string, object> asd = ((IModel)value).GetIdentifyingAttributes().First();
                     string idAtt = asd.Value as string;
                     string idKey = asd.Key;
                     if (value != null) {
@@ -48,7 +47,7 @@ namespace Termin4CSharp {
                         value = new DAL().Get(dynamicIModel).First();
                     }
                 }
-                instance.GetType().GetProperty(key).SetValue(instance, value, null);
+                instance.GetType().GetProperty(attributeName).SetValue(instance, value, null);
             }
             dynamic castedInstance = Convert.ChangeType(instance, modelType);
             return castedInstance;

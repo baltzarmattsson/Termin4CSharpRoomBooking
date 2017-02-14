@@ -12,6 +12,7 @@ namespace Termin4CSharp.Model
         public string Address { get; set; }
         public DateTime Avail_start { get; set; }
         public DateTime Avail_end { get; set; }
+        //public List<Room> Rooms { get; set; }
 
         public Building() { }
         public Building(string name, string address, DateTime avail_start, DateTime avail_end)

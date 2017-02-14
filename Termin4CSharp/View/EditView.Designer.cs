@@ -63,6 +63,7 @@ namespace Termin4CSharp.View {
             // Sätt Redigering/uppdatering/skapa ny dynamiskt vvvv
             mainTitleLabel.Text = string.Format("Redigering: {0} ", model.GetType().Name);
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
+            this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
 
             Console.WriteLine("Private: loading: " + model.GetType());
             var attributes = Utils.GetAttributeInfo(model);

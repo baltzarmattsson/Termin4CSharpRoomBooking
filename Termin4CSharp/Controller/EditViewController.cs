@@ -14,18 +14,31 @@ namespace Termin4CSharp.Controller {
 
         public EditView EditView { get; set; }
         private bool hasUnsavedChanges;
+        private bool isExistingObjectInDatabase = false;
 
         public EditViewController(EditView editView) {
             this.EditView = editView;
             this.EditView.Controller = this;
         }
 
-        public void Save(IModel model, bool isExistingObjectInDatbase) {
+        public int Save(IModel model) {
             DAL dal = new DAL();
-            if (isExistingObjectInDatbase)
-                dal.Update(model);
+            int affectedRows = 0;
+            string dbMethod = "";
+            if (isExistingObjectInDatabase) {
+                affectedRows = dal.Update(model);
+                dbMethod = "uppdaterad";
+            } else {
+                affectedRows = dal.Add(model);
+                dbMethod = "tillagd";
+            }
+            if (affectedRows > 0)
+                this.UpdateResponseLabel(string.Format("{0} {1}", model.GetType().Name, dbMethod));
             else
-                dal.Add(model);
+                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", model.GetType().Name, dbMethod));
+            return affectedRows;
+                    
+            
             // TODO exception handling, gör först SqlException sedan Exception
         }
         public void Close() {
@@ -34,10 +47,17 @@ namespace Termin4CSharp.Controller {
             } else
                 EditView.Close();
         }
-        public void Delete(IModel model) {
+        public int Delete(IModel model) {
             DAL dal = new DAL();
             //Show popup - säkerställande
-            dal.Remove(model);
+            int affectedRows = dal.Remove(model);
+            if (affectedRows > 0) {
+                this.ClearFields(EditView.GetControls());
+                this.UpdateResponseLabel(string.Format("{0} borttagen", model.GetType().Name));
+            } else {
+                this.UpdateResponseLabel(string.Format("Ingen {0} borttagen", model.GetType().Name));
+            }
+            return affectedRows;
         }
 
         private void UpdateResponseLabel(string message) {
@@ -55,14 +75,23 @@ namespace Termin4CSharp.Controller {
             IModel model = null;
             var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
             model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
-            if (model != null)
+            if (model != null) {
                 Console.WriteLine(model);
+                this.Save(model);
+                this.isExistingObjectInDatabase = true;
+            }
         }
         public void HandleDeleteButtonClick() {
-
+            IModel model = null;
+            var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
+            model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
+            if (model != null) {
+                this.Delete(model);
+                this.isExistingObjectInDatabase = false;                
+            }
         }
         public void HandleCloseButtonClick() {
-
+            this.Close();
         }
 
         private Dictionary<string, object> ViewControlsToDictionary(Control.ControlCollection controls) {
@@ -81,6 +110,18 @@ namespace Termin4CSharp.Controller {
                 }
             }
             return controlValues;
+        }
+
+        private void ClearFields(Control.ControlCollection controls) {
+            foreach (Control c in controls) {
+                if (c is TextBox) {
+                    ((TextBox)c).Text = "";
+                } else if (c is NumberTextBox) {
+                    ((NumberTextBox)c).Text = "";
+                } else if (c is DateTimePicker) {
+                    ((DateTimePicker)c).Value = DateTime.Now;
+                }
+            }
         }
 
     }

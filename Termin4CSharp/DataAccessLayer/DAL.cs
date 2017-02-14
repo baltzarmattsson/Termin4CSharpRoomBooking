@@ -11,17 +11,17 @@ namespace Termin4CSharp.DataAccessLayer {
 
         public IController Controller { get; set; }
 
-        public void Add(IModel model) {
+        public int Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             using (cmd.Connection = Connector.GetConnection()) {
-                cmd.ExecuteNonQuery();
+                return cmd.ExecuteNonQuery();
             }
         }
 
-        public void Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public int Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.REMOVE, model, whereParams, tableName, optWhereCondition);
             using (cmd.Connection = Connector.GetConnection()) {
-                cmd.ExecuteNonQuery();
+                return cmd.ExecuteNonQuery();
             }
         }
 
@@ -31,25 +31,18 @@ namespace Termin4CSharp.DataAccessLayer {
             var resultList = new List<IModel>();
             using (cmd.Connection = Connector.GetConnection()) {
                 dr = cmd.ExecuteReader();
-                
                 while (dr.Read()) {
-                    //Console.Write("RESULTS {0}: ", model.GetType().ToString().Split('.')[2]);
-                    //foreach (string key in Utils.GetAttributeInfo(model).Keys) {
-                    //    Console.Write("\t{0} = {1}\t", key, dr[key]);
-                    //}
-                    //Console.WriteLine();
                     IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
-                    //Console.WriteLine("PARSED: " + parsedModel);
                     resultList.Add(parsedModel);
                 }
             }
             return resultList;
         }
 
-        public void Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public int Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.UPDATE, model, whereParams, tableName, optWhereCondition);
             using (cmd.Connection = Connector.GetConnection()) {
-                cmd.ExecuteNonQuery();
+                return cmd.ExecuteNonQuery();
             }
         }
 

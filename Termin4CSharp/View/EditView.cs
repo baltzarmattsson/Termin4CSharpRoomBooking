@@ -44,5 +44,6 @@ namespace Termin4CSharp.View {
         public Control.ControlCollection GetControls() {
             return this.flowLayoutPanel1.Controls;
         }
+        
     }
 }

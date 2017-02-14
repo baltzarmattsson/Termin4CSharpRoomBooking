@@ -37,13 +37,15 @@ namespace Termin4CSharp {
 
             foreach (string key in attributeInfo.Keys) {
                 var value = dr[key] == DBNull.Value ? null : dr[key];
-                if (value is IModel) {
-                    KeyValuePair<string, object> asd = ((IModel)value).GetIdentifyingAttributes().First();
+                if (attributeInfo.ContainsKey(key) && attributeInfo[key] is IModel) {
+                    IModel referencedModel = attributeInfo[key] as IModel;
+                    KeyValuePair<string, object> asd = referencedModel.GetIdentifyingAttributes().First();
+                    //KeyValuePair<string, object> asd = ((IModel)value).GetIdentifyingAttributes().First();
                     string idAtt = asd.Value as string;
                     string idKey = asd.Key;
                     if (value != null) {
-                        IModel dynamicIModel = Utils.CreateDynamicIModel(value as IModel, idKey, idAtt);
-                        value = new DAL().Get(dynamicIModel);
+                        IModel dynamicIModel = Utils.CreateDynamicIModel(referencedModel, idKey, idAtt);
+                        value = new DAL().Get(dynamicIModel).First();
                     }
                 }
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
@@ -282,7 +284,7 @@ namespace Termin4CSharp {
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
                 if (val is IModel)
-                    val = ((IModel)val).GetIdentifyingAttributes().First();
+                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
 
                 /*      NULL        **/
                 if (val == null)

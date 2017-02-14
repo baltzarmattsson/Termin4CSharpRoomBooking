@@ -8,7 +8,7 @@ namespace Termin4CSharp.Model
 {
     class Room : IModel
     {
-        public string BName { get; set; }
+        public Building BName { get; set; }
         public string Id { get; set; }
         public int Capacity { get; set; }
         public string Floor { get; set; }
@@ -18,7 +18,7 @@ namespace Termin4CSharp.Model
 
         public Room(Building building, string id, int capacity, string floor, int? roomType)
         {
-            this.BName = building.Name;
+            this.BName = building;
             this.Id = id;
             this.Capacity = capacity;
             this.Floor = floor;

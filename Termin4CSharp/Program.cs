@@ -48,6 +48,7 @@ namespace Termin4CSharp {
             Room r2 = new Room(b2, "1337r2", 13414122, "0", null);
             dal.Add(r);
             dal.Add(r2);
+            dal.Add(new Room(null, "test", 123123, "123", null));
 
             Room asd = dal.Get(r).First() as Room;
             Console.WriteLine(asd);

@@ -25,14 +25,14 @@ namespace Termin4CSharp.DataAccessLayer {
             }
         }
 
-        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool findResursiveIModels = true) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
             SqlDataReader dr = null;
             var resultList = new List<IModel>();
             using (cmd.Connection = Connector.GetConnection()) {
                 dr = cmd.ExecuteReader();
                 while (dr.Read()) {
-                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
+                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr, findResursiveIModels);
                     resultList.Add(parsedModel);
                 }
             }

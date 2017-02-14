@@ -16,16 +16,18 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
-            Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now);
-            DAL dal = new DAL();
-            IModel fetched;
-            if (dal.Get(b2).Count > 0)
-                fetched = dal.Get(b2).First();
-            else
-                fetched = b2;
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
+            //Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now, null);
+            //DAL dal = new DAL();
+            //IModel fetched;
+            //if (dal.Get(b2).Count > 0)
+            //    fetched = dal.Get(b2).First();
+            //else
+            //    fetched = b2;
+
+            Building fetched = new Building("Buildbuild", "buildaddress", DateTime.Now, DateTime.Now, new List<Room>());
 
             EditView ev = new EditView(fetched);
             EditViewController c = new EditViewController(ev);

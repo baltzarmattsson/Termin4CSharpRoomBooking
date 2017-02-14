@@ -12,7 +12,7 @@ namespace Termin4CSharp.Model
         public string Address { get; set; }
         public DateTime Avail_start { get; set; }
         public DateTime Avail_end { get; set; }
-        public List<Room> Rooms { get; set; }
+        public List<Room> Room { get; set; }
 
         public Building() { }
         public Building(string name, string address, DateTime avail_start, DateTime avail_end, List<Room> rooms)
@@ -21,7 +21,7 @@ namespace Termin4CSharp.Model
             this.Address = address;
             this.Avail_start = avail_start;
             this.Avail_end = avail_end;
-            this.Rooms = rooms;
+            this.Room = rooms;
         }
 
         public Dictionary<string, object> GetIdentifyingAttributes() {
@@ -36,7 +36,7 @@ namespace Termin4CSharp.Model
             var other = obj as Building;
             if (other == null)
                 return false;
-            return this.Name.Equals(other.Name) && this.Address.Equals(other.Address) && Utils.DateCompare(this.Avail_start, other.Avail_start) && Utils.DateCompare(this.Avail_end, other.Avail_end) && this.Rooms == other.Rooms;
+            return this.Name.Equals(other.Name) && this.Address.Equals(other.Address) && Utils.DateCompare(this.Avail_start, other.Avail_start) && Utils.DateCompare(this.Avail_end, other.Avail_end) && this.Room == other.Room;
         }
     }
 }

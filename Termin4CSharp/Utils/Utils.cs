@@ -29,7 +29,7 @@ namespace Termin4CSharp {
             }
             return attributeValues;
         }
-        public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr) {
+        public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr, bool findResursiveIModels = true) {
             Type modelType = model.GetType();
             var attributeInfo = Utils.GetAttributeInfo(model);
             ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
@@ -37,8 +37,8 @@ namespace Termin4CSharp {
 
             foreach (string attributeName in attributeInfo.Keys) {
                 var value = dr[attributeName] == DBNull.Value ? null : dr[attributeName];
-                // If value is an IModel or a list of IModels
-                if (attributeInfo.ContainsKey(attributeName) && (attributeInfo[attributeName] is IModel || attributeInfo[attributeName] is List<IModel>)) {
+                // If we want to find models within models, and value is an IModel or a list of IModels
+                if (findResursiveIModels && attributeInfo.ContainsKey(attributeName) && (attributeInfo[attributeName] is IModel || attributeInfo[attributeName] is List<IModel>)) {
                     bool modelIsList = attributeInfo[attributeName] is List<IModel>;
                     IModel referencedModel = null;
                     if (modelIsList)
@@ -52,9 +52,9 @@ namespace Termin4CSharp {
                     if (value != null) {
                         IModel dynamicIModel = Utils.CreateDynamicIModel(referencedModel, idKey, idAtt);
                         if (modelIsList)
-                            value = new DAL().Get(dynamicIModel);
+                            value = new DAL().Get(dynamicIModel, findResursiveIModels: false);
                         else
-                            value = new DAL().Get(dynamicIModel).First();
+                            value = new DAL().Get(dynamicIModel, findResursiveIModels: false).First();
                     }
                 }
                 instance.GetType().GetProperty(attributeName).SetValue(instance, value, null);
@@ -117,13 +117,17 @@ namespace Termin4CSharp {
                 if (queryType != QueryType.GET && key.Equals("id", StringComparison.InvariantCultureIgnoreCase) && Utils.IdIsAutoIncrementInDb(model))
                     continue;
 
-                // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
-                if (queryType == QueryType.UPDATE) {
-                    modelKeys += key.ToLower() + " = @" + key + ", ";
-                // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
-                } else {
-                    modelKeys += key.ToLower() + ", ";
-                    modelValues += "@" + key + ", ";
+                // Skipping lists, since they are collected from another table
+                if ((modelAttributes[key] is List<IModel>) == false) {
+                    Console.WriteLine(modelAttributes[key].GetType());
+                    // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
+                    if (queryType == QueryType.UPDATE) {
+                        modelKeys += key.ToLower() + " = @" + key + ", ";
+                        // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
+                    } else {
+                        modelKeys += key.ToLower() + ", ";
+                        modelValues += "@" + key + ", ";
+                    }
 
                 }
             }
@@ -292,6 +296,8 @@ namespace Termin4CSharp {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
+                if (val is List<IModel>)
+                    continue;
                 if (val is IModel)
                     val = ((IModel)val).GetIdentifyingAttributes().First().Value;
 

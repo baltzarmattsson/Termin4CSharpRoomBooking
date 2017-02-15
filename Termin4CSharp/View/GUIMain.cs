@@ -15,6 +15,7 @@ namespace Termin4CSharp.View
     public partial class GUIMain : Form
     {
         public GUIMainController Controller { get; set; }
+        private string textFilter;
 
         public GUIMain()
         {
@@ -99,6 +100,22 @@ namespace Termin4CSharp.View
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        internal CheckedListBox.CheckedItemCollection GetRoomFilters() {
+            return this.roomFilterBox.CheckedItems;
+        }
+
+        internal CheckedListBox.CheckedItemCollection GetResourceFilters() {
+            return this.resourceFilterBox.CheckedItems;
+        }
+
+        internal string GetTextFilter() {
+            return this.textFilter;
+        }
+
+        internal CheckedListBox.CheckedItemCollection GetBuildingFilters() {
+            return this.buildingFilterBox.CheckedItems;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

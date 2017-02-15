@@ -42,11 +42,7 @@ namespace Termin4CSharp.DataAccessLayer {
             }
             return returnModel;
         }
-
-
-
-
-
+        
         public int Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             using (cmd.Connection = Connector.GetConnection()) {

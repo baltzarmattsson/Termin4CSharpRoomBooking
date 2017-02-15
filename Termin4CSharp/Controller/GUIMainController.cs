@@ -24,6 +24,8 @@ namespace Termin4CSharp.Controller {
         public void LoadRooms() {
             DAL dal = new DAL();
             var whereParams = new Dictionary<string, object>();
+            // TODO fixa IModelToQuery att hämta alla attribut ifall det är en GET-query, och ifall deti nte finns
+            // några where-params och IModel inte innehåller ett ID-attribut (dvs är en new IModel() av något slag)
             whereParams["1"] = 1;
             var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
             this.GUIMain.SetRooms(rooms);
@@ -45,6 +47,19 @@ namespace Termin4CSharp.Controller {
 
         public void NotifyExceptionToView() {
             throw new NotImplementedException();
+        }
+
+        public void HandleFilterChange() {
+            var buildingFilters = this.GUIMain.GetBuildingFilters();
+            var roomFilters = this.GUIMain.GetRoomFilters();
+            var resourceFilters = this.GUIMain.GetResourceFilters();
+            var freeTextFilter = this.GUIMain.GetTextFilter();
+
+
+            /*
+            "select * from Room r where r.bName in ('Buildname') and r.id like '13%' and r.id in 
+
+(select id from Room_Resource where resource in ('Handikappwc'))"" obs skapa Room_Resource på nytt*/
         }
     }
 }

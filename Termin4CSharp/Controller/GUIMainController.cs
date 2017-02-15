@@ -17,6 +17,8 @@ namespace Termin4CSharp.Controller {
         public GUIMainController(GUIMain guiMain) {
             this.GUIMain = guiMain;
             this.GUIMain.Controller = this;
+            this.LoadRooms();
+            this.LoadFilters();
         }
 
         public void LoadRooms() {
@@ -26,6 +28,20 @@ namespace Termin4CSharp.Controller {
             var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
             Console.WriteLine(rooms.Count);
             this.GUIMain.SetRooms(rooms);
+        }
+
+        public void LoadFilters() {
+            DAL dal = new DAL();
+            var whereParams = new Dictionary<string, object>();
+            whereParams["1"] = 1;
+            var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
+            var buildings = dal.Get(new Building(), whereParams).Cast<Building>().ToList();
+            var resources = dal.Get(new Resource(), whereParams).Cast<Resource>().ToList();
+
+            this.GUIMain.SetRoomFilters(rooms);
+            this.GUIMain.SetBuildingFilters(buildings);
+            this.GUIMain.SetResourceFilters(resources);
+
         }
 
         public void NotifyExceptionToView() {

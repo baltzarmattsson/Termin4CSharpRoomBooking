@@ -95,12 +95,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-<<<<<<< HEAD
     <EmbeddedResource Include="View\EditView.resx">
       <DependentUpon>EditView.cs</DependentUpon>
     </EmbeddedResource>
-=======
->>>>>>> 963fd5491c885cbcad8ca299a770d55613baffb1
     <EmbeddedResource Include="View\GUIMain.resx">
       <DependentUpon>GUIMain.cs</DependentUpon>
     </EmbeddedResource>

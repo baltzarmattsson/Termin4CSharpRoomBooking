@@ -5,7 +5,7 @@ using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.View {
-    partial class EditView {
+    public partial class EditView {
         /// <summary>
         /// Required designer variable.
         /// </summary>

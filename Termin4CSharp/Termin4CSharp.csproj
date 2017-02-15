@@ -52,7 +52,10 @@
     <Compile Include="Controller\GUIMainController.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="DataAccessLayer\DAL.cs" />
+<<<<<<< HEAD
     <Compile Include="DataAccessLayer\DALConnector.cs" />
+=======
+>>>>>>> b02df152bb1103ff0a74522d9818ea15c485cfe8
     <Compile Include="DataAccessLayer\DALCronus.cs" />
     <Compile Include="DataAccessLayer\DbFields.cs" />
     <Compile Include="DataAccessLayer\EnumValues.cs" />

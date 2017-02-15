@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Termin4CSharp.Controller;
 
 namespace Termin4CSharp.View
 {
     public partial class GUIMain : Form
     {
+        public GUIMainController Controller { get; set; }
+
         public GUIMain()
         {
             InitializeComponent();

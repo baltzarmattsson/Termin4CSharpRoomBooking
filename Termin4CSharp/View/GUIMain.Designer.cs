@@ -2,7 +2,7 @@
 using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.View {
-    partial class GUIMain
+    public partial class GUIMain
     {
         /// <summary>
         /// Required designer variable.

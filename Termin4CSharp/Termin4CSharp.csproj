@@ -49,8 +49,10 @@
   <ItemGroup>
     <Compile Include="Controller\Class1.cs" />
     <Compile Include="Controller\EditViewController.cs" />
+    <Compile Include="Controller\GUIMainController.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="DataAccessLayer\DAL.cs" />
+    <Compile Include="DataAccessLayer\DALCronus.cs" />
     <Compile Include="DataAccessLayer\DbFields.cs" />
     <Compile Include="DataAccessLayer\EnumValues.cs" />
     <Compile Include="Model\Booking.cs" />

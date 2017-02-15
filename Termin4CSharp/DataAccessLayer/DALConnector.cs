@@ -9,7 +9,7 @@ namespace Termin4CSharp.DataAccessLayer
 {
     class DALConnector
     {
-        private static readonly string URL = "";
+        private static readonly string URL = ""; // CRONUS
 
         public static SqlConnection GetConnection()
         {

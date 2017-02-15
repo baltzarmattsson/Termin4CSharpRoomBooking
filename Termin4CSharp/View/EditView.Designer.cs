@@ -90,9 +90,9 @@ namespace Termin4CSharp.View {
                         numTextBox.Enabled = false;
                     control = numTextBox;
                 // List<IModel>
-                } else if (value is System.Collections.Generic.List<Room>) {
+                } else if (value is List<IModel>) {
                     CheckedListBox checkListBox = new CheckedListBox();
-                    foreach (var item in (List<Room>)value)
+                    foreach (var item in (List<IModel>)value)
                         checkListBox.Items.Add(item);
                     checkListBox.Width = 500;
                     checkListBox.Name = kv.Key;

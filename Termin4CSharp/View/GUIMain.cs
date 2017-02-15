@@ -162,16 +162,20 @@ namespace Termin4CSharp.View
 
         }
         private void buildingFilterBox_ItemCheck(object sender, EventArgs e) {
-            Console.WriteLine(sender); ;
+            //Console.WriteLine(sender); ;
+            Controller.HandleFilterChange();
         }
         private void roomFilterBox_ItemCheck(object sender, EventArgs e) {
-            Console.WriteLine(sender); ;
+            //Console.WriteLine(sender); ;
+            Controller.HandleFilterChange();
         }
         private void resourceFilterBox_ItemCheck(object sender, EventArgs e) {
-            Console.WriteLine(sender); ;
+            //Console.WriteLine(sender); ;
+            Controller.HandleFilterChange();
         }
 
         public void SetRooms(List<Room> rooms) {
+            this.listView1.Items.Clear();
             foreach (var room in rooms)
                 this.listView1.Items.Add(new ListViewItem(new[] { room.BName.ToString(), room.Id, "tidslinje", room.Capacity.ToString() }));
         }

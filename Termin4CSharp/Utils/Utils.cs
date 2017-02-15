@@ -12,6 +12,7 @@ using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.Model.DbHelpers;
 using Termin4CSharp.View.CustomControls;
+using static System.Windows.Forms.CheckedListBox;
 
 namespace Termin4CSharp {
     class Utils {
@@ -21,7 +22,7 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, "([g|s]et)|(ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute)|(Rooms|Building|Bookings)"));
+                        .Where(x => !Regex.IsMatch(x, "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)"));
 
             foreach (string attName in names) {
                 PropertyInfo pi = t.GetProperty(attName);
@@ -101,8 +102,6 @@ namespace Termin4CSharp {
                     modelKeys += key.ToLower() + ", ";
                     modelValues += "@" + key + ", ";
                 }
-
-
             }
             modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
             if (modelValues.Length > 2)
@@ -123,7 +122,7 @@ namespace Termin4CSharp {
                     break;
             }
 
-            // Adding where conditions, if there are any values in the optWhereParams, OR, adding the IModels identifying attribute if it's an UPDATE or REMOVE-query
+            // Adding where conditions if there's any values in the optWhereParams -- OR -- adding the IModels identifying attribute if it's an UPDATE or REMOVE-query
             if ((optWhereParams != null && optWhereParams.Count > 0) || (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)) {
                 string eqOperator = Utils.WhereConditionToString(optWhereCondition);
                 sqlBuilder.Append(" where ");
@@ -152,6 +151,110 @@ namespace Termin4CSharp {
 
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
+        }
+
+        //public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
+        public static SqlCommand FindRoomsWithFilters(CheckedItemCollection buildingNames, CheckedItemCollection roomIDs, CheckedItemCollection resourceNames) {
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            var modelAttributes = Utils.GetAttributeInfo(new Room());
+            string modelKeys = string.Join(", ", modelAttributes.Keys);
+            sqlBuilder.Append(string.Format("select {0} from {1} r", modelKeys, DbFields.RoomTable));
+
+
+            var whereParams = new Dictionary<string, object>();
+            bool whereAdded = false;
+            int indexCounter = 0;
+
+            //foreach (var list in listOfLists) {
+            if (buildingNames.Count > 0) {
+                sqlBuilder.Append("where r.bname in (");
+                string key = "";
+                foreach (string buildName in buildingNames) {
+                    key = "index" + indexCounter++;
+                    sqlBuilder.Append("@@" + key + ", ");
+                    whereParams[key] = buildName;
+                }
+                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                sqlBuilder.Append(")");
+                whereAdded = true;
+            }
+            if (roomIDs.Count > 0) {
+                if (whereAdded) {
+                    sqlBuilder.Append(" and ");
+                } else {
+                    sqlBuilder.Append(" where ");
+                    whereAdded = true;
+                }
+                sqlBuilder.Append(" r.id in (@@{0}");
+                string key = "";
+                foreach (string roomID in roomIDs) {
+                    key = "index" + indexCounter++;
+                    sqlBuilder.Append("@@" + key + ", ");
+                    whereParams[key] = roomID;
+                }
+                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                sqlBuilder.Append(")");
+            }
+            if (resourceNames.Count > 0) {
+                if (whereAdded)
+                    sqlBuilder.Append(" and ");
+                else
+                    sqlBuilder.Append(" where ");
+                sqlBuilder.Append(" r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (");
+                string key = "";
+                foreach (string resourceName in resourceNames) {
+                    key = "index" + indexCounter++;
+                    sqlBuilder.Append("@@" + key + ", ");
+                    whereParams[key] = resourceName;
+                }
+                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                sqlBuilder.Append("))");
+            }
+            SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
+            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
+            
+            return cmd; 
+        }
+
+        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false) {
+            foreach (KeyValuePair<string, object> attKV in queryParams) {
+
+                string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
+                object val = attKV.Value;
+                if (val is List<IModel>)
+                    continue; //TODO ta bort dessa
+                if (val is IModel)
+                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
+
+                /*      NULL        **/
+                if (val == null)
+                    cmd.Parameters.AddWithValue(key, DBNull.Value);
+                /**     TEXT        **/
+                else if (val is string)
+                    cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                /**     NUMBERS     **/
+                else if (val is Int32)
+                    cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
+                else if (val is Int64)
+                    cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
+                else if (val is double)
+                    cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
+                else if (val is decimal)
+                    cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
+                /**     DATETIME    **/
+                else if (val is DateTime)
+                    cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
+                /**     BOOL        **/
+                else if (val is bool)
+                    cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
+
+                else
+                    throw new Exception("Type not implemented: " + val.GetType());
+
+                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+            }
+            Console.WriteLine();
         }
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
@@ -262,46 +365,6 @@ namespace Termin4CSharp {
             if (model is Booking)
                 isAuto = true;
             return isAuto;
-        }
-
-        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false) {
-            foreach (KeyValuePair<string, object> attKV in queryParams) {
-
-                string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
-                object val = attKV.Value;
-                if (val is List<IModel>)
-                    continue;
-                if (val is IModel)
-                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
-
-                /*      NULL        **/
-                if (val == null)
-                    cmd.Parameters.AddWithValue(key, DBNull.Value);
-                /**     TEXT        **/
-                else if (val is string)
-                    cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
-                /**     NUMBERS     **/
-                else if (val is Int32)
-                    cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
-                else if (val is Int64)
-                    cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
-                else if (val is double)
-                    cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
-                else if (val is decimal)
-                    cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-                /**     DATETIME    **/
-                else if (val is DateTime)
-                    cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-                /**     BOOL        **/
-                else if (val is bool)
-                    cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
-
-                else
-                    throw new Exception("Type not implemented: " + val.GetType());
-
-                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
-            }
-            Console.WriteLine();
         }
 
       private static string IModelTableName(IModel model) {

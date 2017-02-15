@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Termin4CSharp.Model;
+using static System.Windows.Forms.CheckedListBox;
 
 namespace Termin4CSharp.DataAccessLayer {
     class DAL {
@@ -42,7 +43,23 @@ namespace Termin4CSharp.DataAccessLayer {
             }
             return returnModel;
         }
-        
+
+        public List<Room> FindRoomsWithFilters(CheckedItemCollection buildingNames, CheckedItemCollection roomIDs, CheckedItemCollection resourceNames) {
+            SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames);
+            SqlDataReader dr = null;
+            var resultList = new List<Room>();
+            using (cmd.Connection = Connector.GetConnection()) {
+                IModel model = new Room();
+                dr = cmd.ExecuteReader();
+                while (dr.Read()) {
+                    Room parsedRoom = Utils.ParseDataReaderToIModel(model, dr) as Room;
+                    resultList.Add(parsedRoom);
+                }
+            }
+            return resultList;
+        }
+
+
         public int Add(IModel model) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             using (cmd.Connection = Connector.GetConnection()) {
@@ -57,14 +74,14 @@ namespace Termin4CSharp.DataAccessLayer {
             }
         }
 
-        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool findResursiveIModels = true) {
+        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition);
             SqlDataReader dr = null;
             var resultList = new List<IModel>();
             using (cmd.Connection = Connector.GetConnection()) {
                 dr = cmd.ExecuteReader();
                 while (dr.Read()) {
-                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr, findResursiveIModels);
+                    IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
                     resultList.Add(parsedModel);
                 }
             }

@@ -19,6 +19,7 @@ namespace Termin4CSharp.Controller {
             this.GUIMain.Controller = this;
             this.LoadRooms();
             this.LoadFilters();
+            this.HandleFilterChange();
         }
 
         public void LoadRooms() {
@@ -55,6 +56,9 @@ namespace Termin4CSharp.Controller {
             var resourceFilters = this.GUIMain.GetResourceFilters();
             var freeTextFilter = this.GUIMain.GetTextFilter();
 
+            DAL dal = new DAL();
+            List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters);
+            this.GUIMain.SetRooms(filteredRooms);
 
             /*
             "select * from Room r where r.bName in ('Buildname') and r.id like '13%' and r.id in 

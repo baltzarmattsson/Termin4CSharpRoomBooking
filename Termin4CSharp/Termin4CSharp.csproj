@@ -118,8 +118,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\GUIMain.resx">
       <DependentUpon>GUIMain.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>GUIMain1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="DataAccessLayer\DAL.cs.orig" />
     <None Include="Model\Building.cs.orig" />

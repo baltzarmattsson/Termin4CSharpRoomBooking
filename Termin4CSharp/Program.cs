@@ -20,7 +20,6 @@ namespace Termin4CSharp {
             Application.SetCompatibleTextRenderingDefault(false);
             GUIMain mainGui = new GUIMain();
             GUIMainController controller = new GUIMainController(mainGui);
-            controller.LoadRooms();
             Application.Run(mainGui);
 
 

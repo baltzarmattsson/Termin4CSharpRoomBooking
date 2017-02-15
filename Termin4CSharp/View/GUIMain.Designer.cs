@@ -53,13 +53,13 @@ namespace Termin4CSharp.View {
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.vScrollBar3 = new System.Windows.Forms.VScrollBar();
             this.label10 = new System.Windows.Forms.Label();
-            this.checkedListBox3 = new System.Windows.Forms.CheckedListBox();
+            this.resourceFilterBox = new System.Windows.Forms.CheckedListBox();
             this.label9 = new System.Windows.Forms.Label();
             this.vScrollBar2 = new System.Windows.Forms.VScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
+            this.roomFilterBox = new System.Windows.Forms.CheckedListBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.buildingFilterBox = new System.Windows.Forms.CheckedListBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -88,7 +88,7 @@ namespace Termin4CSharp.View {
             this.OK.Controls.Add(this.tabPage2);
             this.OK.Controls.Add(this.tabPage3);
             this.OK.Location = new System.Drawing.Point(2, 0);
-            this.OK.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OK.Margin = new System.Windows.Forms.Padding(6);
             this.OK.Name = "OK";
             this.OK.SelectedIndex = 0;
             this.OK.Size = new System.Drawing.Size(1878, 1012);
@@ -99,9 +99,9 @@ namespace Termin4CSharp.View {
             // 
             this.tabPage1.Controls.Add(this.tabControl1);
             this.tabPage1.Location = new System.Drawing.Point(8, 39);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(6);
             this.tabPage1.Size = new System.Drawing.Size(1862, 965);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programkonstruktion";
@@ -113,7 +113,7 @@ namespace Termin4CSharp.View {
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1870, 962);
@@ -131,9 +131,9 @@ namespace Termin4CSharp.View {
             this.tabPage4.Controls.Add(this.textBox1);
             this.tabPage4.Controls.Add(this.label1);
             this.tabPage4.Location = new System.Drawing.Point(8, 39);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(6);
             this.tabPage4.Size = new System.Drawing.Size(1854, 915);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Logga in ";
@@ -165,7 +165,7 @@ namespace Termin4CSharp.View {
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(108, 523);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(150, 44);
             this.button1.TabIndex = 5;
@@ -185,7 +185,7 @@ namespace Termin4CSharp.View {
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(108, 452);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(6);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(196, 31);
             this.textBox2.TabIndex = 3;
@@ -205,7 +205,7 @@ namespace Termin4CSharp.View {
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(108, 358);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(6);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(196, 31);
             this.textBox1.TabIndex = 1;
@@ -230,13 +230,13 @@ namespace Termin4CSharp.View {
             this.tabPage5.Controls.Add(this.trackBar1);
             this.tabPage5.Controls.Add(this.vScrollBar3);
             this.tabPage5.Controls.Add(this.label10);
-            this.tabPage5.Controls.Add(this.checkedListBox3);
+            this.tabPage5.Controls.Add(this.resourceFilterBox);
             this.tabPage5.Controls.Add(this.label9);
             this.tabPage5.Controls.Add(this.vScrollBar2);
             this.tabPage5.Controls.Add(this.vScrollBar1);
-            this.tabPage5.Controls.Add(this.checkedListBox2);
+            this.tabPage5.Controls.Add(this.roomFilterBox);
             this.tabPage5.Controls.Add(this.label8);
-            this.tabPage5.Controls.Add(this.checkedListBox1);
+            this.tabPage5.Controls.Add(this.buildingFilterBox);
             this.tabPage5.Controls.Add(this.textBox3);
             this.tabPage5.Controls.Add(this.label7);
             this.tabPage5.Controls.Add(this.label6);
@@ -244,9 +244,9 @@ namespace Termin4CSharp.View {
             this.tabPage5.Controls.Add(this.dateTimePicker1);
             this.tabPage5.Controls.Add(this.comboBox4);
             this.tabPage5.Location = new System.Drawing.Point(8, 39);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(6);
             this.tabPage5.Size = new System.Drawing.Size(1854, 915);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -267,7 +267,7 @@ namespace Termin4CSharp.View {
             this.columnHeader3,
             this.columnHeader4});
             this.listView1.Location = new System.Drawing.Point(498, 262);
-            this.listView1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.listView1.Margin = new System.Windows.Forms.Padding(6);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(1074, 587);
             this.listView1.TabIndex = 20;
@@ -309,7 +309,7 @@ namespace Termin4CSharp.View {
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(12, 765);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(6);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(240, 90);
             this.trackBar1.TabIndex = 18;
@@ -331,17 +331,18 @@ namespace Termin4CSharp.View {
             this.label10.TabIndex = 16;
             this.label10.Text = "Resurser:";
             // 
-            // checkedListBox3
+            // resourceFilterBox
             // 
-            this.checkedListBox3.FormattingEnabled = true;
-            this.checkedListBox3.Items.AddRange(new object[] {
+            this.resourceFilterBox.FormattingEnabled = true;
+            this.resourceFilterBox.Items.AddRange(new object[] {
             "Rullstolsanpassat",
             "Projektor"});
-            this.checkedListBox3.Location = new System.Drawing.Point(12, 588);
-            this.checkedListBox3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.checkedListBox3.Name = "checkedListBox3";
-            this.checkedListBox3.Size = new System.Drawing.Size(236, 108);
-            this.checkedListBox3.TabIndex = 15;
+            this.resourceFilterBox.Location = new System.Drawing.Point(12, 588);
+            this.resourceFilterBox.Margin = new System.Windows.Forms.Padding(6);
+            this.resourceFilterBox.Name = "resourceFilterBox";
+            this.resourceFilterBox.Size = new System.Drawing.Size(236, 108);
+            this.resourceFilterBox.TabIndex = 15;
+            this.resourceFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.resourceFilterBox_ItemCheck);
             // 
             // label9
             // 
@@ -367,19 +368,20 @@ namespace Termin4CSharp.View {
             this.vScrollBar1.Size = new System.Drawing.Size(17, 123);
             this.vScrollBar1.TabIndex = 12;
             // 
-            // checkedListBox2
+            // roomFilterBox
             // 
-            this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Items.AddRange(new object[] {
+            this.roomFilterBox.FormattingEnabled = true;
+            this.roomFilterBox.Items.AddRange(new object[] {
             "100",
             "101",
             "102",
             "103"});
-            this.checkedListBox2.Location = new System.Drawing.Point(12, 427);
-            this.checkedListBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(236, 108);
-            this.checkedListBox2.TabIndex = 11;
+            this.roomFilterBox.Location = new System.Drawing.Point(12, 427);
+            this.roomFilterBox.Margin = new System.Windows.Forms.Padding(6);
+            this.roomFilterBox.Name = "roomFilterBox";
+            this.roomFilterBox.Size = new System.Drawing.Size(236, 108);
+            this.roomFilterBox.TabIndex = 11;
+            this.roomFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.roomFilterBox_ItemCheck);
             // 
             // label8
             // 
@@ -391,24 +393,25 @@ namespace Termin4CSharp.View {
             this.label8.TabIndex = 10;
             this.label8.Text = "Byggnader:";
             // 
-            // checkedListBox1
+            // buildingFilterBox
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
+            this.buildingFilterBox.FormattingEnabled = true;
+            this.buildingFilterBox.Items.AddRange(new object[] {
             "EC1",
             "EC2",
             "EC3",
             "ALFA"});
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 262);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(236, 108);
-            this.checkedListBox1.TabIndex = 9;
+            this.buildingFilterBox.Location = new System.Drawing.Point(12, 262);
+            this.buildingFilterBox.Margin = new System.Windows.Forms.Padding(6);
+            this.buildingFilterBox.Name = "buildingFilterBox";
+            this.buildingFilterBox.Size = new System.Drawing.Size(236, 108);
+            this.buildingFilterBox.TabIndex = 9;
+            this.buildingFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.buildingFilterBox_ItemCheck);
             // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(18, 158);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(6);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(196, 31);
             this.textBox3.TabIndex = 8;
@@ -436,7 +439,7 @@ namespace Termin4CSharp.View {
             // dateTimePicker2
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(138, 65);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(6);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(396, 31);
             this.dateTimePicker2.TabIndex = 5;
@@ -444,7 +447,7 @@ namespace Termin4CSharp.View {
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(138, 15);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(6);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(396, 31);
             this.dateTimePicker1.TabIndex = 4;
@@ -457,7 +460,7 @@ namespace Termin4CSharp.View {
             "Min profil",
             "Logga ut"});
             this.comboBox4.Location = new System.Drawing.Point(1472, 0);
-            this.comboBox4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(6);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(196, 33);
             this.comboBox4.TabIndex = 3;
@@ -467,9 +470,9 @@ namespace Termin4CSharp.View {
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(8, 39);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
             this.tabPage2.Size = new System.Drawing.Size(1862, 965);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Webbservice";
@@ -483,9 +486,9 @@ namespace Termin4CSharp.View {
             this.tabPage3.Controls.Add(this.vScrollBar5);
             this.tabPage3.Controls.Add(this.listView2);
             this.tabPage3.Location = new System.Drawing.Point(8, 39);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(6);
             this.tabPage3.Size = new System.Drawing.Size(1862, 965);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "ERP";
@@ -495,7 +498,7 @@ namespace Termin4CSharp.View {
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(318, 235);
-            this.button2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(150, 44);
             this.button2.TabIndex = 24;
@@ -506,7 +509,7 @@ namespace Termin4CSharp.View {
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(64, 238);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(6);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(238, 33);
             this.comboBox1.TabIndex = 23;
@@ -521,7 +524,7 @@ namespace Termin4CSharp.View {
             // listView2
             // 
             this.listView2.Location = new System.Drawing.Point(64, 313);
-            this.listView2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.listView2.Margin = new System.Windows.Forms.Padding(6);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(1074, 587);
             this.listView2.TabIndex = 21;
@@ -535,7 +538,7 @@ namespace Termin4CSharp.View {
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1880, 1008);
             this.Controls.Add(this.OK);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "GUIMain";
             this.Text = "Lunds universitet";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -576,13 +579,13 @@ namespace Termin4CSharp.View {
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.VScrollBar vScrollBar3;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckedListBox checkedListBox3;
+        private System.Windows.Forms.CheckedListBox resourceFilterBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.VScrollBar vScrollBar2;
         private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.CheckedListBox checkedListBox2;
+        private System.Windows.Forms.CheckedListBox roomFilterBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox buildingFilterBox;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;

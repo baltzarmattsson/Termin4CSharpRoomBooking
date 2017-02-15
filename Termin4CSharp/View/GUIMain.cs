@@ -144,6 +144,15 @@ namespace Termin4CSharp.View
         {
 
         }
+        private void buildingFilterBox_ItemCheck(object sender, EventArgs e) {
+            Console.WriteLine(sender); ;
+        }
+        private void roomFilterBox_ItemCheck(object sender, EventArgs e) {
+            Console.WriteLine(sender); ;
+        }
+        private void resourceFilterBox_ItemCheck(object sender, EventArgs e) {
+            Console.WriteLine(sender); ;
+        }
 
         public void SetRooms(List<Room> rooms) {
             foreach (var room in rooms)
@@ -151,21 +160,20 @@ namespace Termin4CSharp.View
         }
 
         public void SetBuildingFilters(List<Building> buildings) {
-            this.checkedListBox1.Items.Clear();
+            this.buildingFilterBox.Items.Clear();
             foreach (var building in buildings)
-                this.checkedListBox1.Items.Add(building.Name);
+                this.buildingFilterBox.Items.Add(building.Name);
         }
 
         public void SetRoomFilters(List<Room> rooms) {
-            this.checkedListBox2.Items.Clear();
+            this.roomFilterBox.Items.Clear();
             foreach (var room in rooms)
-                this.checkedListBox2.Items.Add(room.Id);
+                this.roomFilterBox.Items.Add(room.Id);
         }
         public void SetResourceFilters(List<Resource> resources) {
-            this.checkedListBox3.Items.Clear();
+            this.resourceFilterBox.Items.Clear();
             foreach (var resource in resources)
-                this.checkedListBox3.Items.Add(resource.Type);
+                this.resourceFilterBox.Items.Add(resource.Type);
         }
-
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model
 {
-    class Room : IModel
+    public class Room : IModel
     {
         public string BName { get; set; }
         public string Id { get; set; }

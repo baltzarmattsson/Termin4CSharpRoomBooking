@@ -16,8 +16,14 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            GUIMain mainGui = new GUIMain();
+            GUIMainController controller = new GUIMainController(mainGui);
+            Application.Run(mainGui);
+
+
+
             //Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
             //Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now, null);
             //DAL dal = new DAL();
@@ -35,11 +41,11 @@ namespace Termin4CSharp {
             //rooms.Add(r2);
             //fetched.Rooms = rooms;
 
-            DAL dal = new DAL();
-            //r = dal.Get(r).First() as Room;
-            Building fetched = new Building();
-            fetched.Name = "Buildname";
-            fetched = dal.GetIModel(fetched) as Building;
+            //DAL dal = new DAL();
+            ////r = dal.Get(r).First() as Room;
+            //Building fetched = new Building();
+            //fetched.Name = "Buildname";
+            //fetched = dal.GetIModel(fetched) as Building;
             //dal.Add(fetched);
             //fetched = dal.Get(fetched).First() as Building;
             //var whereParams = new Dictionary<string, object>();
@@ -49,9 +55,9 @@ namespace Termin4CSharp {
             //List<IModel> test = dal.Get(new Room(), whereParams);
             //fetched.Rooms = test;
 
-            EditView ev = new EditView(fetched);
-            EditViewController c = new EditViewController(ev);
-            Application.Run(ev);
+            //EditView ev = new EditView(fetched);
+            //EditViewController c = new EditViewController(ev);
+            //Application.Run(ev);
 
             //DAL dal = new DAL();
             //Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);

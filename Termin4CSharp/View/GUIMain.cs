@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.Controller;
+using Termin4CSharp.Model;
 
 namespace Termin4CSharp.View
 {
@@ -142,6 +143,11 @@ namespace Termin4CSharp.View
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        public void SetRooms(List<Room> rooms) {
+            foreach (var item in rooms)
+                this.listView1.Items.Add(item.ToString());
         }
     }
 }

@@ -30,10 +30,8 @@ namespace Termin4CSharp {
             return attributeValues;
         }
         public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr, bool findResursiveIModels = true) {
-            Type modelType = model.GetType();
             var attributeInfo = Utils.GetAttributeInfo(model);
-            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
-            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            object instance = Utils.GetInstanceFromIModel(model);
 
             foreach (string attributeName in attributeInfo.Keys) {
                 var value = dr[attributeName] == DBNull.Value ? null : dr[attributeName];
@@ -59,33 +57,38 @@ namespace Termin4CSharp {
                 }
                 instance.GetType().GetProperty(attributeName).SetValue(instance, value, null);
             }
-            dynamic castedInstance = Convert.ChangeType(instance, modelType);
+            dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
             return castedInstance;
         }
 
         public static IModel CreateDynamicIModel(IModel model, string identifyingAttributeKey, object identifyingAttributeValue) {
-            Type modelType = model.GetType();
             var attributeInfo = Utils.GetAttributeInfo(model);
-            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
-            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            object instance = Utils.GetInstanceFromIModel(model);
+
             instance.GetType().GetProperty(identifyingAttributeKey).SetValue(instance, identifyingAttributeValue, null);
         
-            dynamic castedInstance = Convert.ChangeType(instance, modelType);
+            dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
             return castedInstance;
         }
 
         public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
-            Type modelType = model.GetType();
             var attributeInfo = Utils.GetAttributeInfo(model);
-            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
-            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            object instance = Utils.GetInstanceFromIModel(model);
 
             foreach (string key in attributeInfo.Keys) {
                 var value = controlValues[key];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }            
-            dynamic castedInstance = Convert.ChangeType(instance, modelType);
+            dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
             return castedInstance;
+        }
+
+        private static object GetInstanceFromIModel(IModel model) {
+            Type modelType = model.GetType();
+            var attributeInfo = Utils.GetAttributeInfo(model);
+            ConstructorInfo constructorInfo = modelType.GetConstructor(Type.EmptyTypes);
+            object instance = constructorInfo.Invoke(Type.EmptyTypes);
+            return instance;
         }
 
         public static bool DateCompare(DateTime dOne, DateTime dTwo) {

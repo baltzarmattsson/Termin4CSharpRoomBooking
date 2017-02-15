@@ -146,8 +146,26 @@ namespace Termin4CSharp.View
         }
 
         public void SetRooms(List<Room> rooms) {
-            foreach (var item in rooms)
-                this.listView1.Items.Add(item.ToString());
+            foreach (var room in rooms)
+                this.listView1.Items.Add(new ListViewItem(new[] { room.BName.ToString(), room.Id, "tidslinje", room.Capacity.ToString() }));
         }
+
+        public void SetBuildingFilters(List<Building> buildings) {
+            this.checkedListBox1.Items.Clear();
+            foreach (var building in buildings)
+                this.checkedListBox1.Items.Add(building.Name);
+        }
+
+        public void SetRoomFilters(List<Room> rooms) {
+            this.checkedListBox2.Items.Clear();
+            foreach (var room in rooms)
+                this.checkedListBox2.Items.Add(room.Id);
+        }
+        public void SetResourceFilters(List<Resource> resources) {
+            this.checkedListBox3.Items.Clear();
+            foreach (var resource in resources)
+                this.checkedListBox3.Items.Add(resource.Type);
+        }
+
     }
 }

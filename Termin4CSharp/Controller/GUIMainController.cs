@@ -21,7 +21,10 @@ namespace Termin4CSharp.Controller {
 
         public void LoadRooms() {
             DAL dal = new DAL();
-            var rooms = dal.Get(new Room()).Cast<Room>().ToList();
+            var whereParams = new Dictionary<string, object>();
+            whereParams["1"] = 1;
+            var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
+            Console.WriteLine(rooms.Count);
             this.GUIMain.SetRooms(rooms);
         }
 

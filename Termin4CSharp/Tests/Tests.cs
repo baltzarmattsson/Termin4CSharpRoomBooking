@@ -16,8 +16,11 @@ namespace Termin4CSharp.Tests {
             Person p = new Person("testname", "testid", "testemail", "testphonenbr");
             Building b = new Building("testname", "testaddress", DateTime.Now, DateTime.Now, null);
             //RoomType rt = new RoomType(113377, "testtype");
-            Room r = new Room(b, "testid", 134141, "0", null);
-
+            Room r = new Room(b.Name, "testid", 134141, "0", null);
+            r.Building = b;
+            var rooms = new List<Room>();
+            rooms.Add(r);
+            b.Rooms = rooms;
             // Testing add
             DAL dal = new DAL();
 
@@ -25,9 +28,9 @@ namespace Termin4CSharp.Tests {
                 dal.Add(p);
                 dal.Add(b);
                 dal.Add(r);
-                Person retrievedPerson = dal.Get(p).First() as Person;
-                Building retrievedBuilding = dal.Get(b).First() as Building;
-                Room retrievedRoom = dal.Get(r).First() as Room;
+                Person retrievedPerson = dal.GetIModel(p) as Person;
+                Building retrievedBuilding = dal.GetIModel(b) as Building;
+                Room retrievedRoom = dal.GetIModel(r) as Room;
                 Assert.AreEqual(retrievedPerson, p);
                 Assert.AreEqual(retrievedBuilding, b);
                 Assert.AreEqual(retrievedRoom, r);

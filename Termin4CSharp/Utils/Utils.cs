@@ -21,10 +21,12 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, "([g|s]et)|(ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute)"));
+                        .Where(x => !Regex.IsMatch(x, "([g|s]et)|(ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute)|(Rooms|Building|Bookings)"));
 
             foreach (string attName in names) {
                 PropertyInfo pi = t.GetProperty(attName);
+                Type methodRetType = pi.GetMethod.ReturnType;
+                var a = pi.GetValue(paramObj, null);
                 attributeValues[attName] = pi == null ? "" : pi.GetValue(paramObj, null);
             }
             return attributeValues;
@@ -35,26 +37,6 @@ namespace Termin4CSharp {
 
             foreach (string attributeName in attributeInfo.Keys) {
                 var value = dr[attributeName] == DBNull.Value ? null : dr[attributeName];
-                // If we want to find models within models, and value is an IModel or a list of IModels
-                if (findResursiveIModels && attributeInfo.ContainsKey(attributeName) && (attributeInfo[attributeName] is IModel || attributeInfo[attributeName] is List<IModel>)) {
-                    bool modelIsList = attributeInfo[attributeName] is List<IModel>;
-                    IModel referencedModel = null;
-                    if (modelIsList)
-                        referencedModel = ((List<IModel>)attributeInfo[attributeName]).First() as IModel;
-                    else
-                        referencedModel = attributeInfo[attributeName] as IModel;
-
-                    KeyValuePair<string, object> refModelIdKV = referencedModel.GetIdentifyingAttributes().First();
-                    string idAtt = refModelIdKV.Value as string;
-                    string idKey = refModelIdKV.Key;
-                    if (value != null) {
-                        IModel dynamicIModel = Utils.CreateDynamicIModel(referencedModel, idKey, idAtt);
-                        if (modelIsList)
-                            value = new DAL().Get(dynamicIModel, findResursiveIModels: false);
-                        else
-                            value = new DAL().Get(dynamicIModel, findResursiveIModels: false).First();
-                    }
-                }
                 instance.GetType().GetProperty(attributeName).SetValue(instance, value, null);
             }
             dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
@@ -95,15 +77,6 @@ namespace Termin4CSharp {
             return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
         }
 
-        public static object SqlTypeConverter(SqlDataReader dr, string key) {
-
-            var type = dr.GetValue(dr.GetOrdinal(key));
-            Console.WriteLine(type);
-
-            return type;
-        }
-
-
         public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
@@ -119,20 +92,17 @@ namespace Termin4CSharp {
                 // For non-GET-queries, if the id is autoincrementing, we're skipping inserting/updating this value
                 if (queryType != QueryType.GET && key.Equals("id", StringComparison.InvariantCultureIgnoreCase) && Utils.IdIsAutoIncrementInDb(model))
                     continue;
-
-                // Skipping lists, since they are collected from another table
-                if ((modelAttributes[key] is List<IModel>) == false) {
-                    Console.WriteLine(modelAttributes[key].GetType());
-                    // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
-                    if (queryType == QueryType.UPDATE) {
-                        modelKeys += key.ToLower() + " = @" + key + ", ";
-                        // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
-                    } else {
-                        modelKeys += key.ToLower() + ", ";
-                        modelValues += "@" + key + ", ";
-                    }
-
+                
+                // If it's an UPDATE the key/values must be next to eacother, i.e. key1 = value1, key2 = value2
+                if (queryType == QueryType.UPDATE) {
+                    modelKeys += key.ToLower() + " = @" + key + ", ";
+                    // Else they can be added to the end of the query: i.e. insert into tbl [keys] values [values]
+                } else {
+                    modelKeys += key.ToLower() + ", ";
+                    modelValues += "@" + key + ", ";
                 }
+
+
             }
             modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
             if (modelValues.Length > 2)
@@ -180,7 +150,7 @@ namespace Termin4CSharp {
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
 
-            //Console.WriteLine(sqlBuilder.ToString());
+            Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
 
@@ -329,9 +299,9 @@ namespace Termin4CSharp {
                 else
                     throw new Exception("Type not implemented: " + val.GetType());
 
-                //Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
             }
-            //Console.WriteLine();
+            Console.WriteLine();
         }
 
       private static string IModelTableName(IModel model) {
@@ -376,6 +346,12 @@ namespace Termin4CSharp {
                     break;
             }
             return op;
+        }
+
+        public static bool CompareLists(List<IModel> first, List<IModel> second) {
+            var firstNotSecond = first.Except(second).ToList();
+            var secondNotFirst = second.Except(first).ToList();
+            return !firstNotSecond.Any() && !secondNotFirst.Any();
         }
     }
 }

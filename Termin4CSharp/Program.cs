@@ -27,13 +27,27 @@ namespace Termin4CSharp {
             //else
             //    fetched = b2;
 
-            Building fetched = new Building("Buildbuild", "buildaddress", DateTime.Now, DateTime.Now, null);
-            Room r = new Room(fetched, "1337", 134141, "0", null);
-            Room r2 = new Room(fetched, "1337r2", 13414122, "0", null);
-            var rooms = new List<IModel>();
-            rooms.Add(r);
-            rooms.Add(r2);
-            fetched.Room = rooms;
+            //Building fetched = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now, null);
+            //Room r = new Room(fetched, "1337", 134141, "0", null);
+            //Room r2 = new Room(fetched, "1337r2", 13414122, "0", null);
+            //var rooms = new List<IModel>();
+            //rooms.Add(r);
+            //rooms.Add(r2);
+            //fetched.Rooms = rooms;
+
+            DAL dal = new DAL();
+            //r = dal.Get(r).First() as Room;
+            Building fetched = new Building();
+            fetched.Name = "Buildname";
+            fetched = dal.GetIModel(fetched) as Building;
+            //dal.Add(fetched);
+            //fetched = dal.Get(fetched).First() as Building;
+            //var whereParams = new Dictionary<string, object>();
+            //string buildIdKey = new Building().GetIdentifyingAttributes().First().Key;
+            //string buildIdVal = fetched.GetIdentifyingAttributes().First().Value as string;
+            //whereParams["bname"] = buildIdVal;
+            //List<IModel> test = dal.Get(new Room(), whereParams);
+            //fetched.Rooms = test;
 
             EditView ev = new EditView(fetched);
             EditViewController c = new EditViewController(ev);

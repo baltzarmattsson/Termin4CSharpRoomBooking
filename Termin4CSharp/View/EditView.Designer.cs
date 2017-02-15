@@ -89,17 +89,10 @@ namespace Termin4CSharp.View {
                     if (isIdentifyingAttribute)
                         numTextBox.Enabled = false;
                     control = numTextBox;
-                // List<IModel>
-                } else if (value is List<IModel>) {
-                    CheckedListBox checkListBox = new CheckedListBox();
-                    foreach (var item in (List<IModel>)value)
-                        checkListBox.Items.Add(item);
-                    checkListBox.Width = 500;
-                    checkListBox.Name = kv.Key;
-                    control = checkListBox;
+                
                 // Else
                 } else {
-                    Console.WriteLine(value.GetType());
+                    //Console.WriteLine(value.GetType());
                     TextBox textBox = new TextBox();
                     textBox.Width = 500;
                     textBox.Text = value == null ? "" : value.ToString();
@@ -110,6 +103,21 @@ namespace Termin4CSharp.View {
                 }
                 this.flowLayoutPanel1.Controls.Add(control);
                 flowLayoutPanel1.SetFlowBreak(control, true);
+            }
+
+            // List<IModel>
+            Type modelType = model.GetType();
+            if (modelType == typeof(Building)) {
+                Label attributeNameLabel = new Label();
+                attributeNameLabel.Text = "Rum";
+                var value = ((Building)model).Rooms;
+                CheckedListBox checkListBox = new CheckedListBox();
+                foreach (var item in (List<Room>)value)
+                    checkListBox.Items.Add(item);
+                checkListBox.Width = 500;
+                flowLayoutPanel1.Controls.Add(attributeNameLabel);
+                flowLayoutPanel1.Controls.Add(checkListBox);
+                flowLayoutPanel1.SetFlowBreak(checkListBox, true);
             }
 
             // Adding responselabel

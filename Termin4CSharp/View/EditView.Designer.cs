@@ -62,8 +62,7 @@ namespace Termin4CSharp.View {
             mainTitleLabel.Text = string.Format("Redigering: {0} ", model.GetType().Name);
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
             this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
-
-            Console.WriteLine("Private: loading: " + model.GetType());
+            
             var attributes = Utils.GetAttributeInfo(model);
             Label attributeName = null;
             foreach (var kv in attributes) {
@@ -72,17 +71,16 @@ namespace Termin4CSharp.View {
                 attributeName = new Label();
                 attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
                 this.flowLayoutPanel1.Controls.Add(attributeName);
-
-                // TODO - städa , gör en Control object och sedan använd denna generiskt till t.ex. Width och Name
+                
+                Control control = null;
                 // DateTime
                 if (value is DateTime) {
                     DateTimePicker datePicker = new DateTimePicker();
                     datePicker.Width = 500;
                     datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
                     datePicker.Name = kv.Key;
-                    this.flowLayoutPanel1.Controls.Add(datePicker);
-                    flowLayoutPanel1.SetFlowBreak(datePicker, true);
-                    // Numbers
+                    control = datePicker;
+                // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                     NumberTextBox numTextBox = new NumberTextBox();
                     numTextBox.Width = 500;
@@ -90,17 +88,15 @@ namespace Termin4CSharp.View {
                     numTextBox.Name = kv.Key;
                     if (isIdentifyingAttribute)
                         numTextBox.Enabled = false;
-                    this.flowLayoutPanel1.Controls.Add(numTextBox);
-                    flowLayoutPanel1.SetFlowBreak(numTextBox, true);
+                    control = numTextBox;
+                // List<IModel>
                 } else if (value is System.Collections.Generic.List<Room>) {
                     CheckedListBox checkListBox = new CheckedListBox();
                     foreach (var item in (List<Room>)value)
                         checkListBox.Items.Add(item);
                     checkListBox.Width = 500;
                     checkListBox.Name = kv.Key;
-                    this.flowLayoutPanel1.Controls.Add(checkListBox);
-                    flowLayoutPanel1.SetFlowBreak(checkListBox, true);
-                
+                    control = checkListBox;
                 // Else
                 } else {
                     Console.WriteLine(value.GetType());
@@ -110,9 +106,10 @@ namespace Termin4CSharp.View {
                     textBox.Name = kv.Key;
                     if (isIdentifyingAttribute)
                         textBox.Enabled = false;
-                    this.flowLayoutPanel1.Controls.Add(textBox);
-                    flowLayoutPanel1.SetFlowBreak(textBox, true);
+                    control = textBox;
                 }
+                this.flowLayoutPanel1.Controls.Add(control);
+                flowLayoutPanel1.SetFlowBreak(control, true);
             }
 
             // Adding responselabel

@@ -154,12 +154,12 @@ namespace Termin4CSharp {
         }
 
         //public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
-        public static SqlCommand FindRoomsWithFilters(CheckedItemCollection buildingNames, CheckedItemCollection roomIDs, CheckedItemCollection resourceNames) {
+        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
             string modelKeys = string.Join(", ", modelAttributes.Keys);
-            sqlBuilder.Append(string.Format("select {0} from {1} r", modelKeys, DbFields.RoomTable));
+            sqlBuilder.Append(string.Format("select {0} from {1} r ", modelKeys, DbFields.RoomTable));
 
 
             var whereParams = new Dictionary<string, object>();
@@ -186,7 +186,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(" where ");
                     whereAdded = true;
                 }
-                sqlBuilder.Append(" r.id in (@@{0}");
+                sqlBuilder.Append(" r.id in (");
                 string key = "";
                 foreach (string roomID in roomIDs) {
                     key = "index" + indexCounter++;

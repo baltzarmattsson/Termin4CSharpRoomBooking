@@ -343,6 +343,7 @@ namespace Termin4CSharp.View {
             this.resourceFilterBox.Size = new System.Drawing.Size(236, 108);
             this.resourceFilterBox.TabIndex = 15;
             this.resourceFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.resourceFilterBox_ItemCheck);
+            //this.resourceFilterBox.SelectedValueChanged += new System.EventHandler(this.filterBox_SelectedValueChanged);
             // 
             // label9
             // 
@@ -382,6 +383,7 @@ namespace Termin4CSharp.View {
             this.roomFilterBox.Size = new System.Drawing.Size(236, 108);
             this.roomFilterBox.TabIndex = 11;
             this.roomFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.roomFilterBox_ItemCheck);
+            //this.roomFilterBox.SelectedValueChanged += new System.EventHandler(this.filterBox_SelectedValueChanged);
             // 
             // label8
             // 
@@ -407,6 +409,7 @@ namespace Termin4CSharp.View {
             this.buildingFilterBox.Size = new System.Drawing.Size(236, 108);
             this.buildingFilterBox.TabIndex = 9;
             this.buildingFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.buildingFilterBox_ItemCheck);
+            //this.buildingFilterBox.SelectedValueChanged += new System.EventHandler(this.filterBox_SelectedValueChanged);
             // 
             // textBox3
             // 

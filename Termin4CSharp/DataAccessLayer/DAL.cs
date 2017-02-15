@@ -44,7 +44,7 @@ namespace Termin4CSharp.DataAccessLayer {
             return returnModel;
         }
 
-        public List<Room> FindRoomsWithFilters(CheckedItemCollection buildingNames, CheckedItemCollection roomIDs, CheckedItemCollection resourceNames) {
+        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames);
             SqlDataReader dr = null;
             var resultList = new List<Room>();

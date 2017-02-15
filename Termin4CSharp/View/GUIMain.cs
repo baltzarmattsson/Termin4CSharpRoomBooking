@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.Controller;
+using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
+using static Termin4CSharp.Controller.GUIMainController;
 
 namespace Termin4CSharp.View
 {
@@ -161,17 +163,14 @@ namespace Termin4CSharp.View
         {
 
         }
-        private void buildingFilterBox_ItemCheck(object sender, EventArgs e) {
-            //Console.WriteLine(sender); ;
-            Controller.HandleFilterChange();
+        private void buildingFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
+            Controller.HandleFilterChange(FilterBox.BUILDING, sender as CheckedListBox, e);
         }
-        private void roomFilterBox_ItemCheck(object sender, EventArgs e) {
-            //Console.WriteLine(sender); ;
-            Controller.HandleFilterChange();
+        private void roomFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
+            Controller.HandleFilterChange(FilterBox.ROOM, sender as CheckedListBox, e);
         }
-        private void resourceFilterBox_ItemCheck(object sender, EventArgs e) {
-            //Console.WriteLine(sender); ;
-            Controller.HandleFilterChange();
+        private void resourceFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
+            Controller.HandleFilterChange(FilterBox.RESOURCE, sender as CheckedListBox, e);
         }
 
         public void SetRooms(List<Room> rooms) {

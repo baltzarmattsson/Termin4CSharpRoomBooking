@@ -118,16 +118,33 @@ namespace Termin4CSharp.DataAccessLayer {
         }
 
         private void HandleSqlException(IModel model, SqlException sqle) {
-            string message = null, duplicateValue = null;
-            var regmatch = Regex.Match(sqle.Message, "(?<=\\()(.*?)(?=\\))").Groups[0];
-            duplicateValue = regmatch.Captures[0].ToString();
+            string message = null;
             Console.WriteLine();
             switch (sqle.Number) {
                 case SqlCodes.PrimaryKey:
+                    var regmatch = Regex.Match(sqle.Message, "(?<=\\()(.*?)(?=\\))").Groups[0]; //finds (Names within paranthesis)
+                    string duplicateValue = regmatch.Captures[0].ToString();
                     var listOfIdentifyingKeys = new List<string>();
                     foreach (var id in model.GetIdentifyingAttributes().Keys)
                         listOfIdentifyingKeys.Add(Utils.ConvertAttributeNameToDisplayName(model, id));
-                    message = string.Format("Det finns redan {0} med {1} \"{2}\", vänligen välj ett annat", Utils.ConvertAttributeNameToDisplayName(model, "modelEqv"), string.Join(" eller ", listOfIdentifyingKeys), duplicateValue);
+                    message = string.Format("Det finns redan {0} med {1} \"{2}\", vänligen välj ett annat", Utils.ConvertAttributeNameToDisplayName(model, "modeleqv"), string.Join(" eller ", listOfIdentifyingKeys), duplicateValue);
+                    break;
+                case SqlCodes.ForeignKey:
+
+                    //Getting tablename
+                    var tableRegmatch = Regex.Match(sqle.Message, "(?<=table \\\")(.*?)(?=\\\")").Groups[0]; //find tablename, like dbo.Person
+                    string table = tableRegmatch.Captures[0].ToString();
+                    int indexOfLastDot = table.LastIndexOf('.');
+                    var tableSplit = table.Split('.');
+                    table = tableSplit[tableSplit.Length - 1];
+                    table = Utils.GenericDbValuesToDisplayValue(table);
+
+                    //Getting column name
+                    var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //finds columnname, like name or bName
+                    string column = columnRegmatch.Captures[0].ToString();
+                    column = Utils.GenericDbValuesToDisplayValue(column);
+                    Console.WriteLine();
+                    message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
                     break;
                 default:
                     throw sqle;

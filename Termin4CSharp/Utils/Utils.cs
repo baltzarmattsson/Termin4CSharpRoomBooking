@@ -457,6 +457,50 @@ namespace Termin4CSharp {
             return retTable;
         }
 
+        public static string GenericDbValuesToDisplayValue(string dbValue) {
+            string display = dbValue;
+
+            switch (dbValue) {
+                case DbFields.PersonTable:
+                    display = "person";
+                    break;
+                case DbFields.RoomTable:
+                    display = "rum";
+                    break;
+                case DbFields.BuildingTable:
+                    display = "byggnad";
+                    break;
+                case DbFields.InstitutionTable:
+                    display = "institution";
+                    break;
+                case DbFields.ResourceTable:
+                    display = "resurs";
+                    break;
+                case DbFields.BookingTable:
+                    display = "bokning";
+                    break;
+                case DbFields.InstBuildTable:
+                    break;
+                case DbFields.RoomResourceTable:
+                    break;
+                case DbFields.PersonRoleTable:
+                    break;
+                case DbFields.LoginTable:
+                    display = "inloggning";
+                    break;
+                case DbFields.RoomTypeTable:
+                    break;
+                case "name":
+                    display = "det namnet";
+                    break;
+                default:
+                    throw new Exception("But what: " + dbValue);
+            }
+            
+
+            return display;
+        }
+
         private static string WhereConditionToString(WhereCondition whereCondition) {
             string op = "=";
             switch (whereCondition) {

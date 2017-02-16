@@ -258,9 +258,9 @@ namespace Termin4CSharp {
                 else
                     throw new Exception("Type not implemented: " + val.GetType());
 
-                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+                //Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
             }
-            Console.WriteLine();
+            //Console.WriteLine();
         }
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
@@ -275,13 +275,13 @@ namespace Termin4CSharp {
                         retName = "en person";
                         break;
                     case "name":
-                        retName = "namn";
+                        retName = "Namn";
                         break;
                     case "id":
                         retName = "ID";
                         break;
                     case "phonenbr":
-                        retName = "telefonnummer";
+                        retName = "Telefonnummer";
                         break;
                     case "email":
                         break;
@@ -292,13 +292,13 @@ namespace Termin4CSharp {
                         retName = "ett rum";
                         break;
                     case "bname":
-                        retName = "byggnadsnamn";
+                        retName = "Byggnadsnamn";
                         break;
                     case "capacity":
-                        retName = "antal platser";
+                        retName = "Antal platser";
                         break;
                     case "floor":
-                        retName = "våning";
+                        retName = "Våning";
                         break;
                     case "id":
                         retName = "ID";
@@ -310,16 +310,16 @@ namespace Termin4CSharp {
                         retName = "en byggnad";
                         break;
                     case "address":
-                        retName = "adress";
+                        retName = "Adress";
                         break;
                     case "avail_end":
-                        retName = "öppningstid";
+                        retName = "Öppningstid";
                         break;
                     case "avail_start":
-                        retName = "stängningstid";
+                        retName = "Stängningstid";
                         break;
                     case "name":
-                        retName = "namn";
+                        retName = "Namn";
                         break;
                 }
             } else if (model is Booking) {
@@ -331,19 +331,19 @@ namespace Termin4CSharp {
                         retName = "ID";
                         break;
                     case "personid":
-                        retName = "person (ID)";
+                        retName = "Person (ID)";
                         break;
                     case "purpose":
-                        retName = "syfte";
+                        retName = "Syfte";
                         break;
                     case "roomid":
-                        retName = "rum (ID)";
+                        retName = "Rum (ID)";
                         break;
                     case "start_time":
-                        retName = "starttid";
+                        retName = "Starttid";
                         break;
                     case "end_time":
-                        retName = "sluttid";
+                        retName = "Sluttid";
                         break;
                 }
             }
@@ -360,7 +360,7 @@ namespace Termin4CSharp {
                         retName = "en resurs";
                         break;
                     case "type":
-                        retName = "typ";
+                        retName = "Typ";
                         break;
                 }
             } else if (model is Institution_Building) {
@@ -396,10 +396,10 @@ namespace Termin4CSharp {
                         retName = "ett login";
                         break;
                     case "password":
-                        retName = "lösenord";
+                        retName = "Lösenord";
                         break;
                     case "personid":
-                        retName = "person (ID)";
+                        retName = "Person (ID)";
                         break;
                 }
             } else if (model is RoomType) {
@@ -411,7 +411,7 @@ namespace Termin4CSharp {
                         retName = "ID";
                         break;
                     case "type":
-                        retName = "typ";
+                        retName = "Typ";
                         break;
                 }
             }

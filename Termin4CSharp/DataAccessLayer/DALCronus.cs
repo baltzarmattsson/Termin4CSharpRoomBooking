@@ -29,7 +29,7 @@ namespace Termin4CSharp.DataAccessLayer
             }
             return connect;
         }
-        public ResultSet GetEmployee()
+        public ResultSet GetEmployees()
         {
             String sql = "SELECT * FROM [CRONUS Sverige AB$Employee]"; //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
             EmployeeStatement = getConnected().createStatement();
@@ -43,7 +43,7 @@ namespace Termin4CSharp.DataAccessLayer
         }
         public ResultSet GetEmployeeAbscence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate='2004";
+            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate=´)2004";
             EmployeeAbsStatement = getConnected().createStatement();
             return employeeAbsStatement.executeQuery(sql);
         }
@@ -55,13 +55,13 @@ namespace Termin4CSharp.DataAccessLayer
         }
         public ResultSet GetDepartment()  //Information om Employee och deras Department
         {
-            String sql = ""
+            String sql = "" // hittar inte ens department i CRONUS
             DepartmentStatement = getConnected().createStatement();
             return GetDepartment.executeQuery(sql);
         }
         public ResultSet GetHighestSalary() //Information om Employee som har högst lön
         {
-            String sql = "SELECT  SELECT MAX(Salary) FROM [CRONUS Sverige AB$Employee]
+            String sql = "SELECT MAX(Salary) FROM [CRONUS Sverige AB$Employee]"; // funkar inte
             HighestSalaryStatement = getConnected().createStatement();
             return HighestSalaryStatement.executeQuery(sql);
         }
@@ -91,19 +91,19 @@ namespace Termin4CSharp.DataAccessLayer
         }
     public ResultSet public GetTables2() //Alla table_constraints 
         {
-            string sql = "SELECT * sysobjects WHERE xtype = 'U
+            string sql = "SELECT * FROM sysobjects WHERE xtype = 'U';
             Tables2Statement = getConnected().createStatement();
             return Tables2Statement.executeQuery(sql);
         }
-    public ResultSet public GetMetaEmployee() //Alla kolumner i tabellen Employee 
+    public ResultSet public GetMetaEmployees() //Alla kolumner i tabellen Employee 
         {
-            string sql = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = 'CRONUS Sverige AB$Employee'";
+            string sql = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'CRONUS Sverige AB$Employee'";
             MetaEmployeeStatement = getConnected().createStatement();
             return MetaEmployeeStatement.executeQuery(sql);
         }
-     public ResultSet public GetMetaEmployee2() throw SQLException //Alla kolumner i tabellen Employee version2. 
+     public ResultSet public GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. //
         {
-            string sql = "SELECT* FROM sys.columns c INNER JOIN sys.tables t ON c.object_id = t.object_id WHERE t.name = '[CRONUS Sverige AB$Employee]'";
+            string sql = 
             MetaEmployee2Statement = getConnected().createStatement();
             return MetaEmployee2Statement.executeQuery(sql); 
         }

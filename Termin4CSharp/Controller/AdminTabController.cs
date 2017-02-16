@@ -8,6 +8,7 @@ using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.Model.DbHelpers;
 using Termin4CSharp.View;
+using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.Controller {
     public class AdminTabController {
@@ -16,6 +17,7 @@ namespace Termin4CSharp.Controller {
 
         private ComboBox editTypeBox;
         private ComboBox editArticleBox;
+        private Dictionary<string, IModel> toStringAsIModel;
         private ComboBox createTypeBox;
 
         public AdminTabController(GUIMain guiMain) {
@@ -57,12 +59,15 @@ namespace Termin4CSharp.Controller {
             IModel correspondingIModel = this.ParseStringToIModel(selectedType);
 
             if (correspondingIModel != null) {
-                EditView ev = new EditView(correspondingIModel);
+                EditView ev = new EditView(correspondingIModel, isExistingItemInDatabase: false);
                 EditViewController editController = new EditViewController(ev);
-                //Application.Run(ev);
-                //Form.ActiveForm.Show(ev);
-                EditView ev = new Form().Show();
+                ev.Show();
             }
+        }
+        public void HandleEditIModelClick() {
+            string selectedIModel = null;
+            if (this.editArticleBox.SelectedItem != null) 
+                selectedIModel = this.editArticleBox.SelectedItem.ToString();
         }
 
         private void SetCreateTypes(List<string> creatableTypes) {
@@ -76,15 +81,20 @@ namespace Termin4CSharp.Controller {
         }
         private void SetEditArticles(List<IModel> editArticles) {
             this.editArticleBox.Items.Clear();
-            this.editArticleBox.Items.AddRange(editArticles.ToArray());
+            //this.editArticleBox.Items.AddRange(editArticles.ToArray());
+            //int indexCounter = 0;
+            //ComboBoxItem item = null;
+            foreach (var article in editArticles) {
+                this.editArticleBox.Items.Add(article);
+            }
             if (this.editArticleBox.Items.Count > 0)
                 this.editArticleBox.SelectedIndex = 0;
             else
                 this.editArticleBox.Text = null;
         }
-        public void SetEditArticles(string editType) {
+        public void SetEditArticles(object editType) {
             DAL dal = new DAL();
-            IModel correspondingIModel = this.ParseStringToIModel(editType);
+            IModel correspondingIModel = this.ParseStringToIModel(editType as string);
             if (correspondingIModel != null) {
                 List<IModel> allResultsInCorrespondingTable = dal.Get(correspondingIModel, selectAll: true);
                 this.SetEditArticles(allResultsInCorrespondingTable);

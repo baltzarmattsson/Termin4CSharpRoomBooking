@@ -79,6 +79,7 @@ namespace Termin4CSharp.View {
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
+            this.button4 = new System.Windows.Forms.Button();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -450,6 +451,7 @@ namespace Termin4CSharp.View {
             // 
             // adminTab
             // 
+            this.adminTab.Controls.Add(this.button4);
             this.adminTab.Controls.Add(this.button3);
             this.adminTab.Controls.Add(this.createTypeBox);
             this.adminTab.Controls.Add(this.label13);
@@ -466,9 +468,9 @@ namespace Termin4CSharp.View {
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(224, 178);
+            this.button3.Location = new System.Drawing.Point(97, 205);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(121, 23);
             this.button3.TabIndex = 5;
             this.button3.Text = "Skapa";
             this.button3.UseVisualStyleBackColor = true;
@@ -587,6 +589,16 @@ namespace Termin4CSharp.View {
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(97, 116);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(121, 23);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Editera";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // GUIMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -663,5 +675,6 @@ namespace Termin4CSharp.View {
         private ComboBox editArticleBox;
         private ComboBox editTypeBox;
         private Label label12;
+        private Button button4;
     }
 }

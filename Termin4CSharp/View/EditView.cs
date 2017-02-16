@@ -15,11 +15,13 @@ namespace Termin4CSharp.View {
 
         public IModel Model { get; set; }
         public EditViewController Controller { get; set; }
+        public bool IsExistingItemInDatabase { get; private set; }
 
-        public EditView(IModel model) {
+        public EditView(IModel model, bool isExistingItemInDatabase = true) {
             InitializeComponent();
             this.Model = model;
             LoadModel(model);
+            this.IsExistingItemInDatabase = isExistingItemInDatabase;
         }
 
         public void SetResponseLabel(string message) {

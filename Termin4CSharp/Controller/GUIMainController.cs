@@ -28,11 +28,12 @@ namespace Termin4CSharp.Controller {
 
         public void LoadRooms() {
             DAL dal = new DAL();
-            var whereParams = new Dictionary<string, object>();
-            // TODO fixa IModelToQuery att hämta alla attribut ifall det är en GET-query, och ifall deti nte finns
-            // några where-params och IModel inte innehåller ett ID-attribut (dvs är en new IModel() av något slag)
-            whereParams["1"] = 1;
-            var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
+            //var whereParams = new Dictionary<string, object>();
+            //// TODO fixa IModelToQuery att hämta alla attribut ifall det är en GET-query, och ifall deti nte finns
+            //// några where-params och IModel inte innehåller ett ID-attribut (dvs är en new IModel() av något slag)
+            //whereParams["1"] = 1;
+            //var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
+            var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
             this.GUIMain.SetRooms(rooms);
         }
 

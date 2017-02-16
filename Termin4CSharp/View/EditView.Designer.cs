@@ -5,7 +5,7 @@ using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.View {
-    public partial class EditView {
+    public partial class EditView : Form {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -86,8 +86,6 @@ namespace Termin4CSharp.View {
                     numTextBox.Width = 500;
                     numTextBox.Text = value == null ? "" : value.ToString();
                     numTextBox.Name = kv.Key;
-                    if (isIdentifyingAttribute)
-                        numTextBox.Enabled = false;
                     control = numTextBox;
                 
                 // Else
@@ -97,10 +95,10 @@ namespace Termin4CSharp.View {
                     textBox.Width = 500;
                     textBox.Text = value == null ? "" : value.ToString();
                     textBox.Name = kv.Key;
-                    if (isIdentifyingAttribute)
-                        textBox.Enabled = false;
                     control = textBox;
                 }
+                if (IsExistingItemInDatabase && isIdentifyingAttribute)
+                    control.Enabled = false;
                 this.flowLayoutPanel1.Controls.Add(control);
                 flowLayoutPanel1.SetFlowBreak(control, true);
             }

@@ -19,6 +19,7 @@ namespace Termin4CSharp.Controller {
         public EditViewController(EditView editView) {
             this.EditView = editView;
             this.EditView.Controller = this;
+            this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
         }
 
         public int Save(IModel model) {

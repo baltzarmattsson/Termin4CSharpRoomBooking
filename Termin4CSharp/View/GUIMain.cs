@@ -211,11 +211,15 @@ namespace Termin4CSharp.View
             ComboBox senderAsCBox = (ComboBox)sender;
             string selectedItem = senderAsCBox.SelectedItem.ToString();
             Console.WriteLine("test");
-            this.AdminController.SetEditArticles(senderAsCBox.SelectedItem.ToString());
+            this.AdminController.SetEditArticles(selectedItem);
         }
 
         private void button3_Click(object sender, EventArgs e) {
             this.AdminController.HandleCreateNewIModelClick();
+        }
+
+        private void button4_Click(object sender, EventArgs e) {
+            this.AdminController.HandleEditIModelClick();
         }
     }
 }

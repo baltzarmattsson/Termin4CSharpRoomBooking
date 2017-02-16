@@ -195,5 +195,15 @@ namespace Termin4CSharp.View
             foreach (var resource in resources)
                 this.resourceFilterBox.Items.Add(resource.Type);
         }
+
+        public ComboBox GetAdminEditTypeComboBox() {
+            return this.editTypeBox;
+        }
+        public ComboBox GetAdminEditArticleComboBox() {
+            return this.editArticleBox;
+        }
+        public ComboBox GetAdminCreateTypeComboBox() {
+            return this.createTypeBox;
+        }
     }
 }

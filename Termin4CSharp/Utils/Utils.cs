@@ -211,6 +211,7 @@ namespace Termin4CSharp {
                 sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
                 sqlBuilder.Append("))");
             }
+            //Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
             
@@ -222,10 +223,10 @@ namespace Termin4CSharp {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
-                if (val is List<IModel>)
-                    continue; //TODO ta bort dessa
-                if (val is IModel)
-                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
+                //if (val is List<IModel>)
+                //    continue; //TODO ta bort dessa
+                //if (val is IModel)
+                //    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
 
                 /*      NULL        **/
                 if (val == null)

@@ -27,13 +27,13 @@ namespace Termin4CSharp.Controller {
         }
 
         public void LoadRooms() {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
             this.GUIMain.SetRooms(rooms);
         }
 
         public void LoadFilters() {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             var whereParams = new Dictionary<string, object>();
             whereParams["1"] = 1;
             var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
@@ -78,7 +78,7 @@ namespace Termin4CSharp.Controller {
             //var resourceFilters = this.GUIMain.GetResourceFilters();
             //var freeTextFilter = this.GUIMain.GetTextFilter();
 
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters);
             this.GUIMain.SetRooms(filteredRooms);
 
@@ -86,6 +86,10 @@ namespace Termin4CSharp.Controller {
             "select * from Room r where r.bName in ('Buildname') and r.id like '13%' and r.id in 
 
 (select id from Room_Resource where resource in ('Handikappwc'))"" obs skapa Room_Resource på nytt*/
+        }
+
+        public void NotifyExceptionToView(string s) {
+            throw new NotImplementedException();
         }
     }
 }

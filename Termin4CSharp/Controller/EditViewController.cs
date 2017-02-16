@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Termin4CSharp.Controller {
         }
 
         public int Save(IModel model) {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             int affectedRows = 0;
             string dbMethod = "";
             if (isExistingObjectInDatabase) {
@@ -41,7 +42,7 @@ namespace Termin4CSharp.Controller {
             }
             if (affectedRows > 0)
                 this.UpdateResponseLabel(string.Format("{0} {1}", model.GetType().Name, dbMethod));
-            else
+            else if (affectedRows != -1) //-1 is error from DAL
                 this.UpdateResponseLabel(string.Format("Ingen {0} {1}", model.GetType().Name, dbMethod));
             return affectedRows;
                     
@@ -58,7 +59,7 @@ namespace Termin4CSharp.Controller {
             }
         }
         public int Delete(IModel model) {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             //Show popup - säkerställande
             int affectedRows = dal.Remove(model);
             if (affectedRows > 0) {
@@ -77,10 +78,7 @@ namespace Termin4CSharp.Controller {
         public void HasUnsavedChanges(bool value) {
             this.hasUnsavedChanges = value;
         }
-
-        public void NotifyExceptionToView() {
-
-        }
+        
         public void HandleSaveButtonClick() {
             if (this.IdentifyingValuesAreNotEmpty()) {
                 IModel model = null;
@@ -159,7 +157,10 @@ namespace Termin4CSharp.Controller {
                 if (string.IsNullOrEmpty(idValue.Value.ToString()))
                     return false;
             return true;
-        } 
+        }
 
+        public void NotifyExceptionToView(string s) {
+            this.UpdateResponseLabel(s);
+        }        
     }
 }

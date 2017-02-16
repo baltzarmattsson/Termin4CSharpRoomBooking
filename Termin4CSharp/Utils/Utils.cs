@@ -158,8 +158,7 @@ namespace Termin4CSharp {
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
-
-        //public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
+        
         public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
 
             StringBuilder sqlBuilder = new StringBuilder();
@@ -272,65 +271,102 @@ namespace Termin4CSharp {
 
             if (model is Person) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en person";
+                        break;
                     case "name":
+                        retName = "namn";
                         break;
                     case "id":
+                        retName = "ID";
                         break;
                     case "phonenbr":
+                        retName = "telefonnummer";
                         break;
                     case "email":
                         break;
                 }
             } else if (model is Room) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "ett rum";
+                        break;
                     case "bname":
+                        retName = "byggnadsnamn";
                         break;
                     case "capacity":
+                        retName = "antal platser";
                         break;
                     case "floor":
+                        retName = "våning";
                         break;
                     case "id":
+                        retName = "ID";
                         break;
                 }
             } else if (model is Building) { 
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en byggnad";
+                        break;
                     case "address":
+                        retName = "adress";
                         break;
                     case "avail_end":
+                        retName = "öppningstid";
                         break;
                     case "avail_start":
+                        retName = "stängningstid";
                         break;
                     case "name":
+                        retName = "namn";
                         break;
                 }
             } else if (model is Booking) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en bokning";
+                        break;
                     case "id":
+                        retName = "ID";
                         break;
                     case "personid":
+                        retName = "person (ID)";
                         break;
                     case "purpose":
+                        retName = "syfte";
                         break;
                     case "roomid":
+                        retName = "rum (ID)";
                         break;
                     case "start_time":
+                        retName = "starttid";
                         break;
                     case "end_time":
+                        retName = "sluttid";
                         break;
                 }
             }
             else if (model is Institution) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        break;
                     case "name":
                         break;
                 }
             } else if (model is Resource) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en resurs";
+                        break;
                     case "type":
+                        retName = "typ";
                         break;
                 }
             } else if (model is Institution_Building) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        break;
                     case "bname":
                         break;
                     case "iname":
@@ -338,6 +374,8 @@ namespace Termin4CSharp {
                 }
             } else if (model is Room_Resource) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        break;
                     case "resid":
                         break;
                     case "roomid":
@@ -345,21 +383,35 @@ namespace Termin4CSharp {
                 }
             } else if (model is Role) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en roll";
+                        break;
                     case "id":
+                        retName = "ID";
                         break;
                 }
             } else if (model is Login) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "ett login";
+                        break;
                     case "password":
+                        retName = "lösenord";
                         break;
                     case "personid":
+                        retName = "person (ID)";
                         break;
                 }
             } else if (model is RoomType) {
                 switch (key.ToLower()) {
+                    case "modeleqv":
+                        retName = "en rumtyp";
+                        break;
                     case "id":
+                        retName = "ID";
                         break;
                     case "type":
+                        retName = "typ";
                         break;
                 }
             }

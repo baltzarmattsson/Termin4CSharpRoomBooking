@@ -21,7 +21,6 @@ namespace Termin4CSharp.View {
             InitializeComponent();
             this.Model = model;
             this.IsExistingItemInDatabase = isExistingItemInDatabase;
-            //LoadModel(model);
         }
 
         public void SetResponseLabel(string message) {

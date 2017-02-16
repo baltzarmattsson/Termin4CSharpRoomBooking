@@ -22,7 +22,7 @@ namespace Termin4CSharp.Tests {
             rooms.Add(r);
             b.Rooms = rooms;
             // Testing add
-            DAL dal = new DAL();
+            DAL dal = new DAL(null);
 
             try {
                 dal.Add(p);

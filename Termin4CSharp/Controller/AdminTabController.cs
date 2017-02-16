@@ -11,7 +11,7 @@ using Termin4CSharp.View;
 using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.Controller {
-    public class AdminTabController {
+    public class AdminTabController : IController {
 
         private GUIMain GUIMain;
 
@@ -32,7 +32,7 @@ namespace Termin4CSharp.Controller {
         }
 
         private void LoadComboBoxes() {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
 
             // Editable and creatable types
             var types = new List<string>();
@@ -97,7 +97,7 @@ namespace Termin4CSharp.Controller {
         //        this.editArticleBox.Text = null;
         //}
         public void SetEditArticles(object editType) {
-            DAL dal = new DAL();
+            DAL dal = new DAL(this);
             IModel correspondingIModel = this.ParseStringToIModel(editType as string);
             if (correspondingIModel != null) {
                 List<IModel> allResultsInCorrespondingTable = dal.Get(correspondingIModel, selectAll: true);
@@ -151,6 +151,10 @@ namespace Termin4CSharp.Controller {
                 string selectedEditType = this.editTypeBox.SelectedItem.ToString();
                 this.SetEditArticles(selectedEditType);
             }
+        }
+
+        public void NotifyExceptionToView(string s) {
+            throw new NotImplementedException();
         }
     }
 

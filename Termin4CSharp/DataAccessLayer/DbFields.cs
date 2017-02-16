@@ -25,4 +25,6 @@ namespace Termin4CSharp.DataAccessLayer {
     public abstract class SqlCodes {
         public const int PrimaryKey = 2627;
     }
+
+
 }

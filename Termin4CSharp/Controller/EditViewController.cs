@@ -111,14 +111,19 @@ namespace Termin4CSharp.Controller {
         private Dictionary<string, object> ViewControlsToDictionary(Control.ControlCollection controls) {
             Dictionary<string, object> controlValues = new Dictionary<string, object>();
             foreach (Control c in controls) {
-                if (c is TextBox) {
-                    controlValues[c.Name] = ((TextBox)c).Text;
-                } else if (c is NumberTextBox) {
-                    try {
-                        controlValues[c.Name] = Int32.Parse(((NumberTextBox)c).Text);
-                    } catch (FormatException) {
-                        EditView.SetResponseLabel("Ett nummer är för stort, försök igen");
-                    }
+                if (c is NumberTextBox) {
+                    NumberTextBox numTextBox = (NumberTextBox)c;
+                    if (numTextBox.Text.Length > 0) {
+                        try {
+                            controlValues[c.Name] = Int32.Parse(numTextBox.Text);
+                        } catch (FormatException) {
+                            EditView.SetResponseLabel("Ett nummer är för stort, försök igen");
+                        }
+                    } else
+                        controlValues[c.Name] = null;
+                } else if (c is TextBox) {
+                    TextBox txtBox = (TextBox)c;
+                    controlValues[c.Name] = String.IsNullOrEmpty(txtBox.Text) ? null : txtBox.Text; 
                 } else if (c is DateTimePicker) {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
                 }

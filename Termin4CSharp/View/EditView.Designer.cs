@@ -98,7 +98,7 @@ namespace Termin4CSharp.View {
                     if (isIdentifyingAttribute)
                         numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
                     numTextBox.Text = "dummyval";
-                    numTextBox.Text = value == null ? "" : value.ToString();
+                    numTextBox.Text = value == null ? "0" : value.ToString();
                     control = numTextBox;
                 
                 // Else

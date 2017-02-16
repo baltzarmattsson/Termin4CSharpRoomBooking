@@ -60,6 +60,7 @@ namespace Termin4CSharp {
 
             foreach (string key in attributeInfo.Keys) {
                 var value = controlValues[key];
+                //var t = attributeInfo[key];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }            
             dynamic castedInstance = Convert.ChangeType(instance, model.GetType());

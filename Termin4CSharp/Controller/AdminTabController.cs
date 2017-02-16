@@ -17,7 +17,7 @@ namespace Termin4CSharp.Controller {
 
         private ComboBox editTypeBox;
         private ComboBox editArticleBox;
-        private Dictionary<string, IModel> toStringAsIModel;
+        private Dictionary<string, IModel> toStringToIModel;
         private ComboBox createTypeBox;
 
         public AdminTabController(GUIMain guiMain) {
@@ -26,13 +26,8 @@ namespace Termin4CSharp.Controller {
             this.editTypeBox = GUIMain.GetAdminEditTypeComboBox();
             this.editArticleBox = GUIMain.GetAdminEditArticleComboBox();
             this.createTypeBox = GUIMain.GetAdminCreateTypeComboBox();
-
-            ////test
-            //List<string> asd = new List<string>();
-            //asd.Add("test1");
-            //asd.Add("test2");
-            //asd.Add("test3");
-            //this.SetEditTypes(asd);   
+            this.toStringToIModel = new Dictionary<string, IModel>();
+              
             this.LoadComboBoxes();  
         }
 
@@ -57,17 +52,25 @@ namespace Termin4CSharp.Controller {
         public void HandleCreateNewIModelClick() {
             string selectedType = this.createTypeBox.SelectedItem.ToString();
             IModel correspondingIModel = this.ParseStringToIModel(selectedType);
+            if (correspondingIModel != null)
+                this.ShowEditView(correspondingIModel, false);
+        }
 
-            if (correspondingIModel != null) {
-                EditView ev = new EditView(correspondingIModel, isExistingItemInDatabase: false);
+        private void ShowEditView(IModel model, bool isExistingItemInDatabase) {
+            if (model != null) {
+                EditView ev = new EditView(model, isExistingItemInDatabase);
                 EditViewController editController = new EditViewController(ev);
                 ev.Show();
             }
         }
+
         public void HandleEditIModelClick() {
-            string selectedIModel = null;
-            if (this.editArticleBox.SelectedItem != null) 
-                selectedIModel = this.editArticleBox.SelectedItem.ToString();
+            if (this.editArticleBox.SelectedItem != null) {
+                string selectedIModelToString = this.editArticleBox.SelectedItem.ToString();
+                IModel selectedModel = this.toStringToIModel[selectedIModelToString];
+                if (selectedModel != null)
+                    this.ShowEditView(selectedModel, true);
+            }
         }
 
         private void SetCreateTypes(List<string> creatableTypes) {
@@ -81,11 +84,9 @@ namespace Termin4CSharp.Controller {
         }
         private void SetEditArticles(List<IModel> editArticles) {
             this.editArticleBox.Items.Clear();
-            //this.editArticleBox.Items.AddRange(editArticles.ToArray());
-            //int indexCounter = 0;
-            //ComboBoxItem item = null;
             foreach (var article in editArticles) {
-                this.editArticleBox.Items.Add(article);
+                this.editArticleBox.Items.Add(article.ToString());
+                this.toStringToIModel[article.ToString()] = article;
             }
             if (this.editArticleBox.Items.Count > 0)
                 this.editArticleBox.SelectedIndex = 0;

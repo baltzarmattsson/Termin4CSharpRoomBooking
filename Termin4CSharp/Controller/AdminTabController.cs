@@ -34,32 +34,33 @@ namespace Termin4CSharp.Controller {
         private void LoadComboBoxes() {
             DAL dal = new DAL();
 
-            // Editable types
-            var editableAndCreatableTypes = new List<string>();
-            editableAndCreatableTypes.Add("Bokning");
-            editableAndCreatableTypes.Add("Byggnad");
-            editableAndCreatableTypes.Add("Person");
-            editableAndCreatableTypes.Add("Resurs");
-            editableAndCreatableTypes.Add("Rum");
-            editableAndCreatableTypes.Add("Inloggning");
-            editableAndCreatableTypes.Add("Roll");
-            editableAndCreatableTypes.Add("Rumtyp");
-            this.SetEditTypes(editableAndCreatableTypes);
-            this.SetCreateTypes(editableAndCreatableTypes);
-            //
+            // Editable and creatable types
+            var types = new List<string>();
+            types.Add("Bokning");
+            types.Add("Byggnad");
+            types.Add("Person");
+            types.Add("Resurs");
+            types.Add("Rum");
+            types.Add("Inloggning");
+            types.Add("Roll");
+            types.Add("Rumtyp");
+            this.SetEditTypes(types);
+            this.SetCreateTypes(types);
         }
 
         public void HandleCreateNewIModelClick() {
-            string selectedType = this.createTypeBox.SelectedItem.ToString();
-            IModel correspondingIModel = this.ParseStringToIModel(selectedType);
-            if (correspondingIModel != null)
-                this.ShowEditView(correspondingIModel, false);
+            if (this.createTypeBox.SelectedItem != null) {
+                string selectedType = this.createTypeBox.SelectedItem.ToString();
+                IModel correspondingIModel = this.ParseStringToIModel(selectedType);
+                if (correspondingIModel != null)
+                    this.ShowEditView(correspondingIModel, false);
+            }
         }
 
         private void ShowEditView(IModel model, bool isExistingItemInDatabase) {
             if (model != null) {
                 EditView ev = new EditView(model, isExistingItemInDatabase);
-                EditViewController editController = new EditViewController(ev);
+                EditViewController editController = new EditViewController(ev, this);
                 ev.Show();
             }
         }
@@ -68,8 +69,9 @@ namespace Termin4CSharp.Controller {
             if (this.editArticleBox.SelectedItem != null) {
                 string selectedIModelToString = this.editArticleBox.SelectedItem.ToString();
                 IModel selectedModel = this.toStringToIModel[selectedIModelToString];
-                if (selectedModel != null)
+                if (selectedModel != null) {
                     this.ShowEditView(selectedModel, true);
+                }
             }
         }
 
@@ -82,23 +84,34 @@ namespace Termin4CSharp.Controller {
             this.editTypeBox.Items.Clear();
             this.editTypeBox.Items.AddRange(editTypes.ToArray());
         }
-        private void SetEditArticles(List<IModel> editArticles) {
-            this.editArticleBox.Items.Clear();
-            foreach (var article in editArticles) {
-                this.editArticleBox.Items.Add(article.ToString());
-                this.toStringToIModel[article.ToString()] = article;
-            }
-            if (this.editArticleBox.Items.Count > 0)
-                this.editArticleBox.SelectedIndex = 0;
-            else
-                this.editArticleBox.Text = null;
-        }
+        ////private void SetEditArticles(List<IModel> editArticles) {
+        //    this.editArticleBox.Items.Clear();
+        //    this.toStringToIModel.Clear();
+        //    foreach (var article in editArticles) {
+        //        this.editArticleBox.Items.Add(article.ToString());
+        //        this.toStringToIModel[article.ToString()] = article;
+        //    }
+        //    if (this.editArticleBox.Items.Count > 0)
+        //        this.editArticleBox.SelectedIndex = 0;
+        //    else
+        //        this.editArticleBox.Text = null;
+        //}
         public void SetEditArticles(object editType) {
             DAL dal = new DAL();
             IModel correspondingIModel = this.ParseStringToIModel(editType as string);
             if (correspondingIModel != null) {
                 List<IModel> allResultsInCorrespondingTable = dal.Get(correspondingIModel, selectAll: true);
-                this.SetEditArticles(allResultsInCorrespondingTable);
+                //this.SetEditArticles(allResultsInCorrespondingTable);
+                this.editArticleBox.Items.Clear();
+                this.toStringToIModel.Clear();
+                foreach (var article in allResultsInCorrespondingTable) {
+                    this.editArticleBox.Items.Add(article.ToString());
+                    this.toStringToIModel[article.ToString()] = article;
+                }
+                if (this.editArticleBox.Items.Count > 0)
+                    this.editArticleBox.SelectedIndex = 0;
+                else
+                    this.editArticleBox.Text = null;
             }
         }
 
@@ -132,5 +145,13 @@ namespace Termin4CSharp.Controller {
             }
             return correspondingIModel;
         }
+        public void HandleEditViewClosed() {
+            //Updating the articlebox
+            if (this.editTypeBox.SelectedItem != null) {
+                string selectedEditType = this.editTypeBox.SelectedItem.ToString();
+                this.SetEditArticles(selectedEditType);
+            }
+        }
     }
+
 }

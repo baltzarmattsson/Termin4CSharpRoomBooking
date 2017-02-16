@@ -13,13 +13,19 @@ namespace Termin4CSharp.Controller {
     public class EditViewController : IController {
 
         public EditView EditView { get; set; }
+        public AdminTabController AdminController { get; set; }
         private bool hasUnsavedChanges;
         private bool isExistingObjectInDatabase = false;
+        private Dictionary<string, object> identifyingAttributesValues;
 
-        public EditViewController(EditView editView) {
+        public EditViewController(EditView editView, AdminTabController adminController = null) {
             this.EditView = editView;
             this.EditView.Controller = this;
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
+            this.AdminController = adminController;
+            this.identifyingAttributesValues = new Dictionary<string, object>();
+
+            this.EditView.InitializeLoad();
         }
 
         public int Save(IModel model) {
@@ -45,8 +51,11 @@ namespace Termin4CSharp.Controller {
         public void Close() {
             if (hasUnsavedChanges) {
                 // Är du säker, du har inte sparat
-            } else
+            } else {
                 EditView.Close();
+                if (this.AdminController != null)
+                    this.AdminController.HandleEditViewClosed();
+            }
         }
         public int Delete(IModel model) {
             DAL dal = new DAL();
@@ -73,13 +82,17 @@ namespace Termin4CSharp.Controller {
 
         }
         public void HandleSaveButtonClick() {
-            IModel model = null;
-            var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
-            model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
-            if (model != null) {
-                Console.WriteLine(model);
-                this.Save(model);
-                this.isExistingObjectInDatabase = true;
+            if (this.IdentifyingValuesAreNotEmpty()) {
+                IModel model = null;
+                var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
+                model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
+                if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
+                    Console.WriteLine(model);
+                    this.Save(model);
+                    this.isExistingObjectInDatabase = true;
+                }
+            } else {
+                this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
         }
         public void HandleDeleteButtonClick() {
@@ -124,6 +137,24 @@ namespace Termin4CSharp.Controller {
                 }
             }
         }
+
+        public void HandleIdentifyingAttributesTextChange(object sender, EventArgs e) {
+            if (sender is TextBox)
+                identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
+            else if (sender is NumberTextBox)
+                identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
+            else
+                throw new Exception("What type then...." + sender.GetType());
+        }
+
+        private bool IdentifyingValuesAreNotEmpty() {
+            if (this.identifyingAttributesValues.Count == 0)
+                return false;
+            foreach (var idValue in identifyingAttributesValues)
+                if (string.IsNullOrEmpty(idValue.Value.ToString()))
+                    return false;
+            return true;
+        } 
 
     }
 }

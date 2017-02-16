@@ -366,7 +366,7 @@ namespace Termin4CSharp {
             return retName;
         }
 
-        private static bool IdIsAutoIncrementInDb(IModel model) {
+        public static bool IdIsAutoIncrementInDb(IModel model) {
             bool isAuto = false;
             if (model is Booking)
                 isAuto = true;

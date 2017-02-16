@@ -52,6 +52,11 @@ namespace Termin4CSharp.View {
 
         }
 
+        public void InitializeLoad() {
+            if (this.Model != null)
+                this.LoadModel(this.Model);
+        }
+
         private void LoadModel(IModel model) {
 
             Label mainTitleLabel = new Label();
@@ -67,6 +72,11 @@ namespace Termin4CSharp.View {
             Label attributeName = null;
             foreach (var kv in attributes) {
                 bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key);
+
+                // If the models id is autoincrementing, and we're not creating a new item, skip inserting a control for that value
+                if (!IsExistingItemInDatabase && isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model))
+                    continue;
+
                 var value = kv.Value;
                 attributeName = new Label();
                 attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
@@ -77,24 +87,29 @@ namespace Termin4CSharp.View {
                 if (value is DateTime) {
                     DateTimePicker datePicker = new DateTimePicker();
                     datePicker.Width = 500;
-                    datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
                     datePicker.Name = kv.Key;
+                    datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
                     control = datePicker;
                 // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                     NumberTextBox numTextBox = new NumberTextBox();
                     numTextBox.Width = 500;
-                    numTextBox.Text = value == null ? "" : value.ToString();
                     numTextBox.Name = kv.Key;
+                    if (isIdentifyingAttribute)
+                        numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                    numTextBox.Text = "dummyval";
+                    numTextBox.Text = value == null ? "" : value.ToString();
                     control = numTextBox;
                 
                 // Else
                 } else {
-                    //Console.WriteLine(value.GetType());
                     TextBox textBox = new TextBox();
                     textBox.Width = 500;
-                    textBox.Text = value == null ? "" : value.ToString();
                     textBox.Name = kv.Key;
+                    if (isIdentifyingAttribute)
+                        textBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                    textBox.Text = "dummyval";
+                    textBox.Text = value == null ? "" : value.ToString();
                     control = textBox;
                 }
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)

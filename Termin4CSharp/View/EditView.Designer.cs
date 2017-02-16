@@ -89,6 +89,11 @@ namespace Termin4CSharp.View {
                     datePicker.Width = 500;
                     datePicker.Name = kv.Key;
                     datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
+
+                    if (model is Building) {
+                        datePicker.Format = DateTimePickerFormat.Time;
+                        datePicker.ShowUpDown = true;
+                    }
                     control = datePicker;
                 // Numbers
                 } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {

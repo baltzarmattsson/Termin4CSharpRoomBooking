@@ -17,6 +17,7 @@ namespace Termin4CSharp.View
     public partial class GUIMain : Form
     {
         public GUIMainController Controller { get; set; }
+        public AdminTabController AdminController { get; set; }
         private string textFilter;
 
         public GUIMain()
@@ -204,6 +205,17 @@ namespace Termin4CSharp.View
         }
         public ComboBox GetAdminCreateTypeComboBox() {
             return this.createTypeBox;
+        }
+
+        private void editTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
+            ComboBox senderAsCBox = (ComboBox)sender;
+            string selectedItem = senderAsCBox.SelectedItem.ToString();
+            Console.WriteLine("test");
+            this.AdminController.SetEditArticles(senderAsCBox.SelectedItem.ToString());
+        }
+
+        private void button3_Click(object sender, EventArgs e) {
+            this.AdminController.HandleCreateNewIModelClick();
         }
     }
 }

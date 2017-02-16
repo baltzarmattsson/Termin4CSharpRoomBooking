@@ -78,11 +78,14 @@ namespace Termin4CSharp {
             return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
         }
 
-        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
             if (tableName == null)
                 throw new Exception(String.Format("Table could not be found! IModel: {0} optTableName: {1}", model.GetType(), optTableName));
+
+            if (selectAll && queryType != QueryType.GET)
+                throw new Exception("Can't do query without where-params if it's not a get-query!");
             
             StringBuilder sqlBuilder = new StringBuilder();
             Dictionary<string, object> modelAttributes = Utils.GetAttributeInfo(model);
@@ -122,23 +125,25 @@ namespace Termin4CSharp {
                     break;
             }
 
-            // Adding where conditions if there's any values in the optWhereParams -- OR -- adding the IModels identifying attribute if it's an UPDATE or REMOVE-query
-            if ((optWhereParams != null && optWhereParams.Count > 0) || (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)) {
-                string eqOperator = Utils.WhereConditionToString(optWhereCondition);
-                sqlBuilder.Append(" where ");
+            // Unless we have specified we want to select all from the IModel-table, add where-conditions, else do query without where
+            if (selectAll == false) {
+                // Adding where conditions if there's any values in the optWhereParams -- OR -- adding the IModels identifying attribute if it's an UPDATE or REMOVE-query
+                if ((optWhereParams != null && optWhereParams.Count > 0) || (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET)) {
+                    string eqOperator = Utils.WhereConditionToString(optWhereCondition);
+                    sqlBuilder.Append(" where ");
 
-                // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
-                if ((optWhereParams == null || optWhereParams.Count == 0) && (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET))
-                    optWhereParams = model.GetIdentifyingAttributes();
+                    // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
+                    if ((optWhereParams == null || optWhereParams.Count == 0) && (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET))
+                        optWhereParams = model.GetIdentifyingAttributes();
 
-                foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
-                    string key = whereKV.Key.ToLower();
-                    string val = "@@" + whereKV.Key;
-                    sqlBuilder.Append(key + " " + eqOperator + " " + val);
-                    sqlBuilder.Append(" and ");
+                    foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
+                        string key = whereKV.Key.ToLower();
+                        string val = "@@" + whereKV.Key;
+                        sqlBuilder.Append(key + " " + eqOperator + " " + val);
+                        sqlBuilder.Append(" and ");
+                    }
+                    sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
                 }
-                sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
-
             }
 
             

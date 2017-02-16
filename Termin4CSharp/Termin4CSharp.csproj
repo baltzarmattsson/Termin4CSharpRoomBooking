@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\AdminTabController.cs" />
     <Compile Include="Controller\Class1.cs" />
     <Compile Include="Controller\EditViewController.cs" />
     <Compile Include="Controller\GUIMainController.cs" />

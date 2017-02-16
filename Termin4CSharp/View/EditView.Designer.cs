@@ -112,8 +112,9 @@ namespace Termin4CSharp.View {
                 attributeNameLabel.Text = "Rum";
                 var value = ((Building)model).Rooms;
                 CheckedListBox checkListBox = new CheckedListBox();
-                foreach (var item in (List<Room>)value)
-                    checkListBox.Items.Add(item);
+                if (value != null)
+                    foreach (var item in (List<Room>)value)
+                        checkListBox.Items.Add(item);
                 checkListBox.Width = 500;
                 flowLayoutPanel1.Controls.Add(attributeNameLabel);
                 flowLayoutPanel1.Controls.Add(checkListBox);

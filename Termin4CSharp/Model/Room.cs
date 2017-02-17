@@ -12,12 +12,12 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public int Capacity { get; set; }
         public string Floor { get; set; }
-        public int? RoomType { get; set; }
+        public string RoomType { get; set; }
         public Building Building { get; set; }
 
         public Room() { }
 
-        public Room(string building, string id, int capacity, string floor, int? roomType)
+        public Room(string building, string id, int capacity, string floor, string roomType)
         {
             this.BName = building;
             this.Id = id;
@@ -39,7 +39,7 @@ namespace Termin4CSharp.Model
             var other = obj as Room;
             if (other == null)
                 return false;
-            return this.BName.Equals(other.BName) && this.Id.Equals(other.Id) && this.Capacity == other.Capacity && this.Floor.Equals(other.Floor);// && this.Building == other.Building;
+            return this.BName.Equals(other.BName) && this.Id.Equals(other.Id) && this.Capacity == other.Capacity && this.Floor.Equals(other.Floor) && this.RoomType.Equals(other.RoomType);// && this.Building == other.Building;
         }
     }
 }

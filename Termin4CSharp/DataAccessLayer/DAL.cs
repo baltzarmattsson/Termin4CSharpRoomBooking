@@ -51,9 +51,9 @@ namespace Termin4CSharp.DataAccessLayer {
             return returnModel;
         }
 
-        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null) {
+        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
 
-            SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText);
+            SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
             var resultList = new List<Room>();
             cmd.Connection = Connector.GetConnection();
@@ -133,19 +133,18 @@ namespace Termin4CSharp.DataAccessLayer {
                     break;
                 case SqlCodes.ForeignKey:
                     //Getting tablename
-                    var tableRegmatch = Regex.Match(sqle.Message, "(?<=table \\\")(.*?)(?=\\\")").Groups[0]; //find tablename within \" \", like \"dbo.Person\"
+                    var tableRegmatch = Regex.Match(sqle.Message, "(?<=table \\\")(.*?)(?=\\\")").Groups[0]; //Finds tablename within \" \", like \"dbo.Person\"
                     string table = tableRegmatch.Captures[0].ToString();
                     int indexOfLastDot = table.LastIndexOf('.');
                     if (indexOfLastDot != -1)
-                        table = table.Substring(indexOfLastDot+1, (table.Length - 1) - indexOfLastDot); //Extracts only tablename: dbo.Person -> Person
+                        table = table.Substring(indexOfLastDot+1, (table.Length - 1) - indexOfLastDot); //Extracts tablename: dbo.Person -> Person
                     table = Utils.GenericDbValuesToDisplayValue(table);
 
                     //Getting column name
-                    var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //finds columnname, like name or bName
+                    var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //Finds columnname within ' ', like 'name' or 'bName'
                     string column = columnRegmatch.Captures[0].ToString();
                     column = Utils.GenericDbValuesToDisplayValue(column);
                     message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
-                    Console.WriteLine(sqle.Message);
                     break;
                 case SqlCodes.DataWouldBeTruncated:
                     message = "Ett värde är för långt, vänligen försök igen";

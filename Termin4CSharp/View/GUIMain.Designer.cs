@@ -76,6 +76,7 @@ namespace Termin4CSharp.View {
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
+            this.button5 = new System.Windows.Forms.Button();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -104,7 +105,7 @@ namespace Termin4CSharp.View {
             this.tabPage1.Controls.Add(this.tabControl1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(931, 500);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programkonstruktion";
@@ -135,7 +136,7 @@ namespace Termin4CSharp.View {
             this.tabPage4.Controls.Add(this.label1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(927, 474);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Logga in ";
@@ -218,6 +219,7 @@ namespace Termin4CSharp.View {
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button5);
             this.tabPage5.Controls.Add(this.listView1);
             this.tabPage5.Controls.Add(this.textBox3);
             this.tabPage5.Controls.Add(this.label11);
@@ -235,11 +237,11 @@ namespace Termin4CSharp.View {
             this.tabPage5.Controls.Add(this.comboBox4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(927, 474);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.UseVisualStyleBackColor = true;
-            this.tabPage5.Click += new System.EventHandler(this.tabPage5_Click);
+            this.tabPage5.Enter += new System.EventHandler(this.tabPage5_GotFocus);
             // 
             // listView1
             // 
@@ -287,7 +289,7 @@ namespace Termin4CSharp.View {
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 382);
+            this.label11.Location = new System.Drawing.Point(6, 407);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 13);
             this.label11.TabIndex = 19;
@@ -296,10 +298,12 @@ namespace Termin4CSharp.View {
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(6, 398);
+            this.trackBar1.Location = new System.Drawing.Point(6, 423);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(120, 45);
             this.trackBar1.TabIndex = 18;
+            this.trackBar1.Tag = "";
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // label10
             // 
@@ -428,7 +432,7 @@ namespace Termin4CSharp.View {
             this.adminTab.Controls.Add(this.label12);
             this.adminTab.Location = new System.Drawing.Point(4, 22);
             this.adminTab.Name = "adminTab";
-            this.adminTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.adminTab.Padding = new System.Windows.Forms.Padding(3);
             this.adminTab.Size = new System.Drawing.Size(927, 474);
             this.adminTab.TabIndex = 3;
             this.adminTab.Text = "Admin";
@@ -512,7 +516,7 @@ namespace Termin4CSharp.View {
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(931, 500);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Webbservice";
@@ -527,7 +531,7 @@ namespace Termin4CSharp.View {
             this.tabPage3.Controls.Add(this.listView2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(931, 500);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "ERP";
@@ -566,6 +570,16 @@ namespace Termin4CSharp.View {
             this.listView2.TabIndex = 21;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 376);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(120, 23);
+            this.button5.TabIndex = 21;
+            this.button5.Text = "Rensa filter";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // GUIMain
             // 
@@ -640,5 +654,6 @@ namespace Termin4CSharp.View {
         private ComboBox editTypeBox;
         private Label label12;
         private Button button4;
+        private Button button5;
     }
 }

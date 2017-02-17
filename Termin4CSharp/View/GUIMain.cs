@@ -67,9 +67,10 @@ namespace Termin4CSharp.View
 
         }
 
-        private void tabPage5_Click(object sender, EventArgs e)
+        private void tabPage5_GotFocus(object sender, EventArgs e)
         {
-
+            this.Controller.LoadFilters();
+            this.Controller.LoadRooms();
         }
 
         private void tabPage6_Click(object sender, EventArgs e)
@@ -152,6 +153,24 @@ namespace Termin4CSharp.View
 
         }
 
+        internal void ClearFilterSelections() {
+
+
+            //Temp fix since Windows Forms sucks
+            //this.textBox3.Text = " ";
+            //this.textBox3.Text = "";
+
+            CheckedListBox[] filterBoxes = { this.buildingFilterBox, this.resourceFilterBox, this.roomFilterBox };
+            foreach (var fbox in filterBoxes) {
+                fbox.SelectedItems.Clear();
+                fbox.ClearSelected();
+                for (int i = 0; i < fbox.Items.Count; i++) {
+                    fbox.SetItemCheckState(i, CheckState.Unchecked);
+                    Console.WriteLine(fbox.GetItemCheckState(i));
+                }
+            }
+        }
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
 
@@ -182,21 +201,18 @@ namespace Termin4CSharp.View
 
         public void SetRooms(List<Room> rooms) {
             this.listView1.Items.Clear();
-            //object[] arr = new object[5];
-            //string[] arr2 = Utils.GetAttributeInfo(new Room()).Values.ToArray();
-            //this.listView1.Items.Add(new ListViewItem(arr2));
-            foreach (var room in rooms) {
-                //this.listView1.Items.Add(new ListViewItem(new[] { room.BName.ToString(), room.Id, room.Floor, room.RoomType.ToString(), "tidslinje", room.Capacity.ToString() }));
+            foreach (var room in rooms)
                 this.listView1.Items.Add(new ListViewItem(Utils.GetAttributeInfo(room).Values.Select(x => x != null ? x.ToString() : "").ToArray()));
-            }
         }
         private void InitializeMainRoomViewColumns() {
             this.listView1.Columns.Clear();
             ColumnHeader c = null;
-            foreach (var kv in Utils.GetAttributeInfo(new Room())) {
+            var attInfo = Utils.GetAttributeInfo(new Room());
+            foreach (var kv in attInfo) {
                 c = new ColumnHeader();
                 c.Text = kv.Key;
                 c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                c.Width = this.listView1.Width / attInfo.Count;
                 this.listView1.Columns.Add(c);
             }
         }
@@ -242,6 +258,16 @@ namespace Termin4CSharp.View
             this.AdminController.HandleEditIModelClick();
         }
 
+        private void button5_Click(object sender, EventArgs e) {
+            this.Controller.ClearFilterSelections();
+        }
 
+        private void trackBar1_Scroll(object sender, EventArgs e) {
+            this.label11.Text = "Antal platser: (" + trackBar1.Value + ")";
+            this.Controller.HandleFilterChange(FilterBox.TRACKBAR, null, null);
+        }
+        public int GetMinCapacityFilterValue() {
+            return this.trackBar1.Value;
+        }
     }
 }

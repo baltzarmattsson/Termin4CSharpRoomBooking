@@ -14,7 +14,8 @@ namespace Termin4CSharp.Controller {
     public class GUIMainController : IController {
 
         public GUIMain GUIMain { get; set; }
-        List<string> buildingFilters, roomFilters, resourceFilters;
+        private List<string> buildingFilters, roomFilters, resourceFilters;
+        public int MinCapacity { get; set; }
         private Thread textBoxListener;
 
         public GUIMainController(GUIMain guiMain) {
@@ -51,7 +52,7 @@ namespace Termin4CSharp.Controller {
             throw new NotImplementedException();
         }
         public enum FilterBox {
-            BUILDING, ROOM, RESOURCE
+            BUILDING, ROOM, RESOURCE, TRACKBAR
         }
         public void HandleFilterChange(FilterBox filterBox, CheckedListBox sender, ItemCheckEventArgs e) {
 
@@ -66,22 +67,33 @@ namespace Termin4CSharp.Controller {
                 case FilterBox.RESOURCE:
                     selectedList = this.resourceFilters;
                     break;
+                case FilterBox.TRACKBAR:
+                    this.MinCapacity = this.GUIMain.GetMinCapacityFilterValue();
+                    break;
+
             }
-            string selval = (string)sender.SelectedItem;
-            if (e.NewValue == CheckState.Checked)
-                selectedList.Add((string)sender.SelectedItem);
-            else if (e.NewValue == CheckState.Unchecked)
-                selectedList.Remove((string)sender.SelectedItem);
+            if (filterBox != FilterBox.TRACKBAR) {
+                string selval = (string)sender.SelectedItem;
+                if (e.NewValue == CheckState.Checked)
+                    selectedList.Add((string)sender.SelectedItem);
+                else if (e.NewValue == CheckState.Unchecked)
+                    selectedList.Remove((string)sender.SelectedItem);
+            }
 
             DAL dal = new DAL(this);
-            List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters);
+            List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
         }
 
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e) {
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            this.ClearFilterSelections();
             this.GUIMain.SetRooms(filteredRooms);
+        }
+
+        public void ClearFilterSelections() {
+            this.GUIMain.ClearFilterSelections();
         }
 
         public void NotifyExceptionToView(string s) {

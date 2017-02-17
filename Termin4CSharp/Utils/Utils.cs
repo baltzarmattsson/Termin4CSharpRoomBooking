@@ -60,7 +60,6 @@ namespace Termin4CSharp {
 
             foreach (string key in attributeInfo.Keys) {
                 var value = controlValues[key];
-                //var t = attributeInfo[key];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }            
             dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
@@ -161,7 +160,7 @@ namespace Termin4CSharp {
             return cmd;
         }
 
-        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null) {
+        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
@@ -176,12 +175,13 @@ namespace Termin4CSharp {
             WhereCondition whereCondition = WhereCondition.EQUAL;
 
             if (freeText != null) {
-                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.roomtype like @@freeText3 or r.floor like @@freeText4" + 
+                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.roomtype like @@freeText3 or r.floor like @@freeText4 " + 
                     "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
                 for (int i = 0; i < 6; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
             } else {
+                // Adding building filters
                 if (buildingNames.Count > 0) {
                     sqlBuilder.Append("where r.bname in (");
                     string key = "";
@@ -194,6 +194,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                     whereAdded = true;
                 }
+                // Adding room filters
                 if (roomIDs.Count > 0) {
                     if (whereAdded) {
                         sqlBuilder.Append(" and ");
@@ -211,6 +212,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
                     sqlBuilder.Append(")");
                 }
+                // Adding resource filters
                 if (resourceNames.Count > 0) {
                     if (whereAdded)
                         sqlBuilder.Append(" and ");
@@ -226,6 +228,12 @@ namespace Termin4CSharp {
                     sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
                     sqlBuilder.Append("))");
                 }
+                // Adding minimum capacity filter
+                if (whereAdded)
+                    sqlBuilder.Append(" and ");
+                else
+                    sqlBuilder.Append(" where ");
+                sqlBuilder.Append(" r.capacity >= " + minCapacity);
             }
             Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
@@ -509,6 +517,9 @@ namespace Termin4CSharp {
                 case "rolename":
                 case "role":
                     display = "den rollen";
+                    break;
+                case "type":
+                    display = "den typen";
                     break;
                 default:
                     throw new Exception("But what: " + dbValue);

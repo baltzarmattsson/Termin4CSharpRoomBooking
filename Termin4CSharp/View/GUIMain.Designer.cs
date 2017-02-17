@@ -68,10 +68,12 @@ namespace Termin4CSharp.View {
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
-            this.button2 = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -449,6 +451,8 @@ namespace Termin4CSharp.View {
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Controls.Add(this.comboBox1);
             this.tabPage3.Controls.Add(this.vScrollBar5);
@@ -462,9 +466,32 @@ namespace Termin4CSharp.View {
             this.tabPage3.UseVisualStyleBackColor = true;
             this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(159, 122);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 24;
+            this.button2.Text = "Visa";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Personal",
+            "Personalanhörig",
+            "Personalfrånvaro 2004",
+            "Personal med flest antal sjukdagar",
+            "Avdelningsinformation",
+            "Personal med högst lön",
+            "METADATA - Nycklar",
+            "METADATA - Indexes",
+            "METADATA - Constraints ",
+            "METADATA - Tabeller",
+            "METADATA - Tabeller2",
+            "METADATA - Kolumner",
+            "METADATA - Kolumner2"});
             this.comboBox1.Location = new System.Drawing.Point(32, 124);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -486,14 +513,25 @@ namespace Termin4CSharp.View {
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
-            // button2
+            // label12
             // 
-            this.button2.Location = new System.Drawing.Point(159, 122);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 24;
-            this.button2.Text = "Visa";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(29, 24);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(439, 50);
+            this.label12.TabIndex = 25;
+            this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(31, 61);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(78, 20);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "CRONUS\r\n";
             // 
             // GUIMain
             // 
@@ -514,6 +552,7 @@ namespace Termin4CSharp.View {
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -562,5 +601,7 @@ namespace Termin4CSharp.View {
         private VScrollBar vScrollBar5;
         private ListView listView2;
         private Button button2;
+        private Label label13;
+        private Label label12;
     }
 }

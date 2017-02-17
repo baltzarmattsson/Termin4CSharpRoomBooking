@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,103 +10,150 @@ namespace Termin4CSharp.DataAccessLayer
 {
     class DALCronus
     {
-        private Connection connect;
 
-        public DALCronus()
+        public string GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
         {
-            try
+            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee]";
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
             {
-                Class.forName("");
+                Console.WriteLine(dr[0]);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error is: " + e);
-            }
+            //EmployeeStatement = Connector.GetConnection();
+            return null;
         }
-        private SqlConnection getConnection()
-        {
-            if (connect == null)
-            {
-                connect = DriverManager.getConnection("");
-            }
-            return connect;
-        }
-        public ResultSet GetEmployees()
-        {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee]"; //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
-            EmployeeStatement = getConnected().createStatement();
-            return EmployeeStatement.executeQuery(sql);
-        }
-        public ResultSet GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
+
+        public string GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
         {
             String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Relative]";
-            RelativesStatement = getConnected().createStatement();
-            return RelativesStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //RekativesStatement = Connector.GetConnection();
+            return null;
         }
-        public ResultSet GetEmployeeAbscence() //Information om anställda som har varit borta pga sjukdom år 2004 
+        public string GetEmployeeAbscence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate=´)2004";
-            EmployeeAbsStatement = getConnected().createStatement();
-            return employeeAbsStatement.executeQuery(sql);
+            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate=)2004"; // kolla query
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //EmployeeAbsenceStatement = Connector.GetConnection();
+            return null;
+
         }
-        public ResultSet GetSickestEmployee()  //First name på anställda som har varit mest sjuka
+        public string GetSickestEmployee()  //First name på anställda som har varit mest sjuka
         {
             String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )" //osäker
-            SickestEmployeeStatement = getConnected().createStatement();
-            return GetSickestEmployee.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //SickestEmployeeStatement = Connector.GetConnection();
+            return null;
         }
-        public ResultSet GetDepartment()  //Information om Employee och deras Department
-        {
-            String sql = "" // hittar inte ens department i CRONUS
-            DepartmentStatement = getConnected().createStatement();
-            return GetDepartment.executeQuery(sql);
-        }
-        public ResultSet GetHighestSalary() //Information om Employee som har högst lön
-        {
-            String sql = "SELECT MAX(Salary) FROM [CRONUS Sverige AB$Employee]"; // funkar inte
-            HighestSalaryStatement = getConnected().createStatement();
-            return HighestSalaryStatement.executeQuery(sql);
-        }
-        public ResultSet public GetKeys() //Alla nycklar 
+        public string GetKeys() //Alla nycklar 
         {
             String sql = "SELECT * FROM sys.key_constraints;
-            KeysStatement = getConnected().createStatement();
-            return KeysStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //KeysStatement = Connector.GetConnection();
+            return null;
         }
-    public ResultSet public GetIndexes() //Alla indexes 
+        public string GetIndexes() //Alla indexes 
         {
             string sql = "SELECT * FROM sys.indexes;
-            IndexStatement = getConnected().createStatement();
-            return IndexStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //IndexesStatement = Connector.GetConnection();
+            return null;
         }
-    public ResultSet public GetConstraints()
+        public string GetConstraints() // Alla table_constraints 
         {
-            string sql = "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS";
-            ConstraintsStatement = getConnected().createStatement();
-            return ConstraintStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //ConstraintsStatement = Connector.GetConnection();
+            return null;
         }
-     public ResultSet public GetTables() // Alla table_constraints 
+        public string GetTables() // Alla tabeller
         {
             string sql = "SELECT * FROM sys.tables";
-            TablesStatement = getConnected().createStatement();
-            return TablesStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //TablesStatement = Connector.GetConnection();
+            return null;
         }
-    public ResultSet public GetTables2() //Alla table_constraints 
+        public string GetTables2() //Alla tabeller
         {
             string sql = "SELECT * FROM sysobjects WHERE xtype = 'U';
-            Tables2Statement = getConnected().createStatement();
-            return Tables2Statement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //Tables2Statement = Connector.GetConnection();
+            return null;
         }
-    public ResultSet public GetMetaEmployees() //Alla kolumner i tabellen Employee 
+        public string GetMetaEmployees() //Alla kolumner i tabellen Employee 
         {
             string sql = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'CRONUS Sverige AB$Employee'";
-            MetaEmployeeStatement = getConnected().createStatement();
-            return MetaEmployeeStatement.executeQuery(sql);
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //MetaEmployeesStatement = Connector.GetConnection();
+            return null;
         }
-     public ResultSet public GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. //
+        public string GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. 
         {
-            string sql = 
-            MetaEmployee2Statement = getConnected().createStatement();
-            return MetaEmployee2Statement.executeQuery(sql); 
+            string sql =
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Connection = CRONUSConnector.GetConnection();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                Console.WriteLine(dr[0]);
+            }
+            //MetaEmployees2Statement = Connector.GetConnection();
+            return null;
         }
+    }
 }

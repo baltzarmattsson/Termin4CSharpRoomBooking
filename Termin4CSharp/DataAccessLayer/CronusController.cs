@@ -7,69 +7,64 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.DataAccessLayer
 {
-    class DALController
+    class CronusController
     {
 
         DALCronus  dal = new DALCronus();
-
-        public string GetFileContent(string filename)
+        
+        public string GetEmployees()
         {
-            return DALCronus.GetFileContent(filename);
+            return DALCronus.GetEmployees();
         }
 
-        public DataTable GetEmployee()
-        {
-            return DALCronus.GetEmployee();
-        }
-
-        public DataTable GetRelatives()
+        public string GetRelatives()
         {
             return DALCronus.GetRelatives();
         }
 
-        public DataTable GetEmployeeAbsence()
+        public string GetEmployeeAbsence()
         {
             return DALCronus.GetEmployeeAbsence();
         }
 
-        public DataTable GetSickestEmployee()
+        public string GetSickestEmployee()
         {
             return DALCronus.GetSickestEmployee();
         }
 
-        public DataTable GetKeys()
+        public string GetKeys()
         {
             return DALCronus.GetKeys();
         }
 
-        public DataTable GetIndexes()
+        public string GetIndexes()
         {
             return DALCronus.GetIndexes();
         }
 
-        public DataTable GetConstraints()
+        public string GetConstraints()
         {
             return DALCronus.GetConstraints();
         }
 
-        public DataTable GetAllTables()
+        public string GetAllTables()
         {
             return DALCronus.GetAllTables();
         }
 
-        public DataTable GetAllTables2()
+        public string GetAllTables2()
         {
             return DALCronus.GetAllTables2();
         }
 
-        public DataTable GetMetaEmployees()
+        public string GetMetaEmployees()
         {
             return DALCronus.GetMetaEmployees();
         }
 
-        public DataTable GetMetaEmployees2()
+        public string GetMetaEmployees2()
         {
             return DALCronus.GetMetaEmployees2 ();
-        }
+        } 
     }
 }

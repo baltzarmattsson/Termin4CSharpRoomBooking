@@ -32,5 +32,16 @@ namespace Termin4CSharp.Properties {
                 return ((string)(this["tempdbConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EBBA-DATOR;Initial Catalog=\"Demo Database NAV (5-0)\";User ID=a;Passwo" +
+            "rd=a")]
+        public string EbbaCRONUS {
+            get {
+                return ((string)(this["EbbaCRONUS"]));
+            }
+        }
     }
 }

@@ -40,14 +40,13 @@ namespace Termin4CSharp.Controller {
                 affectedRows = dal.Add(model);
                 dbMethod = "tillagd";
             }
-            if (affectedRows > 0)
+            if (affectedRows > 0) {
                 this.UpdateResponseLabel(string.Format("{0} {1}", model.GetType().Name, dbMethod));
-            else if (affectedRows != -1) //-1 is error from DAL
+                this.isExistingObjectInDatabase = true;
+            } else if (affectedRows != -1) { //-1 is error from DAL
                 this.UpdateResponseLabel(string.Format("Ingen {0} {1}", model.GetType().Name, dbMethod));
+            }
             return affectedRows;
-                    
-            
-            // TODO exception handling, gör först SqlException sedan Exception
         }
         public void Close() {
             if (hasUnsavedChanges) {
@@ -84,11 +83,8 @@ namespace Termin4CSharp.Controller {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
                 model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
-                if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
-                    Console.WriteLine(model);
+                if (model != null && model.GetIdentifyingAttributes().First().Value != null)
                     this.Save(model);
-                    this.isExistingObjectInDatabase = true;
-                }
             } else {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }

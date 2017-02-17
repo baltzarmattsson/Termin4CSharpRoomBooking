@@ -25,6 +25,7 @@ namespace Termin4CSharp.DataAccessLayer {
     public abstract class SqlCodes {
         public const int PrimaryKey = 2627;
         public const int ForeignKey = 547;
+        public const int DataWouldBeTruncated = 8152;
     }
 
 

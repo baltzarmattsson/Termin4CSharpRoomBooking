@@ -130,21 +130,22 @@ namespace Termin4CSharp.DataAccessLayer {
                     message = string.Format("Det finns redan {0} med {1} \"{2}\", vänligen välj ett annat", Utils.ConvertAttributeNameToDisplayName(model, "modeleqv"), string.Join(" eller ", listOfIdentifyingKeys), duplicateValue);
                     break;
                 case SqlCodes.ForeignKey:
-
                     //Getting tablename
-                    var tableRegmatch = Regex.Match(sqle.Message, "(?<=table \\\")(.*?)(?=\\\")").Groups[0]; //find tablename, like dbo.Person
+                    var tableRegmatch = Regex.Match(sqle.Message, "(?<=table \\\")(.*?)(?=\\\")").Groups[0]; //find tablename within \" \", like \"dbo.Person\"
                     string table = tableRegmatch.Captures[0].ToString();
                     int indexOfLastDot = table.LastIndexOf('.');
-                    var tableSplit = table.Split('.');
-                    table = tableSplit[tableSplit.Length - 1];
+                    if (indexOfLastDot != -1)
+                        table = table.Substring(indexOfLastDot+1, (table.Length - 1) - indexOfLastDot); //Extracts only tablename: dbo.Person -> Person
                     table = Utils.GenericDbValuesToDisplayValue(table);
 
                     //Getting column name
                     var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //finds columnname, like name or bName
                     string column = columnRegmatch.Captures[0].ToString();
                     column = Utils.GenericDbValuesToDisplayValue(column);
-                    Console.WriteLine();
                     message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
+                    break;
+                case SqlCodes.DataWouldBeTruncated:
+                    message = "Ett värde är för långt, vänligen försök igen";
                     break;
                 default:
                     throw sqle;

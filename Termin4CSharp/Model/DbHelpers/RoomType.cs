@@ -24,5 +24,9 @@ namespace Termin4CSharp.Model.DbHelpers {
             dict["Type"] = this.Type;
             return dict;
         }
+
+        public override string ToString() {
+            return this.Type;
+        }
     }
 }

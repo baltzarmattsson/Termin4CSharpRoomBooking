@@ -145,6 +145,7 @@ namespace Termin4CSharp.DataAccessLayer {
                     string column = columnRegmatch.Captures[0].ToString();
                     column = Utils.GenericDbValuesToDisplayValue(column);
                     message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
+                    Console.WriteLine(sqle.Message);
                     break;
                 case SqlCodes.DataWouldBeTruncated:
                     message = "Ett värde är för långt, vänligen försök igen";

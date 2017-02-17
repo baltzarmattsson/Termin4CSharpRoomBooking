@@ -18,5 +18,9 @@ namespace Termin4CSharp.Model.DbHelpers {
             dict["PersonId"] = this.PersonId;
             return dict;
         }
+
+        public override string ToString() {
+            return string.Format("{0} {1}", this.PersonId, string.Join("", this.Password.Select(x => "*")));
+        }
     }
 }

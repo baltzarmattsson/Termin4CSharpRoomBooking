@@ -136,6 +136,8 @@ namespace Termin4CSharp {
                     // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
                     if ((optWhereParams == null || optWhereParams.Count == 0) && (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET))
                         optWhereParams = model.GetIdentifyingAttributes();
+                    //else if ((optWhereParams != null && optWhereParams.Count > 0) && queryType == QueryType.UPDATE)
+
 
                     foreach (KeyValuePair<string, object> whereKV in optWhereParams) {
                         string key = whereKV.Key.ToLower();
@@ -171,11 +173,14 @@ namespace Termin4CSharp {
             bool whereAdded = false;
             int indexCounter = 0;
 
+            WhereCondition whereCondition = WhereCondition.EQUAL;
+
             if (freeText != null) {
-                sqlBuilder.Append("where r.bname in (@@freeText0) or r.id in (@@freeText1) " + 
-                    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (@@freeText2))");
-                for (int i = 0; i < 3; i++)
+                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.roomtype like @@freeText3 or r.floor like @@freeText4" + 
+                    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
+                for (int i = 0; i < 6; i++)
                     whereParams["freeText" + i] = freeText;
+                whereCondition = WhereCondition.LIKE;
             } else {
                 if (buildingNames.Count > 0) {
                     sqlBuilder.Append("where r.bname in (");
@@ -224,27 +229,26 @@ namespace Termin4CSharp {
             }
             Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
-            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
+            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true, whereCondition: whereCondition);
 
             return cmd; 
         }
 
-        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false) {
+        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false, WhereCondition whereCondition = WhereCondition.EQUAL) {
             foreach (KeyValuePair<string, object> attKV in queryParams) {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
-                //if (val is List<IModel>)
-                //    continue; //TODO ta bort dessa
-                //if (val is IModel)
-                //    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
-
+                
                 /*      NULL        **/
                 if (val == null)
                     cmd.Parameters.AddWithValue(key, DBNull.Value);
                 /**     TEXT        **/
-                else if (val is string)
+                else if (val is string) {
+                    if (whereCondition == WhereCondition.LIKE)
+                        val = "%" + val + "%";
                     cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                }
                 /**     NUMBERS     **/
                 else if (val is Int32)
                     cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
@@ -432,7 +436,7 @@ namespace Termin4CSharp {
             return isAuto;
         }
 
-      private static string IModelTableName(IModel model) {
+        private static string IModelTableName(IModel model) {
             if (model == null)
                 return null;
             string retTable = null;
@@ -501,6 +505,10 @@ namespace Termin4CSharp {
                     break;
                 case "id":
                     display = "det ID:t";
+                    break;
+                case "rolename":
+                case "role":
+                    display = "den rollen";
                     break;
                 default:
                     throw new Exception("But what: " + dbValue);

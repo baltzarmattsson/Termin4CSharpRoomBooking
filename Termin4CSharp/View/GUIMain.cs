@@ -23,7 +23,9 @@ namespace Termin4CSharp.View
         public GUIMain()
         {
             InitializeComponent();
+            this.InitializeMainRoomViewColumns();
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -180,8 +182,23 @@ namespace Termin4CSharp.View
 
         public void SetRooms(List<Room> rooms) {
             this.listView1.Items.Clear();
-            foreach (var room in rooms)
-                this.listView1.Items.Add(new ListViewItem(new[] { room.BName.ToString(), room.Id, "tidslinje", room.Capacity.ToString() }));
+            //object[] arr = new object[5];
+            //string[] arr2 = Utils.GetAttributeInfo(new Room()).Values.ToArray();
+            //this.listView1.Items.Add(new ListViewItem(arr2));
+            foreach (var room in rooms) {
+                //this.listView1.Items.Add(new ListViewItem(new[] { room.BName.ToString(), room.Id, room.Floor, room.RoomType.ToString(), "tidslinje", room.Capacity.ToString() }));
+                this.listView1.Items.Add(new ListViewItem(Utils.GetAttributeInfo(room).Values.Select(x => x != null ? x.ToString() : "").ToArray()));
+            }
+        }
+        private void InitializeMainRoomViewColumns() {
+            this.listView1.Columns.Clear();
+            ColumnHeader c = null;
+            foreach (var kv in Utils.GetAttributeInfo(new Room())) {
+                c = new ColumnHeader();
+                c.Text = kv.Key;
+                c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                this.listView1.Columns.Add(c);
+            }
         }
 
         public void SetBuildingFilters(List<Building> buildings) {
@@ -214,7 +231,6 @@ namespace Termin4CSharp.View
         private void editTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
             ComboBox senderAsCBox = (ComboBox)sender;
             string selectedItem = senderAsCBox.SelectedItem.ToString();
-            Console.WriteLine("test");
             this.AdminController.SetEditArticles(selectedItem);
         }
 

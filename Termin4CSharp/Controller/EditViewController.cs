@@ -29,12 +29,15 @@ namespace Termin4CSharp.Controller {
             this.EditView.InitializeLoad();
         }
 
-        public int Save(IModel model) {
+        public int Save(IModel model, Dictionary<string, object> oldIdentifyingAttributes = null) {
             DAL dal = new DAL(this);
             int affectedRows = 0;
             string dbMethod = "";
             if (isExistingObjectInDatabase) {
-                affectedRows = dal.Update(model);
+                if (oldIdentifyingAttributes != null && oldIdentifyingAttributes.Count > 0)
+                    affectedRows = dal.Update(model, oldIdentifyingAttributes);
+                else
+                    affectedRows = dal.Update(model);
                 dbMethod = "uppdaterad";
             } else {
                 affectedRows = dal.Add(model);
@@ -78,13 +81,13 @@ namespace Termin4CSharp.Controller {
             this.hasUnsavedChanges = value;
         }
         
-        public void HandleSaveButtonClick() {
+        public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null) {
             if (this.IdentifyingValuesAreNotEmpty()) {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
                 model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
                 if (model != null && model.GetIdentifyingAttributes().First().Value != null)
-                    this.Save(model);
+                    this.Save(model, oldIdentifyingAttributes);
             } else {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }

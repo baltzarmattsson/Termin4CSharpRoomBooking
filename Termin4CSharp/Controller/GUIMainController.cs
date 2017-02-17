@@ -35,11 +35,11 @@ namespace Termin4CSharp.Controller {
 
         public void LoadFilters() {
             DAL dal = new DAL(this);
-            var whereParams = new Dictionary<string, object>();
-            whereParams["1"] = 1;
-            var rooms = dal.Get(new Room(), whereParams).Cast<Room>().ToList();
-            var buildings = dal.Get(new Building(), whereParams).Cast<Building>().ToList();
-            var resources = dal.Get(new Resource(), whereParams).Cast<Resource>().ToList();
+            //var whereParams = new Dictionary<string, object>();
+            //whereParams["1"] = 1;
+            var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
+            var buildings = dal.Get(new Building(), selectAll: true).Cast<Building>().ToList();
+            var resources = dal.Get(new Resource(), selectAll: true).Cast<Resource>().ToList();
 
             this.GUIMain.SetRoomFilters(rooms);
             this.GUIMain.SetBuildingFilters(buildings);

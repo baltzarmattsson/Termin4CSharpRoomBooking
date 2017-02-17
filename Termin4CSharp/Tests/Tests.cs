@@ -13,7 +13,7 @@ namespace Termin4CSharp.Tests {
     public class Tests {
         [TestMethod]
         public void DALAddGetUpdateRemove() {
-            Person p = new Person("testname", "testid", "testemail", "testphonenbr");
+            Person p = new Person("testname", "testid", "testemail", "testphonenbr", null);
             Building b = new Building("testname", "testaddress", DateTime.Now, DateTime.Now, null);
             //RoomType rt = new RoomType(113377, "testtype");
             Room r = new Room(b.Name, "testid", 134141, "0", null);

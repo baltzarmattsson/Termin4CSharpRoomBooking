@@ -117,9 +117,11 @@ namespace Termin4CSharp.View {
                     textBox.Text = value == null ? "" : value.ToString();
                     control = textBox;
                 }
+                //if (IsExistingItemInDatabase && isIdentifyingAttribute)
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)
-                    control.Enabled = false;
-                this.flowLayoutPanel1.Controls.Add(control);
+                    this.oldIdentifyingAttribute[control.Name] = control.Text;
+                    //    control.Enabled = false;
+                    this.flowLayoutPanel1.Controls.Add(control);
                 flowLayoutPanel1.SetFlowBreak(control, true);
             }
 

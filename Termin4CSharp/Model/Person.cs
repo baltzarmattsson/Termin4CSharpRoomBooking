@@ -12,18 +12,20 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public string Email { get; set; }
         public string PhoneNbr { get; set; }
+        public string Role { get; set; }
 
         public Person() { }
-        public Person(string name, string id, string email, string phoneNbr)
+        public Person(string name, string id, string email, string phoneNbr, string role)
         {
             this.Name = name;
             this.Id = id;
             this.Email = email;
             this.PhoneNbr = phoneNbr;
+            this.Role = role;
         }
 
         public override string ToString() {
-            return string.Format("{0} {1} {2} {3}", Name, Id, Email, PhoneNbr);
+            return string.Format("{0} {1} {2} {3} {4}", Name, Id, Email, PhoneNbr, Role);
         }
 
         public Dictionary<string, object> GetIdentifyingAttributes() {

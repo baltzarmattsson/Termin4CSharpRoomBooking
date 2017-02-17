@@ -173,6 +173,10 @@ namespace Termin4CSharp.View
         private void resourceFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
             Controller.HandleFilterChange(FilterBox.RESOURCE, sender as CheckedListBox, e);
         }
+        private void textBox3_TextChanged_1(object sender, EventArgs e) {
+            TextBox senderAsTextBox = (TextBox)sender;
+            Controller.HandleFreeTextFilterChange(senderAsTextBox, e);
+        }
 
         public void SetRooms(List<Room> rooms) {
             this.listView1.Items.Clear();
@@ -221,5 +225,7 @@ namespace Termin4CSharp.View
         private void button4_Click(object sender, EventArgs e) {
             this.AdminController.HandleEditIModelClick();
         }
+
+
     }
 }

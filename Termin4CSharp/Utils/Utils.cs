@@ -158,8 +158,8 @@ namespace Termin4CSharp {
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
-        
-        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
+
+        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null) {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
@@ -171,55 +171,61 @@ namespace Termin4CSharp {
             bool whereAdded = false;
             int indexCounter = 0;
 
-            //foreach (var list in listOfLists) {
-            if (buildingNames.Count > 0) {
-                sqlBuilder.Append("where r.bname in (");
-                string key = "";
-                foreach (string buildName in buildingNames) {
-                    key = "index" + indexCounter++;
-                    sqlBuilder.Append("@@" + key + ", ");
-                    whereParams[key] = buildName;
-                }
-                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
-                sqlBuilder.Append(")");
-                whereAdded = true;
-            }
-            if (roomIDs.Count > 0) {
-                if (whereAdded) {
-                    sqlBuilder.Append(" and ");
-                } else {
-                    sqlBuilder.Append(" where ");
+            if (freeText != null) {
+                sqlBuilder.Append("where r.bname in (@@freeText0) or r.id in (@@freeText1) " + 
+                    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (@@freeText2))");
+                for (int i = 0; i < 3; i++)
+                    whereParams["freeText" + i] = freeText;
+            } else {
+                if (buildingNames.Count > 0) {
+                    sqlBuilder.Append("where r.bname in (");
+                    string key = "";
+                    foreach (string buildName in buildingNames) {
+                        key = "index" + indexCounter++;
+                        sqlBuilder.Append("@@" + key + ", ");
+                        whereParams[key] = buildName;
+                    }
+                    sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                    sqlBuilder.Append(")");
                     whereAdded = true;
                 }
-                sqlBuilder.Append(" r.id in (");
-                string key = "";
-                foreach (string roomID in roomIDs) {
-                    key = "index" + indexCounter++;
-                    sqlBuilder.Append("@@" + key + ", ");
-                    whereParams[key] = roomID;
+                if (roomIDs.Count > 0) {
+                    if (whereAdded) {
+                        sqlBuilder.Append(" and ");
+                    } else {
+                        sqlBuilder.Append(" where ");
+                        whereAdded = true;
+                    }
+                    sqlBuilder.Append(" r.id in (");
+                    string key = "";
+                    foreach (string roomID in roomIDs) {
+                        key = "index" + indexCounter++;
+                        sqlBuilder.Append("@@" + key + ", ");
+                        whereParams[key] = roomID;
+                    }
+                    sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                    sqlBuilder.Append(")");
                 }
-                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
-                sqlBuilder.Append(")");
-            }
-            if (resourceNames.Count > 0) {
-                if (whereAdded)
-                    sqlBuilder.Append(" and ");
-                else
-                    sqlBuilder.Append(" where ");
-                sqlBuilder.Append(" r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (");
-                string key = "";
-                foreach (string resourceName in resourceNames) {
-                    key = "index" + indexCounter++;
-                    sqlBuilder.Append("@@" + key + ", ");
-                    whereParams[key] = resourceName;
+                if (resourceNames.Count > 0) {
+                    if (whereAdded)
+                        sqlBuilder.Append(" and ");
+                    else
+                        sqlBuilder.Append(" where ");
+                    sqlBuilder.Append(" r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (");
+                    string key = "";
+                    foreach (string resourceName in resourceNames) {
+                        key = "index" + indexCounter++;
+                        sqlBuilder.Append("@@" + key + ", ");
+                        whereParams[key] = resourceName;
+                    }
+                    sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
+                    sqlBuilder.Append("))");
                 }
-                sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
-                sqlBuilder.Append("))");
             }
-            //Console.WriteLine(sqlBuilder.ToString());
+            Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
-            
+
             return cmd; 
         }
 
@@ -258,9 +264,9 @@ namespace Termin4CSharp {
                 else
                     throw new Exception("Type not implemented: " + val.GetType());
 
-                //Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
             }
-            //Console.WriteLine();
+            Console.WriteLine();
         }
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
@@ -492,6 +498,9 @@ namespace Termin4CSharp {
                     break;
                 case "name":
                     display = "det namnet";
+                    break;
+                case "id":
+                    display = "det ID:t";
                     break;
                 default:
                     throw new Exception("But what: " + dbValue);

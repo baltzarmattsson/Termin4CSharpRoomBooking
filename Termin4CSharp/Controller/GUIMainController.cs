@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
@@ -14,7 +15,7 @@ namespace Termin4CSharp.Controller {
 
         public GUIMain GUIMain { get; set; }
         List<string> buildingFilters, roomFilters, resourceFilters;
-
+        private Thread textBoxListener;
 
         public GUIMainController(GUIMain guiMain) {
             this.GUIMain = guiMain;
@@ -72,20 +73,15 @@ namespace Termin4CSharp.Controller {
             else if (e.NewValue == CheckState.Unchecked)
                 selectedList.Remove((string)sender.SelectedItem);
 
-
-            //var buildingFilters = this.GUIMain.GetBuildingFilters();
-            //var roomFilters = this.GUIMain.GetRoomFilters();
-            //var resourceFilters = this.GUIMain.GetResourceFilters();
-            //var freeTextFilter = this.GUIMain.GetTextFilter();
-
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters);
             this.GUIMain.SetRooms(filteredRooms);
+        }
 
-            /*
-            "select * from Room r where r.bName in ('Buildname') and r.id like '13%' and r.id in 
-
-(select id from Room_Resource where resource in ('Handikappwc'))"" obs skapa Room_Resource på nytt*/
+        public void HandleFreeTextFilterChange(TextBox sender, EventArgs e) {
+            DAL dal = new DAL(this);
+            List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            this.GUIMain.SetRooms(filteredRooms);
         }
 
         public void NotifyExceptionToView(string s) {

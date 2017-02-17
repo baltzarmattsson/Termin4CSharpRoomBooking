@@ -51,10 +51,12 @@ namespace Termin4CSharp.DataAccessLayer {
             return returnModel;
         }
 
-        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames) {
-            SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames);
+        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null) {
+
+            SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText);
             SqlDataReader dr = null;
             var resultList = new List<Room>();
+            cmd.Connection = Connector.GetConnection();
             try {
                 IModel model = new Room();
                 dr = cmd.ExecuteReader();

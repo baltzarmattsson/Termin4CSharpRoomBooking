@@ -466,6 +466,7 @@ namespace Termin4CSharp.View {
             this.createTypeBox.Size = new System.Drawing.Size(121, 21);
             this.createTypeBox.TabIndex = 4;
             this.createTypeBox.Text = "Typ";
+            this.createTypeBox.DropDownStyle = ComboBoxStyle.DropDownList;
             // 
             // label13
             // 
@@ -485,6 +486,7 @@ namespace Termin4CSharp.View {
             this.editArticleBox.Size = new System.Drawing.Size(425, 21);
             this.editArticleBox.TabIndex = 2;
             this.editArticleBox.Text = "Artikel";
+            this.editArticleBox.DropDownStyle = ComboBoxStyle.DropDownList;
             // 
             // editTypeBox
             // 
@@ -501,6 +503,7 @@ namespace Termin4CSharp.View {
             this.editTypeBox.TabIndex = 1;
             this.editTypeBox.Text = "Typ";
             this.editTypeBox.SelectedIndexChanged += new System.EventHandler(this.editTypeBox_SelectedIndexChanged);
+            this.editTypeBox.DropDownStyle = ComboBoxStyle.DropDownList;
             // 
             // label12
             // 

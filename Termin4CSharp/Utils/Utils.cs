@@ -20,13 +20,13 @@ namespace Termin4CSharp {
         public static Dictionary<string, object> GetAttributeInfo(Object paramObj, bool includingReferencedIModels = false) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
-            string matchPattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
+            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
             if (includingReferencedIModels == false)
-                matchPattern += "|Rooms|Building|Bookings|Room|Person|RoomType|Role";
-            matchPattern += ")";
+                excludePattern += "|Rooms|Building|Bookings|Room|Person|RoomType|Role";
+            excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, matchPattern)); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
+                        .Where(x => !Regex.IsMatch(x, excludePattern)); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
 
             foreach (string attName in names) {
                 PropertyInfo pi = t.GetProperty(attName);
@@ -226,7 +226,7 @@ namespace Termin4CSharp {
             WhereCondition whereCondition = WhereCondition.EQUAL;
 
             if (freeText != null) {
-                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.roomtype like @@freeText3 or r.floor like @@freeText4 " + 
+                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
                     "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
                 for (int i = 0; i < 6; i++)
                     whereParams["freeText" + i] = freeText;

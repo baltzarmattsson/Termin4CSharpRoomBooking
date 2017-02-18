@@ -17,12 +17,12 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //GUIMain mainGui = new GUIMain();
-            //GUIMainController controller = new GUIMainController(mainGui);
-            //AdminTabController adminController = new AdminTabController(mainGui);
-            //Application.Run(mainGui);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            GUIMain mainGui = new GUIMain();
+            GUIMainController controller = new GUIMainController(mainGui);
+            AdminTabController adminController = new AdminTabController(mainGui);
+            Application.Run(mainGui);
 
             //DAL dal = new DAL(null);
             //Building b = new Building("bnamename2", "a", DateTime.Now, DateTime.Now, null);
@@ -36,14 +36,14 @@ namespace Termin4CSharp {
             //int aff = dal.ConnectReferencedIModelsToIModelToQuery(rooms, b);
             //Console.WriteLine(aff);
 
-            Person p = new Model.Person();
-            Building b = new Building();
-            var asd = b.GetReferencedModels();
-            var asd2 = p.GetReferencedModels();
-            Console.WriteLine();
-            bool bb = asd2["Role"] is Role;
-            bool bb2 = asd["Rooms"] is List<IModel>;
-
+            //Person p = new Model.Person();
+            //Building b = new Building();
+            //var asd = b.GetReferencedModels();
+            //var asd2 = p.GetReferencedModels();
+            //Console.WriteLine();
+            //bool bb = asd2["Role"] is Role;
+            //bool bb2 = asd["Rooms"].GetType().IsGenericType;
+            //Console.WriteLine();
         }
     }
 }

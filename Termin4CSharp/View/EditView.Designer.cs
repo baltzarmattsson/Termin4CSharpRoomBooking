@@ -83,40 +83,54 @@ namespace Termin4CSharp.View {
                 this.flowLayoutPanel1.Controls.Add(attributeName);
                 
                 Control control = null;
-                // DateTime
-                if (value is DateTime) {
-                    DateTimePicker datePicker = new DateTimePicker();
-                    datePicker.Width = 500;
-                    datePicker.Name = kv.Key;
-                    datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
 
-                    if (model is Building) {
-                        datePicker.Format = DateTimePickerFormat.Time;
-                        datePicker.ShowUpDown = true;
+                // If IModel or List<IModel>, it's a referenced IModel/List<IModel>. For example, a Building that contains List<Room>, or Person that has a Role
+                // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
+                if (value is IModel || (value != null && value.GetType().IsGenericType)) {
+                    if (value is IModel) {
+                        ComboBox comboBox = new ComboBox();
+                        comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                     }
-                    control = datePicker;
-                // Numbers
-                } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
-                    NumberTextBox numTextBox = new NumberTextBox();
-                    numTextBox.Width = 500;
-                    numTextBox.Name = kv.Key;
-                    if (isIdentifyingAttribute)
-                        numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
-                    numTextBox.Text = "dummyval";
-                    numTextBox.Text = value == null ? "0" : value.ToString();
-                    control = numTextBox;
-                
-                // Else
+
+
                 } else {
-                    TextBox textBox = new TextBox();
-                    textBox.Width = 500;
-                    textBox.Name = kv.Key;
-                    if (isIdentifyingAttribute)
-                        textBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
-                    textBox.Text = "dummyval";
-                    textBox.Text = value == null ? "" : value.ToString();
-                    control = textBox;
+
+                    // DateTime
+                    if (value is DateTime) {
+                        DateTimePicker datePicker = new DateTimePicker();
+                        datePicker.Width = 500;
+                        datePicker.Name = kv.Key;
+                        datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
+
+                        if (model is Building) {
+                            datePicker.Format = DateTimePickerFormat.Time;
+                            datePicker.ShowUpDown = true;
+                        }
+                        control = datePicker;
+                        // Numbers
+                    } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
+                        NumberTextBox numTextBox = new NumberTextBox();
+                        numTextBox.Width = 500;
+                        numTextBox.Name = kv.Key;
+                        if (isIdentifyingAttribute)
+                            numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                        numTextBox.Text = "dummyval";
+                        numTextBox.Text = value == null ? "0" : value.ToString();
+                        control = numTextBox;
+
+                        // Else
+                    } else {
+                        TextBox textBox = new TextBox();
+                        textBox.Width = 500;
+                        textBox.Name = kv.Key;
+                        if (isIdentifyingAttribute)
+                            textBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                        textBox.Text = "dummyval";
+                        textBox.Text = value == null ? "" : value.ToString();
+                        control = textBox;
+                    }
                 }
+
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)
                     this.oldIdentifyingAttribute[control.Name] = control.Text;
                 this.flowLayoutPanel1.Controls.Add(control);

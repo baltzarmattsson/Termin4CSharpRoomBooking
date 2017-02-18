@@ -8,6 +8,7 @@ namespace Termin4CSharp.Model.DbHelpers {
     class Login : IModel {
         public string PersonId { get; set; }
         public string Password { get; set; }
+        public Person Person { get; set; }
         public Login() { }
         public Login(string personId, string password) {
             this.PersonId = personId;
@@ -16,6 +17,12 @@ namespace Termin4CSharp.Model.DbHelpers {
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
             dict["PersonId"] = this.PersonId;
+            return dict;
+        }
+
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            dict["Person"] = new Person();
             return dict;
         }
 

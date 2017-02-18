@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model.DbHelpers {
-    class RoomType : IModel {
+    public class RoomType : IModel {
         
         public string Type { get; set; }
 
@@ -16,6 +16,10 @@ namespace Termin4CSharp.Model.DbHelpers {
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
             dict["Type"] = this.Type;
+            return dict;
+        }
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
             return dict;
         }
 

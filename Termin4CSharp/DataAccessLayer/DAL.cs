@@ -51,6 +51,11 @@ namespace Termin4CSharp.DataAccessLayer {
             return returnModel;
         }
 
+        public int ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel) {
+            SqlCommand cmd = Utils.ConnectReferencedIModelsToIModelToQuery(referencedIModels, targetModel);
+            return this.PerformNonQuery(targetModel, cmd);
+        }
+
         public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
 
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
@@ -152,8 +157,6 @@ namespace Termin4CSharp.DataAccessLayer {
                 default:
                     throw sqle;
             }
-
-
             this.Controller.NotifyExceptionToView(message);
         }
     }

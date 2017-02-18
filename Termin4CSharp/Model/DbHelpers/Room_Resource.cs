@@ -9,6 +9,7 @@ namespace Termin4CSharp.Model.DbHelpers {
 
         public string RoomId { get; set; }
         public string ResId { get; set; }
+        public Room Room { get; set; }
         public Room_Resource() { }
         public Room_Resource(string roomId, string resId) {
             this.RoomId = roomId;
@@ -18,6 +19,11 @@ namespace Termin4CSharp.Model.DbHelpers {
             var dict = new Dictionary<string, object>();
             dict["RoomId"] = this.RoomId;
             dict["ResId"] = this.ResId;
+            return dict;
+        }
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            dict["Room"] = new Room();
             return dict;
         }
     }

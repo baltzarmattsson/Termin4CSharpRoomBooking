@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Termin4CSharp.Model.DbHelpers;
 
 namespace Termin4CSharp.Model
 {
@@ -12,25 +13,31 @@ namespace Termin4CSharp.Model
         public string Id { get; set; }
         public string Email { get; set; }
         public string PhoneNbr { get; set; }
-        public string Role { get; set; }
+        public string RoleName { get; set; }
+        public Role Role { get; set; }
 
         public Person() { }
-        public Person(string name, string id, string email, string phoneNbr, string role)
+        public Person(string name, string id, string email, string phoneNbr, string roleName)
         {
             this.Name = name;
             this.Id = id;
             this.Email = email;
             this.PhoneNbr = phoneNbr;
-            this.Role = role;
+            this.RoleName = roleName;
         }
 
         public override string ToString() {
-            return string.Format("{0} {1} {2} {3} {4}", Name, Id, Email, PhoneNbr, Role);
+            return string.Format("{0} {1} {2} {3} {4}", Name, Id, Email, PhoneNbr, RoleName);
         }
 
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
             dict["Id"] = this.Id;
+            return dict;
+        }
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            dict["Role"] = new Role();
             return dict;
         }
 

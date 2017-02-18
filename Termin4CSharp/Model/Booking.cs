@@ -15,6 +15,8 @@ namespace Termin4CSharp.Model
         public String Purpose { get; set; }
         public DateTime Start_time { get; set; }
         public DateTime End_time { get; set; }
+        public Room Room { get; set; }
+        public Person Person { get; set; }
 
         public Booking() { }
         public Booking(int id, DateTime timestamp, Room room, Person person, string purpose, DateTime start_time, DateTime end_time)
@@ -43,6 +45,13 @@ namespace Termin4CSharp.Model
                 return false;
             return this.Id == other.Id && this.Timestamp.Equals(other.Timestamp) && this.RoomId.Equals(other.RoomId) &&
                 this.PersonId.Equals(other.PersonId) && this.Purpose.Equals(other.Purpose) && Utils.DateCompare(this.Start_time, other.Start_time) && Utils.DateCompare(this.End_time, other.End_time);
+        }
+
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            dict["Room"] = new Room();
+            dict["Person"] = new Person();
+            return dict;
         }
     }
 }

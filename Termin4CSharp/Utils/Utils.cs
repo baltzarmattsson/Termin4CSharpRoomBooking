@@ -17,12 +17,16 @@ using static System.Windows.Forms.CheckedListBox;
 namespace Termin4CSharp {
     class Utils {
 
-        public static Dictionary<string, object> GetAttributeInfo(Object paramObj) {
+        public static Dictionary<string, object> GetAttributeInfo(Object paramObj, bool includingReferencedIModels = false) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
+            string matchPattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
+            if (includingReferencedIModels == false)
+                matchPattern += "|Rooms|Building|Bookings|Room|Person|RoomType|Role";
+            matchPattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)"));
+                        .Where(x => !Regex.IsMatch(x, matchPattern)); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
 
             foreach (string attName in names) {
                 PropertyInfo pi = t.GetProperty(attName);
@@ -78,6 +82,53 @@ namespace Termin4CSharp {
             return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
         }
 
+        public static SqlCommand ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel) {
+            string tableName = Utils.IModelTableName(referencedIModels.First());
+            if (tableName == null)
+                throw new Exception(String.Format("Table could not be found! IModel: {0}", referencedIModels.First()));
+
+            //Uppdatera existerande modeller, dvs listan på referencedModels
+            //Sätt foreignkey-attributet till targetModel.PK
+            //update Room r set r.bName = targetModel.PK where r.Id in 
+
+            StringBuilder sqlBuilder = new StringBuilder();
+
+            string foreignKeyAtt = null, foreignKeyVal = null;
+            if (referencedIModels.First() is Room && targetModel is Building) {
+                foreignKeyAtt = "bname";
+                foreignKeyVal = ((Building)targetModel).Name;
+            }
+            if (foreignKeyAtt == null || foreignKeyVal == null)
+                throw new Exception(string.Format("FKAtt({0}) or FKVal({1}) == null", foreignKeyAtt, foreignKeyVal));
+
+            Dictionary<string, object> fkAttributes = new Dictionary<string, object>();
+            sqlBuilder.Append(string.Format("update {0} set {1} = @{1}", tableName, foreignKeyAtt));
+            fkAttributes[foreignKeyAtt] = foreignKeyVal;
+
+            Dictionary<string, object> whereParams = new Dictionary<string, object>();
+            //string idAttName = referencedIModels.First().GetIdentifyingAttributes().First().Key;
+            //object idAttValue = referencedIModels.First().GetIdentifyingAttributes().First().Value;
+            //sqlBuilder.Append(string.Format(" where {0} in (@@{0})", idAttName));
+            //whereParams[idAttName] = idAttValue;
+
+            string idAttName = referencedIModels.First().GetIdentifyingAttributes().First().Key;
+            object idAttValue = null;
+            sqlBuilder.Append(string.Format(" where {0} in (", idAttName));
+            int indexCounter = 0;
+            foreach (IModel model in referencedIModels) {
+                idAttValue = model.GetIdentifyingAttributes().First().Value;
+                sqlBuilder.Append(string.Format("@@{0}, ", idAttName + "" + indexCounter));
+                whereParams[idAttName + "" + indexCounter++] = idAttValue;
+            }
+            sqlBuilder.Remove(sqlBuilder.Length - 2, 2);
+            sqlBuilder.Append(")");
+
+            SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
+            Utils.FillSqlCmd(cmd, fkAttributes);
+            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
+            return cmd;
+        }
+        
         public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 

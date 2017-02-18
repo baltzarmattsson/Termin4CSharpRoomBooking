@@ -18,6 +18,11 @@ namespace Termin4CSharp.Model.DbHelpers {
             return dict;
         }
 
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            return dict;
+        }
+
         public override string ToString() {
             return this.RoleName;
         }

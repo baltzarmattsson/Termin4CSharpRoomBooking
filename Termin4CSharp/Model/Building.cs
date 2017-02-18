@@ -29,6 +29,11 @@ namespace Termin4CSharp.Model
             dict["Name"] = this.Name;
             return dict;
         }
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
+            dict["Rooms"] = new List<Room>();
+            return dict;
+        }
         public override string ToString() {
             return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }

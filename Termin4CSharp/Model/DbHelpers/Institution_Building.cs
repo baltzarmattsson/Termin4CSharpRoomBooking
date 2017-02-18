@@ -15,10 +15,15 @@ namespace Termin4CSharp.Model {
             this.bName = bName;
         }
 
+
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
             dict["iName"] = this.iName;
             dict["bName"] = this.bName;
+            return dict;
+        }
+        public Dictionary<string, object> GetReferencedModels() {
+            var dict = new Dictionary<string, object>();
             return dict;
         }
     }

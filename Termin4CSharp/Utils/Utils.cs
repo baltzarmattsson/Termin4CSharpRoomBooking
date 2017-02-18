@@ -22,7 +22,7 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
             if (includingReferencedIModels == false)
-                excludePattern += "|Rooms|Building|Bookings|Room|\\bPerson\\b|RoomType|Role";
+                excludePattern += "|Rooms|Building|Bookings|Room|\\bPerson\\b|\\bRoomType\\b|Role";
             excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
@@ -181,7 +181,8 @@ namespace Termin4CSharp {
                     modelValues += "@" + key + ", ";
                 }
             }
-            modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
+            if (modelKeys.Length > 2)
+                modelKeys = modelKeys.Substring(0, modelKeys.Length - 2); //removing ", "
             if (modelValues.Length > 2)
                 modelValues = modelValues.Substring(0, modelValues.Length - 2); //removing ", "
 

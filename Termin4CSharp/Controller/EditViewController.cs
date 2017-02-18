@@ -98,9 +98,28 @@ namespace Termin4CSharp.Controller {
             model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
             if (model != null) {
                 this.Delete(model);
-                this.isExistingObjectInDatabase = false;                
+                this.isExistingObjectInDatabase = false;         
             }
         }
+
+        public List<IModel> GetReferenceAbleIModels(IModel target, IModel referenceIModel) {
+
+            List<IModel> referencableIModels = new List<IModel>();
+            DAL dal = new DAL(this);
+            if (isExistingObjectInDatabase) {
+                var kvIdAtt = target.GetIdentifyingAttributes().First();
+                string id = kvIdAtt.Key;
+                object idVal = kvIdAtt.Value;
+                var whereParams = new Dictionary<string, object>();
+                whereParams[id] = idVal;
+                referencableIModels = dal.Get(referenceIModel, whereParams);
+            } else {
+                referencableIModels = dal.Get(referenceIModel, selectAll: true);
+            }
+
+            return referencableIModels;
+        }
+
         public void HandleCloseButtonClick() {
             this.Close();
         }

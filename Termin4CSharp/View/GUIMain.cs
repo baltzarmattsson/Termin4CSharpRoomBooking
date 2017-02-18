@@ -83,6 +83,10 @@ namespace Termin4CSharp.View
 
         }
 
+        public void SetMinCapacityFilter(int highestCapacity) {
+            this.trackBar1.Maximum = highestCapacity;
+        }
+
         private void tabPage3_Click(object sender, EventArgs e)
         {
 
@@ -263,7 +267,7 @@ namespace Termin4CSharp.View
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e) {
-            this.label11.Text = "Antal platser: (" + trackBar1.Value + ")";
+            this.label11.Text = "Minst antal platser: (" + trackBar1.Value + ")";
             this.Controller.HandleFilterChange(FilterBox.TRACKBAR, null, null);
         }
         public int GetMinCapacityFilterValue() {

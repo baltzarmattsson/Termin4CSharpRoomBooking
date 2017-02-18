@@ -42,9 +42,12 @@ namespace Termin4CSharp.Controller {
             var buildings = dal.Get(new Building(), selectAll: true).Cast<Building>().ToList();
             var resources = dal.Get(new Resource(), selectAll: true).Cast<Resource>().ToList();
 
+            int highestCapacity = rooms.Max(x => x.Capacity);
+
             this.GUIMain.SetRoomFilters(rooms);
             this.GUIMain.SetBuildingFilters(buildings);
             this.GUIMain.SetResourceFilters(resources);
+            this.GUIMain.SetMinCapacityFilter(highestCapacity);
 
         }
 
@@ -75,9 +78,9 @@ namespace Termin4CSharp.Controller {
             if (filterBox != FilterBox.TRACKBAR) {
                 string selval = (string)sender.SelectedItem;
                 if (e.NewValue == CheckState.Checked)
-                    selectedList.Add((string)sender.SelectedItem);
+                    selectedList.Add(selval);
                 else if (e.NewValue == CheckState.Unchecked)
-                    selectedList.Remove((string)sender.SelectedItem);
+                    selectedList.Remove(selval);
             }
 
             DAL dal = new DAL(this);

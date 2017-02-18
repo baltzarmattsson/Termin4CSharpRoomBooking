@@ -22,5 +22,10 @@ namespace Termin4CSharp.Model.DbHelpers {
         public override string ToString() {
             return string.Format("{0} {1}", this.PersonId, string.Join("", this.Password.Select(x => "*")));
         }
+
+        public override bool Equals(object obj) {
+            Login other = obj as Login;
+            return this.PersonId.Equals(other.PersonId) && this.Password.Equals(other.Password);
+        }
     }
 }

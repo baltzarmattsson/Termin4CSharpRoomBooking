@@ -275,7 +275,7 @@ namespace Termin4CSharp.View {
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Antal platser";
+            this.columnHeader4.Text = "Minst antal platser: ";
             this.columnHeader4.Width = 129;
             // 
             // textBox3

@@ -15,25 +15,29 @@ namespace Termin4CSharp.Tests {
         public void DALAddGetUpdateRemove() {
             Person p = new Person("testname", "testid", "testemail", "testphonenbr", null);
             Building b = new Building("testname", "testaddress", DateTime.Now, DateTime.Now, null);
-            //RoomType rt = new RoomType(113377, "testtype");
-            Room r = new Room(b.Name, "testid", 134141, "0", null);
-            r.Building = b;
-            var rooms = new List<Room>();
-            rooms.Add(r);
-            b.Rooms = rooms;
-            // Testing add
+            RoomType rt = new RoomType("testtype");
+            Room r = new Room(b.Name, "testid", 134141, "0", "testtype");
+            Login l = new Login("testid", "testpass");
+
             DAL dal = new DAL(null);
+            IModel[] imodels = new IModel[] { p, b, rt, r, l };
 
             try {
-                dal.Add(p);
-                dal.Add(b);
-                dal.Add(r);
+                // Testing add
+                foreach (IModel model in imodels)
+                    dal.Add(model);
+
                 Person retrievedPerson = dal.GetIModel(p) as Person;
                 Building retrievedBuilding = dal.GetIModel(b) as Building;
+                RoomType retrievedRoomType = dal.GetIModel(rt) as RoomType;
                 Room retrievedRoom = dal.GetIModel(r) as Room;
+                Login retrievedLogin = dal.GetIModel(l) as Login;
+
                 Assert.AreEqual(retrievedPerson, p);
                 Assert.AreEqual(retrievedBuilding, b);
+                Assert.AreEqual(retrievedRoomType, rt);
                 Assert.AreEqual(retrievedRoom, r);
+                Assert.AreEqual(retrievedLogin, l);
 
                 // Testing update
                 p.Name = "newtestname";
@@ -58,12 +62,17 @@ namespace Termin4CSharp.Tests {
                 Assert.AreEqual(retrievedRoom, r);
             } finally {
                 // Testing remove 
-                dal.Remove(p);
-                dal.Remove(b);
-                dal.Remove(r);
-                Assert.AreEqual(dal.Get(p).Count, 0);
-                Assert.AreEqual(dal.Get(b).Count, 0);
-                Assert.AreEqual(dal.Get(r).Count, 0);
+                //dal.Remove(p);
+                //dal.Remove(b);
+                //dal.Remove(r);
+                foreach (IModel model in imodels)
+                    dal.Remove(model);
+
+                foreach (IModel model in imodels)
+                    Assert.AreEqual(dal.Get(model).Count, 0);
+                //Assert.AreEqual(dal.Get(p).Count, 0);
+                //Assert.AreEqual(dal.Get(b).Count, 0);
+                //Assert.AreEqual(dal.Get(r).Count, 0);
             }
 
     }

@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model.DbHelpers {
     class RoomType : IModel {
-
-        //public int Id { get; set; }
+        
         public string Type { get; set; }
 
         public RoomType() { }
-
-        //public RoomType(int id, string type) {
-        //    this.Id = id;
-        //    this.Type = type;
-        //}
         public RoomType(string type) {
             this.Type = type;
         }
@@ -27,6 +21,11 @@ namespace Termin4CSharp.Model.DbHelpers {
 
         public override string ToString() {
             return this.Type;
+        }
+
+        public override bool Equals(object obj) {
+            RoomType other = obj as RoomType;
+            return this.Type.Equals(other.Type);
         }
     }
 }

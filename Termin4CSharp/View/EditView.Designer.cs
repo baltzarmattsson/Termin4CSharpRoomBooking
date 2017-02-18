@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
+using static Termin4CSharp.Controller.EditViewController;
 
 namespace Termin4CSharp.View {
     public partial class EditView : Form {
@@ -91,16 +92,17 @@ namespace Termin4CSharp.View {
                     //List<IModel> imodels = Controller.GetReferenceAbleIModels(model, (IModel)value);
 
                     if (value is IModel) {
-                        List<IModel> imodels = Controller.GetReferenceAbleIModels(model, (IModel)value);
+                        List<IModel> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
                         comboBox.Items.AddRange(imodels.ToArray());
                         control = comboBox;
                     } else if (value.GetType().IsGenericType) {
+                        List<IModel> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
                         CheckedListBox checkBox = new CheckedListBox();
                         checkBox.Width = 500;
-                        //checkBox.Items.AddRange(imodels.ToArray());
+                        checkBox.Items.AddRange(imodels.ToArray());
                         control = checkBox;
                     }
                 } else {

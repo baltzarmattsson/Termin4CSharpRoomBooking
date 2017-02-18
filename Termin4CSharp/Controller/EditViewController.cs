@@ -102,22 +102,63 @@ namespace Termin4CSharp.Controller {
             }
         }
 
-        public List<IModel> GetReferenceAbleIModels(IModel target, IModel referenceIModel) {
+        public enum ReferencedIModelType {
+            SINGLE_IMODEL, LIST_OF_IMODELS
+        }
 
-            List<IModel> referencableIModels = new List<IModel>();
-            DAL dal = new DAL(this);
-            if (isExistingObjectInDatabase) {
-                var kvIdAtt = target.GetIdentifyingAttributes().First();
-                string id = kvIdAtt.Key;
-                object idVal = kvIdAtt.Value;
-                var whereParams = new Dictionary<string, object>();
-                whereParams[id] = idVal;
-                referencableIModels = dal.Get(referenceIModel, whereParams);
-            } else {
-                referencableIModels = dal.Get(referenceIModel, selectAll: true);
+        public List<IModel> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList) {
+
+            List<IModel> fetchedIModelsFromDatabase = new List<IModel>();
+
+
+            if (referencedIModelOrList != null) {
+                DAL dal = new DAL(this);
+                IModel iModelToFetch = null;
+                if (refModelType == ReferencedIModelType.SINGLE_IMODEL) {
+                    iModelToFetch = referencedIModelOrList as IModel;
+                } else if (refModelType == ReferencedIModelType.LIST_OF_IMODELS) {
+                    Type typeThatListHolds = referencedIModelOrList.GetType().GetGenericArguments()[0];
+                    iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
+                }
+                if (isExistingObjectInDatabase) {
+
+                    // Setting WHERE-clause 
+                    //var kvIdAtt = target.GetIdentifyingAttributes().First();
+                    //string id = kvIdAtt.Key;
+                    object identifyingValue = target.GetIdentifyingAttributes().First().Value;
+                    var whereParams = new Dictionary<string, object>();
+                    if (target is Building && iModelToFetch is Room)
+                        whereParams["bname"] = identifyingValue;
+                    //else if (target is Room && iModelToFetch is Building) 
+                    
+                    //whereParams[id] = idVal;
+                    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, whereParams);
+
+                } else {
+                    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, selectAll: true);
+                }
+
+                // If it's a singular IModel being referenced, for example when a Login-object references a Person-object
+                //if (referenceIModel != null) {
+                //    if (isExistingObjectInDatabase) {
+                //        var kvIdAtt = target.GetIdentifyingAttributes().First();
+                //        string id = kvIdAtt.Key;
+                //        object idVal = kvIdAtt.Value;
+                //        var whereParams = new Dictionary<string, object>();
+                //        whereParams[id] = idVal;
+                //        referencableIModels = dal.Get(referenceIModel, whereParams);
+                //    } else {
+                //        referencableIModels = dal.Get(referenceIModel, selectAll: true);
+                //    }
+                //    // Else if it's a list of referenced models, for example the list of Rooms a Building holds
+                //} else if (listOfReferenceIModels != null) {
+                //    Type typeThatListHolds = listOfReferenceIModels.GetType().GetGenericArguments()[0];
+                //    IModel instance = Activator.CreateInstance(typeThatListHolds) as IModel;
+                //}
+
             }
 
-            return referencableIModels;
+            return fetchedIModelsFromDatabase;
         }
 
         public void HandleCloseButtonClick() {

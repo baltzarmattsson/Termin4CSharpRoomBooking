@@ -22,12 +22,12 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
             if (includingReferencedIModels == false)
-                excludePattern += "|Rooms|Building|Bookings|Room|\\bPerson\\b|\\bRoomType\\b|Role";
+                excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b";
             excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
                         .Where(x => !Regex.IsMatch(x, excludePattern));
-
+            Console.WriteLine();
             foreach (string attName in names) {
 
                 object value = null;

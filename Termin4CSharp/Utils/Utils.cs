@@ -22,12 +22,11 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
             if (includingReferencedIModels == false)
-                excludePattern += "|Rooms|Building|Bookings|Room|Person|RoomType|Role";
+                excludePattern += "|Rooms|Building|Bookings|Room|\\bPerson\\b|RoomType|Role";
             excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, @"\b" + excludePattern + @"\b")); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
-            var names2 = t.GetMembers().Select(x => x.Name).Where(x => !Regex.IsMatch(x, "Person"));
+                        .Where(x => !Regex.IsMatch(x, excludePattern));
 
             foreach (string attName in names) {
 
@@ -49,6 +48,7 @@ namespace Termin4CSharp {
                                 .Invoke(null);
                         } else
                             throw new Exception("unhandled");
+
                         attributeValues[attName] = value;
                     } else {
                         PropertyInfo pi = t.GetProperty(attName);

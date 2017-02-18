@@ -16,12 +16,12 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //GUIMain mainGui = new GUIMain();
-            //GUIMainController controller = new GUIMainController(mainGui);
-            //AdminTabController adminController = new AdminTabController(mainGui);
-            //Application.Run(mainGui);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            GUIMain mainGui = new GUIMain();
+            GUIMainController controller = new GUIMainController(mainGui);
+            AdminTabController adminController = new AdminTabController(mainGui);
+            Application.Run(mainGui);
 
             //DAL dal = new DAL(null);
             //Building b = new Building("bnamename2", "a", DateTime.Now, DateTime.Now, null);
@@ -50,9 +50,9 @@ namespace Termin4CSharp {
             ////Type rType = new RoomType().GetType();
             //Console.WriteLine();
 
-            Login l = new Login("id", "testpass");
-            DAL dal = new DAL(null);
-            dal.Add(l);
+            //Login l = new Login("id", "testpass");
+            //DAL dal = new DAL(null);
+            //dal.Add(l);
         }
     }
 }

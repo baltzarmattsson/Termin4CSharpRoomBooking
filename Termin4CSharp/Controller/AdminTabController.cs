@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
-using Termin4CSharp.Model.DbHelpers;
 using Termin4CSharp.View;
 using Termin4CSharp.View.CustomControls;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Termin4CSharp.Model.DbHelpers;
 
 namespace Termin4CSharp.Model
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
-using Termin4CSharp.Model.DbHelpers;
 using Termin4CSharp.View.CustomControls;
 using static System.Windows.Forms.CheckedListBox;
 
@@ -26,13 +26,37 @@ namespace Termin4CSharp {
             excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
-                        .Where(x => !Regex.IsMatch(x, excludePattern)); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
+                        .Where(x => !Regex.IsMatch(x, @"\b" + excludePattern + @"\b")); //([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|Rooms|Building|Bookings)
+            var names2 = t.GetMembers().Select(x => x.Name).Where(x => !Regex.IsMatch(x, "Person"));
 
             foreach (string attName in names) {
-                PropertyInfo pi = t.GetProperty(attName);
-                Type methodRetType = pi.GetMethod.ReturnType;
-                var a = pi.GetValue(paramObj, null);
-                attributeValues[attName] = pi == null ? "" : pi.GetValue(paramObj, null);
+
+                object value = null;
+                if (paramObj is IModel) {
+                    var refModels = ((IModel)paramObj).GetReferencedModels();
+
+                    if (includingReferencedIModels && refModels.ContainsKey(attName)) {
+                        // Create IModel
+                        if (refModels[attName] is IModel) {
+                            Type ttt = Type.GetType("Termin4CSharp.Model." + attName);
+                            value = Activator.CreateInstance(ttt);
+                            // Create List<IModel>
+                        } else if (refModels[attName].GetType().IsGenericType) {
+                            Type typeThatListHolds = refModels[attName].GetType().GetGenericArguments()[0];
+                            value = (IList)typeof(List<>)
+                                .MakeGenericType(typeThatListHolds)
+                                .GetConstructor(Type.EmptyTypes)
+                                .Invoke(null);
+                        } else
+                            throw new Exception("unhandled");
+                        attributeValues[attName] = value;
+                    } else {
+                        PropertyInfo pi = t.GetProperty(attName);
+                        Type methodRetType = pi.GetMethod.ReturnType;
+                        var a = pi.GetValue(paramObj, null);
+                        attributeValues[attName] = pi == null ? "" : pi.GetValue(paramObj, null);
+                    }
+                }
             }
             return attributeValues;
         }

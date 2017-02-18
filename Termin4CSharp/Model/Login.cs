@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Termin4CSharp.Model.DbHelpers {
+namespace Termin4CSharp.Model {
     class Login : IModel {
         public string PersonId { get; set; }
         public string Password { get; set; }

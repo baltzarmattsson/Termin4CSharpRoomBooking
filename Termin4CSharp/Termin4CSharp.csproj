@@ -72,11 +72,11 @@
     <Compile Include="DataAccessLayer\EnumValues.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\Building.cs" />
-    <Compile Include="Model\DbHelpers\Institution_Building.cs" />
-    <Compile Include="Model\DbHelpers\Login.cs" />
-    <Compile Include="Model\DbHelpers\Role.cs" />
-    <Compile Include="Model\DbHelpers\RoomType.cs" />
-    <Compile Include="Model\DbHelpers\Room_Resource.cs" />
+    <Compile Include="Model\Institution_Building.cs" />
+    <Compile Include="Model\Login.cs" />
+    <Compile Include="Model\Role.cs" />
+    <Compile Include="Model\RoomType.cs" />
+    <Compile Include="Model\Room_Resource.cs" />
     <Compile Include="Model\IController.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\Institution.cs" />
@@ -144,6 +144,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Model\DbHelpers\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

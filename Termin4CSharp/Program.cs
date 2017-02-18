@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Termin4CSharp.Controller;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
-using Termin4CSharp.Model.DbHelpers;
 using Termin4CSharp.View;
 
 namespace Termin4CSharp {
@@ -17,12 +16,12 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            GUIMain mainGui = new GUIMain();
-            GUIMainController controller = new GUIMainController(mainGui);
-            AdminTabController adminController = new AdminTabController(mainGui);
-            Application.Run(mainGui);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //GUIMain mainGui = new GUIMain();
+            //GUIMainController controller = new GUIMainController(mainGui);
+            //AdminTabController adminController = new AdminTabController(mainGui);
+            //Application.Run(mainGui);
 
             //DAL dal = new DAL(null);
             //Building b = new Building("bnamename2", "a", DateTime.Now, DateTime.Now, null);
@@ -43,7 +42,17 @@ namespace Termin4CSharp {
             //Console.WriteLine();
             //bool bb = asd2["Role"] is Role;
             //bool bb2 = asd["Rooms"].GetType().IsGenericType;
+            //List<Room> rooms = new List<Room>();
+            //Type t = rooms.GetType().GetGenericArguments()[0];
+
+            //var atts = Utils.GetAttributeInfo(new Building(), true);
+            //var atts2 = Utils.GetAttributeInfo(new Room(), true);
+            ////Type rType = new RoomType().GetType();
             //Console.WriteLine();
+
+            Login l = new Login("id", "testpass");
+            DAL dal = new DAL(null);
+            dal.Add(l);
         }
     }
 }

@@ -23,36 +23,8 @@ namespace Termin4CSharp {
             AdminTabController adminController = new AdminTabController(mainGui);
             Application.Run(mainGui);
 
-            //DAL dal = new DAL(null);
-            //Building b = new Building("bnamename2", "a", DateTime.Now, DateTime.Now, null);
-            ////dal.Add(b);
-            //Room r = null;
-            //List<IModel> rooms = new List<IModel>();
-            //for (int i = 0; i < 5; i++) {
-            //    r = new Room("bnamename", "aa" + i, 15, "1", null);
-            //    rooms.Add(r);
-            //}
-            //int aff = dal.ConnectReferencedIModelsToIModelToQuery(rooms, b);
-            //Console.WriteLine(aff);
-
-            //Person p = new Model.Person();
-            //Building b = new Building();
-            //var asd = b.GetReferencedModels();
-            //var asd2 = p.GetReferencedModels();
-            //Console.WriteLine();
-            //bool bb = asd2["Role"] is Role;
-            //bool bb2 = asd["Rooms"].GetType().IsGenericType;
-            //List<Room> rooms = new List<Room>();
-            //Type t = rooms.GetType().GetGenericArguments()[0];
-
-            //var atts = Utils.GetAttributeInfo(new Building(), true);
-            //var atts2 = Utils.GetAttributeInfo(new Room(), true);
-            ////Type rType = new RoomType().GetType();
-            //Console.WriteLine();
-*/
-
-            DALCronus dal = new DALCronus();
-            dal.GetEmployees();
+            //DALCronus dal = new DALCronus();
+            //dal.GetEmployees();
 
         }
     }

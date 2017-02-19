@@ -6,10 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//namespace Termin4CSharp.DataAccessLayer
-//{
-//    class DALCronus
-//    {
+namespace Termin4CSharp.DataAccessLayer {
+    class DALCronus {
 
         public string GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
         {
@@ -54,7 +52,7 @@ using System.Threading.Tasks;
         }
         public string GetSickestEmployee()  //First name på anställda som har varit mest sjuka
         {
-            String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )" //osäker
+            String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )"; //osäker
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -67,7 +65,7 @@ using System.Threading.Tasks;
         }
         public string GetKeys() //Alla nycklar 
         {
-            String sql = "SELECT * FROM sys.key_constraints;
+            String sql = "SELECT * FROM sys.key_constraints";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -80,7 +78,7 @@ using System.Threading.Tasks;
         }
         public string GetIndexes() //Alla indexes 
         {
-            string sql = "SELECT * FROM sys.indexes;
+            string sql = "SELECT * FROM sys.indexes";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -93,6 +91,7 @@ using System.Threading.Tasks;
         }
         public string GetConstraints() // Alla table_constraints 
         {
+            string sql = "";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -118,7 +117,7 @@ using System.Threading.Tasks;
         }
         public string GetTables2() //Alla tabeller
         {
-            string sql = "SELECT * FROM sysobjects WHERE xtype = 'U';
+            string sql = "SELECT * FROM sysobjects WHERE xtype = 'U'";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -144,7 +143,7 @@ using System.Threading.Tasks;
         }
         public string GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. 
         {
-            string sql =
+            string sql = "";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();

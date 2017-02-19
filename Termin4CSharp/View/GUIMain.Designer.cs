@@ -689,10 +689,10 @@ namespace Termin4CSharp.View {
         private TabPage adminTab;
         private Button button3;
         private ComboBox createTypeBox;
-        private Label label13;
+        //private Label label13;
         private ComboBox editArticleBox;
         private ComboBox editTypeBox;
-        private Label label12;
+        //private Label label12;
         private Button button4;
         private Button button5;
         private Label label13;

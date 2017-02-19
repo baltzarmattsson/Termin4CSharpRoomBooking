@@ -17,29 +17,35 @@ using static System.Windows.Forms.CheckedListBox;
 namespace Termin4CSharp {
     class Utils {
 
-        public static Dictionary<string, object> GetAttributeInfo(Object paramObj, bool includingReferencedIModels = false) {
+        public enum MembersOptimizedFor {
+            QUERIES, EDITVIEW
+        }
+
+        public static Dictionary<string, object> GetAttributeInfo(Object paramObj, MembersOptimizedFor memOptFor = MembersOptimizedFor.QUERIES) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
             string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
-            if (includingReferencedIModels == false)
+            if (memOptFor == MembersOptimizedFor.QUERIES)
                 excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b";
+            else if (memOptFor == MembersOptimizedFor.EDITVIEW)
+                excludePattern += "|\\bBName\\b|\\bRType\\b|\\bRoleName\\b|\\bPersonId\\b|\\bRoomId\\b|\\bPersonId\\b";
             excludePattern += ")";
             var names = t.GetMembers()
                         .Select(x => x.Name)
                         .Where(x => !Regex.IsMatch(x, excludePattern));
-            Console.WriteLine();
+            Console.Write("");
             foreach (string attName in names) {
 
                 object value = null;
                 if (paramObj is IModel) {
                     var refModels = ((IModel)paramObj).GetReferencedModels();
 
-                    if (includingReferencedIModels && refModels.ContainsKey(attName)) {
+                    if (memOptFor == MembersOptimizedFor.QUERIES && refModels.ContainsKey(attName)) {
                         // Create IModel
                         if (refModels[attName] is IModel) {
                             Type ttt = Type.GetType("Termin4CSharp.Model." + attName);
                             value = Activator.CreateInstance(ttt);
-                            // Create List<IModel>
+                        // Create List<IModel>
                         } else if (refModels[attName].GetType().IsGenericType) {
                             Type typeThatListHolds = refModels[attName].GetType().GetGenericArguments()[0];
                             value = (IList)typeof(List<>)

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Termin4CSharp.Model;
 using Termin4CSharp.View.CustomControls;
 using static Termin4CSharp.Controller.EditViewController;
+using static Termin4CSharp.Utils;
 
 namespace Termin4CSharp.View {
     public partial class EditView : Form {
@@ -70,7 +71,7 @@ namespace Termin4CSharp.View {
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
             this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
             
-            var attributes = Utils.GetAttributeInfo(model, includingReferencedIModels: true);
+            var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.NONE);
             Label attributeName = null;
             foreach (var kv in attributes) {
                 bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key);

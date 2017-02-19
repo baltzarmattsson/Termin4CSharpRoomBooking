@@ -16,7 +16,6 @@ namespace Termin4CSharp.Controller {
         public GUIMain GUIMain { get; set; }
         private List<string> buildingFilters, roomFilters, resourceFilters;
         public int MinCapacity { get; set; }
-        private Thread textBoxListener;
 
         public GUIMainController(GUIMain guiMain) {
             this.GUIMain = guiMain;

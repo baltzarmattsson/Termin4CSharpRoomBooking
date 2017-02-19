@@ -49,10 +49,11 @@ namespace Termin4CSharp {
             //var atts2 = Utils.GetAttributeInfo(new Room(), true);
             ////Type rType = new RoomType().GetType();
             //Console.WriteLine();
+*/
 
-            //Login l = new Login("id", "testpass");
-            //DAL dal = new DAL(null);
-            //dal.Add(l);
+            DALCronus dal = new DALCronus();
+            dal.GetEmployees();
+
         }
     }
 }

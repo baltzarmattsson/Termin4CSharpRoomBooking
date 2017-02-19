@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Termin4CSharp.Controller;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.View;
@@ -15,71 +16,58 @@ namespace Termin4CSharp {
         /// </summary>
         [STAThread]
         static void Main() {
+<<<<<<< HEAD
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-<<<<<<< HEAD
-            Person p = new Person("Namnnn", "1337", "email@@", "+4600");
-            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
-            //EditView v = new EditView(p);
-            Application.Run(new EditView(new Room()));
-            Application.Run(new EditView(p));
-            Application.Run(new EditView(b));
+            GUIMain mainGui = new GUIMain();
+            GUIMainController controller = new GUIMainController(mainGui);
+            AdminTabController adminController = new AdminTabController(mainGui);
+            Application.Run(mainGui);
 
-            /**
+            //DAL dal = new DAL(null);
+            //Building b = new Building("bnamename2", "a", DateTime.Now, DateTime.Now, null);
+            ////dal.Add(b);
+            //Room r = null;
+            //List<IModel> rooms = new List<IModel>();
+            //for (int i = 0; i < 5; i++) {
+            //    r = new Room("bnamename", "aa" + i, 15, "1", null);
+            //    rooms.Add(r);
+            //}
+            //int aff = dal.ConnectReferencedIModelsToIModelToQuery(rooms, b);
+            //Console.WriteLine(aff);
+
+            //Person p = new Model.Person();
+            //Building b = new Building();
+            //var asd = b.GetReferencedModels();
+            //var asd2 = p.GetReferencedModels();
+            //Console.WriteLine();
+            //bool bb = asd2["Role"] is Role;
+            //bool bb2 = asd["Rooms"].GetType().IsGenericType;
+            //List<Room> rooms = new List<Room>();
+            //Type t = rooms.GetType().GetGenericArguments()[0];
+
+            //var atts = Utils.GetAttributeInfo(new Building(), true);
+            //var atts2 = Utils.GetAttributeInfo(new Room(), true);
+            ////Type rType = new RoomType().GetType();
+            //Console.WriteLine();
+
+            //Login l = new Login("id", "testpass");
+            //DAL dal = new DAL(null);
+            //dal.Add(l);
 =======
-            Application.Run(new GUIMain()); 
-
-
-
             /*
->>>>>>> 963fd5491c885cbcad8ca299a770d55613baffb1
-            //Connector.getConnection(); 
-            Person p = new Person("Namnnn", "1337", "email@@", "+4600");
-            Person p2 = new Person("Namnnnp2", "1337p2", "email@@p2", "+4600p2");
-            Building b = new Building("Buildname", "buildaddress", DateTime.Now, DateTime.Now);
-            Building b2 = new Building("Buildnameb2", "buildaddressb2", DateTime.Now, DateTime.Now);
-            Room r = new Room(b, "1337", 134141, "0");
-            Room r2 = new Room(b2, "1337r2", 13414122, "0");
-            Booking book = new Booking(1017, DateTime.Now, r, p, "purporse", DateTime.Now, DateTime.Now);
-            Booking book2 = new Booking(1018, DateTime.Now, r2, p2, "purporse", DateTime.Now, DateTime.Now);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            //object[] toBeAddedToDb = { p, p2, b, b2, r, r2, book, book, book, book, book, book, book2, book2, book2, book2, book2 };
-
-            DAL dal = new DAL();
-            dal.Remove(b);
-            dal.Add(b);
-            Building retBuild = dal.Get(b).First() as Building;
-            dal.Remove(b);
-            Console.WriteLine(b.Equals(retBuild));
-            Console.WriteLine();
-
-            //foreach (IModel o in toBeAddedToDb)
-            //    dal.Add(o);
-
-            //foreach (IModel o in toBeAddedToDb)
-            //    dal.Get(o);
-
-            //Console.WriteLine(dal.Get(p).First());
-
-            //object[] toBeDeletedFromDb = { p2, b2, r2, book2 };
-            //foreach (IModel o in toBeDeletedFromDb)
-            //    dal.Remove(o);
-
-            //var wheres = new Dictionary<string, object>();
-            //wheres["id"] = "%";
-            //var results = dal.Get(new Booking(), wheres, optWhereCondition: WhereCondition.LIKE);
-            //var rrr = dal.Get(new Booking(), wheres, optWhereCondition: WhereCondition.LIKE);
-            ////dal.Get(new Building(), wheres, optWhereCondition: WhereCondition.LIKE);
-            //var ppp = dal.Get(new Person(), wheres, optWhereCondition: WhereCondition.LIKE);
-
-            //foreach (IModel m in rrr)
-            //    Console.WriteLine("a");
-<<<<<<< HEAD
-            **/
-=======
+            EditView ev = new EditView(fetched);
+            EditViewController c = new EditViewController(ev);
+            Application.Run(ev);
 */
->>>>>>> 963fd5491c885cbcad8ca299a770d55613baffb1
 
+            DALCronus dal = new DALCronus();
+            dal.GetEmployees();
+
+>>>>>>> ebba
         }
     }
 }

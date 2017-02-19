@@ -76,10 +76,12 @@ namespace Termin4CSharp.View {
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
+<<<<<<< HEAD
+            this.button5 = new System.Windows.Forms.Button();
+=======
             this.label12 = new System.Windows.Forms.Label();
-			this.button5 = new System.Windows.Forms.Button();
-
             this.label13 = new System.Windows.Forms.Label();
+>>>>>>> ebba
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -593,23 +595,27 @@ namespace Termin4CSharp.View {
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
-            // button2
+<<<<<<< HEAD
+            // button5
             // 
-			//
+            this.button5.Location = new System.Drawing.Point(6, 376);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(120, 23);
+            this.button5.TabIndex = 21;
+            this.button5.Text = "Rensa filter";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+=======
             // label12
-			//            this.label12.AutoSize = true;
+            // 
+            this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(29, 24);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(439, 50);
             this.label12.TabIndex = 25;
-            this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";			//
-            // button5
-            //			this.button5.Location = new System.Drawing.Point(6, 376);            this.button5.Size = new System.Drawing.Size(120, 23);
-            this.button5.TabIndex = 21;
-            this.button5.Text = "Rensa filter";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);            // 
+            this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -619,6 +625,7 @@ namespace Termin4CSharp.View {
             this.label13.Size = new System.Drawing.Size(78, 20);
             this.label13.TabIndex = 26;
             this.label13.Text = "CRONUS\r\n";
+>>>>>>> ebba
             // 
             // GUIMain
             // 
@@ -656,6 +663,7 @@ namespace Termin4CSharp.View {
         private VScrollBar vScrollBar5;
         private ListView listView2;
         private Button button2;
+<<<<<<< HEAD
         private TabControl tabControl1;
         private TabPage tabPage4;
         private Label label5;
@@ -695,7 +703,9 @@ namespace Termin4CSharp.View {
         private Label label12;
         private Button button4;
         private Button button5;
+=======
         private Label label13;
         private Label label12;
+>>>>>>> ebba
     }
 }

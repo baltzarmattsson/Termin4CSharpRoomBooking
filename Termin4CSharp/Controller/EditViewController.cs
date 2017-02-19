@@ -184,7 +184,9 @@ namespace Termin4CSharp.Controller {
                 } else if (c is DateTimePicker) {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
                 } else if (c is ComboBox) {
-                    controlValues[c.Name] = ((ComboBox)c).SelectedValue;
+                    IModel selectedIModel = (IModel)((ComboBox)c).SelectedItem;
+                    controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First();
+                    //controlValues[c.Name] = ((ComboBox)c).SelectedItem;
                 } else if (c is CheckedListBox) {
                     controlValues[c.Name] = ((CheckedListBox)c).CheckedItems;
                 }

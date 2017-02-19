@@ -183,6 +183,10 @@ namespace Termin4CSharp.Controller {
                     controlValues[c.Name] = String.IsNullOrEmpty(txtBox.Text) ? null : txtBox.Text; 
                 } else if (c is DateTimePicker) {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
+                } else if (c is ComboBox) {
+                    controlValues[c.Name] = ((ComboBox)c).SelectedValue;
+                } else if (c is CheckedListBox) {
+                    controlValues[c.Name] = ((CheckedListBox)c).CheckedItems;
                 }
             }
             return controlValues;
@@ -205,6 +209,9 @@ namespace Termin4CSharp.Controller {
                 identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
             else if (sender is NumberTextBox)
                 identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
+            //else if (sender is ComboBox)
+            //    identifyingAttributesValues[((ComboBox)sender).Name] = ((ComboBox)sender).SelectedItem;
+
             else
                 throw new Exception("What type then...." + sender.GetType());
         }

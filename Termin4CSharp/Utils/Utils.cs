@@ -89,7 +89,7 @@ namespace Termin4CSharp {
         }
 
         public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
-            var attributeInfo = Utils.GetAttributeInfo(model);
+            var attributeInfo = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
             object instance = Utils.GetInstanceFromIModel(model);
 
             foreach (string key in attributeInfo.Keys) {
@@ -116,10 +116,6 @@ namespace Termin4CSharp {
             string tableName = Utils.IModelTableName(referencedIModels.First());
             if (tableName == null)
                 throw new Exception(String.Format("Table could not be found! IModel: {0}", referencedIModels.First()));
-
-            //Uppdatera existerande modeller, dvs listan på referencedModels
-            //Sätt foreignkey-attributet till targetModel.PK
-            //update Room r set r.bName = targetModel.PK where r.Id in 
 
             StringBuilder sqlBuilder = new StringBuilder();
 

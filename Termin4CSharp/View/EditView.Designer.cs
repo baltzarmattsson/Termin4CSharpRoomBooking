@@ -85,7 +85,7 @@ namespace Termin4CSharp.View {
                 attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
                 this.flowLayoutPanel1.Controls.Add(attributeName);
                 
-                Control control = null;
+                Control control = null; 
 
                 // If IModel or List<IModel>, it's a referenced IModel/List<IModel>. For example, a Building that contains List<Room>, or Person that has a Role
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
@@ -94,6 +94,7 @@ namespace Termin4CSharp.View {
                     if (value is IModel) {
                         List<IModel> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
+                        comboBox.Name = kv.Key;
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
                         comboBox.Items.AddRange(imodels.ToArray());
@@ -101,6 +102,7 @@ namespace Termin4CSharp.View {
                     } else if (value.GetType().IsGenericType) {
                         List<IModel> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
                         CheckedListBox checkBox = new CheckedListBox();
+                        checkBox.Name = kv.Key;
                         checkBox.Width = 500;
                         checkBox.Items.AddRange(imodels.ToArray());
                         control = checkBox;
@@ -112,7 +114,6 @@ namespace Termin4CSharp.View {
                         datePicker.Width = 500;
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-
                         if (model is Building) {
                             datePicker.Format = DateTimePickerFormat.Time;
                             datePicker.ShowUpDown = true;

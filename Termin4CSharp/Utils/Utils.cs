@@ -40,7 +40,7 @@ namespace Termin4CSharp {
                 if (paramObj is IModel) {
                     var refModels = ((IModel)paramObj).GetReferencedModels();
 
-                    if (memOptFor == MembersOptimizedFor.QUERIES && refModels.ContainsKey(attName)) {
+                    if (memOptFor == MembersOptimizedFor.EDITVIEW && refModels.ContainsKey(attName)) {
                         // Create IModel
                         if (refModels[attName] is IModel) {
                             Type ttt = Type.GetType("Termin4CSharp.Model." + attName);

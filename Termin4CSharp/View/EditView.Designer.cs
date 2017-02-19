@@ -71,7 +71,7 @@ namespace Termin4CSharp.View {
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
             this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
             
-            var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.NONE);
+            var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
             Label attributeName = null;
             foreach (var kv in attributes) {
                 bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key);

@@ -91,7 +91,6 @@ namespace Termin4CSharp.View {
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
                 if (value is IModel || (value != null && value.GetType().IsGenericType)) {
                     //List<IModel> imodels = Controller.GetReferenceAbleIModels(model, (IModel)value);
-
                     if (value is IModel) {
                         List<IModel> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
@@ -107,7 +106,6 @@ namespace Termin4CSharp.View {
                         control = checkBox;
                     }
                 } else {
-
                     // DateTime
                     if (value is DateTime) {
                         DateTimePicker datePicker = new DateTimePicker();
@@ -120,7 +118,7 @@ namespace Termin4CSharp.View {
                             datePicker.ShowUpDown = true;
                         }
                         control = datePicker;
-                        // Numbers
+                    // Numbers
                     } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                         NumberTextBox numTextBox = new NumberTextBox();
                         numTextBox.Width = 500;
@@ -130,8 +128,7 @@ namespace Termin4CSharp.View {
                         numTextBox.Text = "dummyval";
                         numTextBox.Text = value == null ? "0" : value.ToString();
                         control = numTextBox;
-
-                        // Else
+                    // Else
                     } else {
                         TextBox textBox = new TextBox();
                         textBox.Width = 500;

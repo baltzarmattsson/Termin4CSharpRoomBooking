@@ -118,15 +118,21 @@ namespace Termin4CSharp.Controller {
 
                             DAL dal = new DAL(this);
                             int added = 0, updated = 0;
-                            if (toBeAdded.Any()) {
-                                if (doOrdinaryAddAndDelete)
-                                    added = dal.Add();
-                                else
-                                    added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+
+                            if (doOrdinaryAddAndDelete && toBeAdded.Any()) {
+
                             }
-                            if (toUpdateToNull.Any()) {
-                                updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
-                            }
+
+
+                            //if (toBeAdded.Any()) {
+                            //    if (doOrdinaryAddAndDelete)
+                            //        added = dal.Add();
+                            //    else
+                            //        added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                            //}
+                            //if (toUpdateToNull.Any()) {
+                            //    updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
+                            //}
                         }
                     }
                 }

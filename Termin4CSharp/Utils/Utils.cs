@@ -130,7 +130,7 @@ namespace Termin4CSharp {
 
             string foreignKeyAtt = null, foreignKeyVal = null;
             if (referencedIModels.First() is Room && targetModel is Building) {
-                foreignKeyAtt = "bname";
+                foreignKeyAtt = "BName";
                 if (connect)
                     foreignKeyVal = ((Building)targetModel).Name;
             }
@@ -300,8 +300,10 @@ namespace Termin4CSharp {
                 if (resourceNames.Count > 0) {
                     if (whereAdded)
                         sqlBuilder.Append(" and ");
-                    else
+                    else {
                         sqlBuilder.Append(" where ");
+                        whereAdded = true;
+                    }
                     sqlBuilder.Append(" r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (");
                     string key = "";
                     foreach (string resourceName in resourceNames) {
@@ -331,6 +333,9 @@ namespace Termin4CSharp {
 
                 string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
                 object val = attKV.Value;
+
+                if (val is IModel)
+                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
                 
                 /*      NULL        **/
                 if (val == null)
@@ -527,9 +532,9 @@ namespace Termin4CSharp {
             //Room
             if (model is Room) {
                 if (key.Equals("building"))
-                    keyEqv = "bName";
+                    keyEqv = "BName";
                 else if (key.Equals("roomtype"))
-                    keyEqv = "rtype";
+                    keyEqv = "RType";
             // Booking
             } else if (model is Booking) {
                 if (key.Equals("person"))

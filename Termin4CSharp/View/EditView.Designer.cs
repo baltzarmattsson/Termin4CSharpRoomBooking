@@ -74,7 +74,7 @@ namespace Termin4CSharp.View {
             var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
             Label attributeName = null;
             foreach (var kv in attributes) {
-                bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key);
+                bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key) || (model is Login && kv.Key.Equals("Person"));
 
                 // If the models id is autoincrementing, and we're not creating a new item, skip inserting a control for that value
                 if (!IsExistingItemInDatabase && isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model))
@@ -96,7 +96,7 @@ namespace Termin4CSharp.View {
                         Dictionary <IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
                         if (isIdentifyingAttribute)
-                            comboBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                            comboBox.SelectedValueChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
                         comboBox.Name = Utils.ConvertReferencedIModelToColumnName(model, kv.Key);
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
@@ -110,13 +110,13 @@ namespace Termin4CSharp.View {
                             }
                         }
                         control = comboBox;
+                        this.oldIdentifyingAttribute[control.Name] = comboBox.SelectedItem;
                     } else if (value.GetType().IsGenericType) {
                         Controller.ViewHasListOfIModels = true;
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
                         //Sets the initial values to know what to update and insert when Save is pressed 
                         if (imodels.Any())
                             this.Controller.InitialStatusOnReferencingModels[imodels.Keys.First().GetType()] = imodels;
-                        //refModels[attName].GetType().GetGenericArguments()[0];
                         CheckedListBox checkBox = new CheckedListBox();
                         checkBox.Name = kv.Key;
                         checkBox.Width = 500;
@@ -143,7 +143,7 @@ namespace Termin4CSharp.View {
                         numTextBox.Width = 500;
                         numTextBox.Name = kv.Key;
                         if (isIdentifyingAttribute)
-                            numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                            numTextBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
                         numTextBox.Text = "dummyval";
                         numTextBox.Text = value == null ? "0" : value.ToString();
                         control = numTextBox;
@@ -153,7 +153,7 @@ namespace Termin4CSharp.View {
                         textBox.Width = 500;
                         textBox.Name = kv.Key;
                         if (isIdentifyingAttribute)
-                            textBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
+                            textBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
                         textBox.Text = "dummyval";
                         textBox.Text = value == null ? "" : value.ToString();
                         control = textBox;
@@ -161,7 +161,8 @@ namespace Termin4CSharp.View {
                 }
 
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)
-                    this.oldIdentifyingAttribute[control.Name] = control.Text;
+                    if (!(control is ComboBox || control is CheckedListBox))
+                        this.oldIdentifyingAttribute[control.Name] = control.Text;
                 this.flowLayoutPanel1.Controls.Add(control);
                 flowLayoutPanel1.SetFlowBreak(control, true);
             }

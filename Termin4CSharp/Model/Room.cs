@@ -15,7 +15,7 @@ namespace Termin4CSharp.Model
         public string RType { get; set; }
         public Building Building { get; set; }
         public RoomType RoomType { get; set; }
-        //public List<Resource> Resources { get; set; }
+        public List<Resource> Resources { get; set; }
 
         public Room() { }
 
@@ -37,7 +37,7 @@ namespace Termin4CSharp.Model
             var dict = new Dictionary<string, object>();
             dict["Building"] = new Building();
             dict["RoomType"] = new RoomType();
-            //dict["Resources"] = new List<Resource>();
+            dict["Resources"] = new List<Resource>();
             return dict;
         }
 

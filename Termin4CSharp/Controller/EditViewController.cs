@@ -135,11 +135,7 @@ namespace Termin4CSharp.Controller {
                                 added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
                             if (toUpdateToNull.Any())
                                 updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
-
-                            Console.WriteLine();
-
-
-
+                            
                             //List<IModel> toBeAdded = initialStatus.Select(x => x).Where(y => y.Value).Intersect()
                             //List<IModel> toUpdateToNull = null;
 
@@ -189,7 +185,7 @@ namespace Termin4CSharp.Controller {
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).BName != null ? ((Room)x).BName.Equals(((Building)target).Name) : false);
                 //else if (target is )
                 else if (target is Person && iModelToFetch is Role)
-                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Role)x).RoleName.Equals(((Person)target).RoleName));
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Role)x).Name.Equals(((Person)target).RoleName));
                 else if (target is Booking && iModelToFetch is Room)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).Id.Equals(((Booking)target).RoomId));
                 else if (target is Booking && iModelToFetch is Person)
@@ -284,7 +280,10 @@ namespace Termin4CSharp.Controller {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
                 } else if (c is ComboBox) {
                     IModel selectedIModel = (IModel)((ComboBox)c).SelectedItem;
-                    controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First().Value;
+                    if (selectedIModel != null)
+                        controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First().Value;
+                    else
+                        controlValues[c.Name] = null;
                 } else if (c is CheckedListBox) {
                     // Skip, handled after the main-query is done
                 }
@@ -305,14 +304,18 @@ namespace Termin4CSharp.Controller {
             }
         }
 
-        public void HandleIdentifyingAttributesTextChange(object sender, EventArgs e) {
+        public void HandleIdentifyingAttributesValueChange(object sender, EventArgs e) {
             if (sender is TextBox)
                 identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
             else if (sender is NumberTextBox)
                 identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
-            else if (sender is ComboBox)
-                identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedValue).GetIdentifyingAttributes().First().Value;
-            else
+            else if (sender is ComboBox) {
+                ComboBox cb = (ComboBox)sender;
+                IModel selVal = (IModel)cb.SelectedItem;
+                var kv = selVal.GetIdentifyingAttributes();
+                var kvfirstval = kv.First().Value;
+                identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedItem).GetIdentifyingAttributes().First().Value;
+            } else
                 throw new Exception("What type then...." + sender.GetType());
         }
 

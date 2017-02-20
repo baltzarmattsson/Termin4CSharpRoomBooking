@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Termin4CSharp.Model {
     class Role : IModel {
 
-        public string RoleName { get; set; }
+        public string Name { get; set; }
         public Role() { }
         public Role(string roleName) {
-            this.RoleName = roleName;
+            this.Name = roleName;
         }
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
-            dict["RoleName"] = this.RoleName;
+            dict["Name"] = this.Name;
             return dict;
         }
 
@@ -24,7 +24,7 @@ namespace Termin4CSharp.Model {
         }
 
         public override string ToString() {
-            return this.RoleName;
+            return this.Name;
         }
 
     }

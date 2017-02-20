@@ -26,7 +26,7 @@ namespace Termin4CSharp {
             Type t = paramObj.GetType();
             string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
             if (memOptFor == MembersOptimizedFor.QUERIES)
-                excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b";
+                excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b|\\bResources\\b";
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
                 excludePattern += "|\\bBName\\b|\\bRType\\b|\\bRoleName\\b|\\bPersonId\\b|\\bRoomId\\b|\\bPersonId\\b";
             excludePattern += ")";
@@ -39,7 +39,7 @@ namespace Termin4CSharp {
                 object value = null;
                 if (paramObj is IModel) {
                     var refModels = ((IModel)paramObj).GetReferencedModels();
-
+                    Console.Write("");
                     if (memOptFor == MembersOptimizedFor.EDITVIEW && refModels.ContainsKey(attName)) {
                         // Create IModel
                         if (refModels[attName] is IModel) {

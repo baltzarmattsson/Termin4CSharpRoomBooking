@@ -87,7 +87,7 @@ namespace Termin4CSharp.View {
                 
                 Control control = null;
                 //bool isListOfIModels = false;
-
+                
                 // If IModel or List<IModel>, it's a referenced IModel/List<IModel>. For example, a Building that contains List<Room>, or Person that has a Role
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
                 if (value is IModel || (value != null && value.GetType().IsGenericType)) {
@@ -95,7 +95,8 @@ namespace Termin4CSharp.View {
                     if (value is IModel) {
                         Dictionary <IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
-                        //comboBox.Name = Controller.ConvertIModelNameToStringValue(model, kv.Key);
+                        if (isIdentifyingAttribute)
+                            comboBox.TextChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesTextChange);
                         comboBox.Name = Utils.ConvertReferencedIModelToColumnName(model, kv.Key);
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
@@ -107,8 +108,6 @@ namespace Termin4CSharp.View {
                                 selectedValue = filteredValues.First().Key;
                                 comboBox.SelectedItem = selectedValue;
                             }
-                                //selVal = selVal.First();
-                            //comboBox.SelectedItem = selVal.Key;
                         }
                         control = comboBox;
                     } else if (value.GetType().IsGenericType) {
@@ -119,6 +118,7 @@ namespace Termin4CSharp.View {
                         checkBox.Width = 500;
                         foreach (var imodel in imodels)
                             checkBox.Items.Add(imodel.Key, imodel.Value);
+                        checkBox.ItemCheck += new ItemCheckEventHandler(this.Controller.HandleListOfIModelsBoxCheck);
                         control = checkBox;
                     }
                 } else {
@@ -161,22 +161,6 @@ namespace Termin4CSharp.View {
                 this.flowLayoutPanel1.Controls.Add(control);
                 flowLayoutPanel1.SetFlowBreak(control, true);
             }
-
-            //// List<IModel>
-            //Type modelType = model.GetType();
-            //if (modelType == typeof(Building)) {
-            //    Label attributeNameLabel = new Label();
-            //    attributeNameLabel.Text = "Rum";
-            //    var value = ((Building)model).Rooms;
-            //    CheckedListBox checkListBox = new CheckedListBox();
-            //    if (value != null)
-            //        foreach (var item in (List<Room>)value)
-            //            checkListBox.Items.Add(item);
-            //    checkListBox.Width = 500;
-            //    flowLayoutPanel1.Controls.Add(attributeNameLabel);
-            //    flowLayoutPanel1.Controls.Add(checkListBox);
-            //    flowLayoutPanel1.SetFlowBreak(checkListBox, true);
-            //}
 
             // Adding responselabel
             this.responseLabel = new Label();

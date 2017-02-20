@@ -19,9 +19,10 @@ namespace Termin4CSharp.Controller {
         private Dictionary<string, object> identifyingAttributesValues;
 
         public bool ViewHasListOfIModels = false;
+
+        public Dictionary<IModel, bool> InitialStatusOnReferencingModels;
         private List<IModel> listOfIModelsToBeReferenced;
         private List<IModel> listOfIModelsToBeUnReferenced;
-        //public Dictionary<string, List<IModel>> ListOfReferencedIModels;
 
         public EditViewController(EditView editView, AdminTabController adminController = null) {
             this.EditView = editView;
@@ -29,8 +30,10 @@ namespace Termin4CSharp.Controller {
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
-            //this.ListOfReferencedIModels = new Dictionary<string, List<IModel>>();
 
+            this.listOfIModelsToBeReferenced = new List<IModel>();
+            this.listOfIModelsToBeUnReferenced = new List<IModel>();
+            this.InitialStatusOnReferencingModels = new Dictionary<IModel, bool>();
 
             this.EditView.InitializeLoad();
         }
@@ -144,6 +147,8 @@ namespace Termin4CSharp.Controller {
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Building)x).Name.Equals(((Room)target).BName));
                 else if (target is Room && iModelToFetch is RoomType)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((RoomType)x).Type.Equals(((Room)target).RType));
+                //else if (target is Room && iModelToFetch is Resource)
+                //    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Resource)x).)
                 else
                     throw new Exception("unhandled type");
 
@@ -176,33 +181,15 @@ namespace Termin4CSharp.Controller {
             return fetchedIModelsFromDatabase;
         }
 
-        //public string ConvertIModelNameToStringValue(IModel model, string key) {
-        //    string keyEqv = null;
-
-        //    //Room
-        //    if (model is Room) {
-        //        if (key.Equals("Building"))
-        //            keyEqv = "bName";
-        //        else if (key.Equals("RoomType"))
-        //            keyEqv = "rType";
-        //    // Booking
-        //    } else if (model is Booking) {
-        //        if (key.Equals("Person"))
-        //            keyEqv = "PersonID";
-        //        else if (key.Equals("Room"))
-        //            keyEqv = "RoomID";
-        //    // Login
-        //    } else if (model is Login && key.Equals("Person")) {
-        //        keyEqv = "PersonID";
-            
-        //    // Person
-        //    } else if (model is Person && key.Equals("Role")) {
-        //        keyEqv = "RoleName";
-        //    }
-        //    if (keyEqv == null)
-        //        throw new Exception("keyEqv is null");
-        //    return keyEqv;
-        //}
+        public void HandleListOfIModelsBoxCheck(object sender, EventArgs e) {
+            CheckedListBox checkBox = (CheckedListBox)sender;
+            ItemCheckEventArgs check = (ItemCheckEventArgs)e;
+            Console.WriteLine();
+            if (check.NewValue == CheckState.Checked)
+                this.listOfIModelsToBeReferenced.Add((IModel)checkBox.SelectedItem);
+            else if (check.NewValue == CheckState.Unchecked)
+                this.listOfIModelsToBeUnReferenced.Add((IModel)checkBox.SelectedItem);
+        }
 
         public void HandleCloseButtonClick() {
             this.Close();
@@ -254,6 +241,8 @@ namespace Termin4CSharp.Controller {
                 identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
             else if (sender is NumberTextBox)
                 identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
+            else if (sender is ComboBox)
+                identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedValue).GetIdentifyingAttributes().First().Value;
             else
                 throw new Exception("What type then...." + sender.GetType());
         }

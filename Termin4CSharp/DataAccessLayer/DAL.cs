@@ -51,8 +51,8 @@ namespace Termin4CSharp.DataAccessLayer {
             return returnModel;
         }
 
-        public int ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel) {
-            SqlCommand cmd = Utils.ConnectReferencedIModelsToIModelToQuery(referencedIModels, targetModel);
+        public int HandleReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool addModels) {
+            SqlCommand cmd = Utils.ConnectReferencedIModelsToIModelToQuery(referencedIModels, targetModel, addModels);
             return this.PerformNonQuery(targetModel, cmd);
         }
 

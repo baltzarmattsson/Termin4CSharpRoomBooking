@@ -44,7 +44,7 @@ namespace Termin4CSharp.Model
             var other = obj as Person;
             if (other == null)
                 return false;
-            return this.Name.Equals(other.Name) && this.Id.Equals(other.Id) && this.Email.Equals(other.Email) && this.PhoneNbr.Equals(other.PhoneNbr);
+            return/* this.Name.Equals(other.Name) && */this.Id.Equals(other.Id); /*&& this.Email.Equals(other.Email) && this.PhoneNbr.Equals(other.PhoneNbr); */
         }
     }
 }

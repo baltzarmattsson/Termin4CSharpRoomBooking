@@ -15,9 +15,13 @@ namespace Termin4CSharp.Controller {
 
         public EditView EditView { get; set; }
         public AdminTabController AdminController { get; set; }
-        private bool hasUnsavedChanges;
         private bool isExistingObjectInDatabase = false;
         private Dictionary<string, object> identifyingAttributesValues;
+
+        public bool ViewHasListOfIModels = false;
+        private List<IModel> listOfIModelsToBeReferenced;
+        private List<IModel> listOfIModelsToBeUnReferenced;
+        //public Dictionary<string, List<IModel>> ListOfReferencedIModels;
 
         public EditViewController(EditView editView, AdminTabController adminController = null) {
             this.EditView = editView;
@@ -25,6 +29,8 @@ namespace Termin4CSharp.Controller {
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
+            //this.ListOfReferencedIModels = new Dictionary<string, List<IModel>>();
+
 
             this.EditView.InitializeLoad();
         }
@@ -52,17 +58,13 @@ namespace Termin4CSharp.Controller {
             return affectedRows;
         }
         public void Close() {
-            if (hasUnsavedChanges) {
-                // Är du säker, du har inte sparat
-            } else {
-                EditView.Close();
-                if (this.AdminController != null)
-                    this.AdminController.HandleEditViewClosed();
-            }
+            EditView.Close();
+            if (this.AdminController != null)
+                this.AdminController.HandleEditViewClosed();
+
         }
         public int Delete(IModel model) {
             DAL dal = new DAL(this);
-            //Show popup - säkerställande
             int affectedRows = dal.Remove(model);
             if (affectedRows > 0) {
                 this.ClearFields(EditView.GetControls());
@@ -76,18 +78,19 @@ namespace Termin4CSharp.Controller {
         private void UpdateResponseLabel(string message) {
             this.EditView.SetResponseLabel(message);
         }
-
-        public void HasUnsavedChanges(bool value) {
-            this.hasUnsavedChanges = value;
-        }
         
         public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null) {
             if (this.IdentifyingValuesAreNotEmpty()) {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
                 model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
-                if (model != null && model.GetIdentifyingAttributes().First().Value != null)
+                if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
                     this.Save(model, oldIdentifyingAttributes);
+                    if (this.ViewHasListOfIModels) {
+
+                    }
+                }
+
             } else {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
@@ -106,10 +109,12 @@ namespace Termin4CSharp.Controller {
             SINGLE_IMODEL, LIST_OF_IMODELS
         }
 
-        public List<IModel> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList) {
-
-            List<IModel> fetchedIModelsFromDatabase = new List<IModel>();
-
+        // Gets a list of all values that can be referenced by the target-model. The bool-parameter tells us
+        // if it's a currently connected/referenced object or not. If it is, it's later marked as checked/selected in the
+        // EditView
+        public Dictionary<IModel, bool> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList) {
+            
+            Dictionary<IModel, bool> fetchedIModelsFromDatabase = new Dictionary<IModel, bool>();
 
             if (referencedIModelOrList != null) {
                 DAL dal = new DAL(this);
@@ -120,46 +125,84 @@ namespace Termin4CSharp.Controller {
                     Type typeThatListHolds = referencedIModelOrList.GetType().GetGenericArguments()[0];
                     iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
                 }
-                if (isExistingObjectInDatabase) {
 
-                    // Setting WHERE-clause 
-                    //var kvIdAtt = target.GetIdentifyingAttributes().First();
-                    //string id = kvIdAtt.Key;
-                    object identifyingValue = target.GetIdentifyingAttributes().First().Value;
-                    var whereParams = new Dictionary<string, object>();
-                    if (target is Building && iModelToFetch is Room)
-                        whereParams["bname"] = identifyingValue;
-                    //else if (target is Room && iModelToFetch is Building) 
-                    
-                    //whereParams[id] = idVal;
-                    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, whereParams);
+                // Loads all objects to the list, and checks if they're connected already by comparing the foreignkey-column with the target-IModel ID
+                List<IModel> allObjects = dal.Get(iModelToFetch, selectAll: true);
 
-                } else {
-                    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, selectAll: true);
-                }
+                if (target is Building && iModelToFetch is Room)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).BName.Equals(((Building)target).Name));
+                //else if (target is )
+                else if (target is Person && iModelToFetch is Role)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Role)x).RoleName.Equals(((Person)target).RoleName));
+                else if (target is Booking && iModelToFetch is Room)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).Id.Equals(((Booking)target).RoomId));
+                else if (target is Booking && iModelToFetch is Person)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Person)x).Id.Equals(((Booking)target).PersonId));
+                else if (target is Login && iModelToFetch is Person)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Person)x).Id.Equals(((Login)target).PersonId));
+                else if (target is Room && iModelToFetch is Building)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Building)x).Name.Equals(((Room)target).BName));
+                else if (target is Room && iModelToFetch is RoomType)
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((RoomType)x).Type.Equals(((Room)target).RType));
+                else
+                    throw new Exception("unhandled type");
 
-                // If it's a singular IModel being referenced, for example when a Login-object references a Person-object
-                //if (referenceIModel != null) {
-                //    if (isExistingObjectInDatabase) {
-                //        var kvIdAtt = target.GetIdentifyingAttributes().First();
-                //        string id = kvIdAtt.Key;
-                //        object idVal = kvIdAtt.Value;
-                //        var whereParams = new Dictionary<string, object>();
-                //        whereParams[id] = idVal;
-                //        referencableIModels = dal.Get(referenceIModel, whereParams);
-                //    } else {
-                //        referencableIModels = dal.Get(referenceIModel, selectAll: true);
-                //    }
-                //    // Else if it's a list of referenced models, for example the list of Rooms a Building holds
-                //} else if (listOfReferenceIModels != null) {
-                //    Type typeThatListHolds = listOfReferenceIModels.GetType().GetGenericArguments()[0];
-                //    IModel instance = Activator.CreateInstance(typeThatListHolds) as IModel;
+                // Now we set "True" to the objects that are 
+                // Setting WHERE-clause 
+                //object identifyingValue = target.GetIdentifyingAttributes().First().Value;
+                //var whereParams = new Dictionary<string, object>();
+                //if (target is Building && iModelToFetch is Room)
+                //    whereParams["bname"] = identifyingValue;
+                //List<IModel> currentlyReferencedObjects = dal.Get(iModelToFetch, whereParams);
+
+
+                //if (isExistingObjectInDatabase) {
+
+                // Setting WHERE-clause 
+                //object identifyingValue = target.GetIdentifyingAttributes().First().Value;
+                //var whereParams = new Dictionary<string, object>();
+                //if (target is Building && iModelToFetch is Room)
+                //    whereParams["bname"] = identifyingValue;
+                //    //else if (target is Room && iModelToFetch is Building) 
+
+                //    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, whereParams);
+
+                //} else {
+                //    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, selectAll: true);
                 //}
 
             }
 
             return fetchedIModelsFromDatabase;
         }
+
+        //public string ConvertIModelNameToStringValue(IModel model, string key) {
+        //    string keyEqv = null;
+
+        //    //Room
+        //    if (model is Room) {
+        //        if (key.Equals("Building"))
+        //            keyEqv = "bName";
+        //        else if (key.Equals("RoomType"))
+        //            keyEqv = "rType";
+        //    // Booking
+        //    } else if (model is Booking) {
+        //        if (key.Equals("Person"))
+        //            keyEqv = "PersonID";
+        //        else if (key.Equals("Room"))
+        //            keyEqv = "RoomID";
+        //    // Login
+        //    } else if (model is Login && key.Equals("Person")) {
+        //        keyEqv = "PersonID";
+            
+        //    // Person
+        //    } else if (model is Person && key.Equals("Role")) {
+        //        keyEqv = "RoleName";
+        //    }
+        //    if (keyEqv == null)
+        //        throw new Exception("keyEqv is null");
+        //    return keyEqv;
+        //}
 
         public void HandleCloseButtonClick() {
             this.Close();
@@ -185,10 +228,10 @@ namespace Termin4CSharp.Controller {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
                 } else if (c is ComboBox) {
                     IModel selectedIModel = (IModel)((ComboBox)c).SelectedItem;
-                    controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First();
-                    //controlValues[c.Name] = ((ComboBox)c).SelectedItem;
+                    controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First().Value;
                 } else if (c is CheckedListBox) {
-                    controlValues[c.Name] = ((CheckedListBox)c).CheckedItems;
+                    // Skip, handled after the main-query is done
+                    //controlValues[c.Name] = ((CheckedListBox)c).CheckedItems;
                 }
             }
             return controlValues;
@@ -211,14 +254,13 @@ namespace Termin4CSharp.Controller {
                 identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
             else if (sender is NumberTextBox)
                 identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
-            //else if (sender is ComboBox)
-            //    identifyingAttributesValues[((ComboBox)sender).Name] = ((ComboBox)sender).SelectedItem;
-
             else
                 throw new Exception("What type then...." + sender.GetType());
         }
 
         private bool IdentifyingValuesAreNotEmpty() {
+            if (Utils.IdIsAutoIncrementInDb(EditView.Model))
+                return true;
             if (this.identifyingAttributesValues.Count == 0)
                 return false;
             foreach (var idValue in identifyingAttributesValues)

@@ -89,11 +89,20 @@ namespace Termin4CSharp {
         }
 
         public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
-            var attributeInfo = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
+            var attributeInfo = Utils.GetAttributeInfo(model, MembersOptimizedFor.QUERIES);
+            if (Utils.IdIsAutoIncrementInDb(model))
+                attributeInfo.Remove(model.GetIdentifyingAttributes().First().Key);
+
             object instance = Utils.GetInstanceFromIModel(model);
 
-            foreach (string key in attributeInfo.Keys) {
-                var value = controlValues[key];
+            string propertyName = null;
+            foreach (string key in attributeInfo.Keys) { 
+                if (controlValues.ContainsKey(key) == false) {
+                    propertyName = Utils.ConvertReferencedIModelToColumnName(model, key);
+                } else {
+                    propertyName = key;
+                }
+                var value = controlValues[propertyName];
                 instance.GetType().GetProperty(key).SetValue(instance, value, null);
             }            
             dynamic castedInstance = Convert.ChangeType(instance, model.GetType());
@@ -112,7 +121,7 @@ namespace Termin4CSharp {
             return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
         }
 
-        public static SqlCommand ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel) {
+        public static SqlCommand ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool addModels) {
             string tableName = Utils.IModelTableName(referencedIModels.First());
             if (tableName == null)
                 throw new Exception(String.Format("Table could not be found! IModel: {0}", referencedIModels.First()));
@@ -122,7 +131,8 @@ namespace Termin4CSharp {
             string foreignKeyAtt = null, foreignKeyVal = null;
             if (referencedIModels.First() is Room && targetModel is Building) {
                 foreignKeyAtt = "bname";
-                foreignKeyVal = ((Building)targetModel).Name;
+                if (addModels)
+                    foreignKeyVal = ((Building)targetModel).Name;
             }
             if (foreignKeyAtt == null || foreignKeyVal == null)
                 throw new Exception(string.Format("FKAtt({0}) or FKVal({1}) == null", foreignKeyAtt, foreignKeyVal));
@@ -132,10 +142,6 @@ namespace Termin4CSharp {
             fkAttributes[foreignKeyAtt] = foreignKeyVal;
 
             Dictionary<string, object> whereParams = new Dictionary<string, object>();
-            //string idAttName = referencedIModels.First().GetIdentifyingAttributes().First().Key;
-            //object idAttValue = referencedIModels.First().GetIdentifyingAttributes().First().Value;
-            //sqlBuilder.Append(string.Format(" where {0} in (@@{0})", idAttName));
-            //whereParams[idAttName] = idAttValue;
 
             string idAttName = referencedIModels.First().GetIdentifyingAttributes().First().Key;
             object idAttValue = null;
@@ -515,6 +521,37 @@ namespace Termin4CSharp {
             return retName;
         }
 
+        public static string ConvertReferencedIModelToColumnName(IModel model, string key) {
+            string keyEqv = null;
+            key = key.ToLower();
+            //Room
+            if (model is Room) {
+                if (key.Equals("building"))
+                    keyEqv = "bName";
+                else if (key.Equals("roomtype"))
+                    keyEqv = "rtype";
+            // Booking
+            } else if (model is Booking) {
+                if (key.Equals("person"))
+                    keyEqv = "PersonId";
+                else if (key.Equals("personid"))
+                    keyEqv = "Person";
+                else if (key.Equals("room"))
+                    keyEqv = "RoomId";
+                else if (key.Equals("roomid"))
+                    keyEqv = "Room";
+            // Login
+            } else if (model is Login && key.Equals("person")) {
+                keyEqv = "PersonId";
+
+            // Person
+            } else if (model is Person && key.Equals("role")) {
+                keyEqv = "RoleName";
+            }
+            if (keyEqv == null)
+                throw new Exception("keyEqv is null");
+            return keyEqv;
+        }
         public static bool IdIsAutoIncrementInDb(IModel model) {
             bool isAuto = false;
             if (model is Booking)

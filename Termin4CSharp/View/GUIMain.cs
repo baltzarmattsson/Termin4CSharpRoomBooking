@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Termin4CSharp.Controller;
+using System.Data.SqlServerCe; 
 
 namespace Termin4CSharp.View
 {

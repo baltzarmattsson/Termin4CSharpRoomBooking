@@ -178,12 +178,13 @@ namespace Termin4CSharp.Controller {
                     iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
                 }
 
-                // Loads all objects to the list, and checks if they're connected already by comparing the foreignkey-column with the target-IModel ID
-                List<IModel> allObjects = dal.Get(iModelToFetch, selectAll: true);
+
+                List<IModel> allObjects = null;
+                
+                allObjects = dal.Get(iModelToFetch, selectAll: true);
 
                 if (target is Building && iModelToFetch is Room)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).BName != null ? ((Room)x).BName.Equals(((Building)target).Name) : false);
-                //else if (target is )
                 else if (target is Person && iModelToFetch is Role)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Role)x).Name.Equals(((Person)target).RoleName));
                 else if (target is Booking && iModelToFetch is Room)
@@ -196,35 +197,32 @@ namespace Termin4CSharp.Controller {
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Building)x).Name.Equals(((Room)target).BName));
                 else if (target is Room && iModelToFetch is RoomType)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((RoomType)x).Type.Equals(((Room)target).RType));
-                //else if (target is Room && iModelToFetch is Resource)
-                //    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Resource)x).)
-                else
+                else if (target is Room && iModelToFetch is Resource) {
+                    // Since they're connected in an associationtable
+                    var whereParams = new Dictionary<string, object>();
+                    whereParams["roomID"] = ((Room)target).Id;
+
+                    var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>();
+                    var allObjectsCasted = allObjects.Cast<Resource>().ToList();
+
+                    var intersected = allObjectsCasted.Select(a => a.Id).Intersect(objectsFromAssociationTable.Select(b => b.ResId));
+
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(a => a, a => false);
+                    //foreach (var m in fetchedIModelsFromDatabase) {
+                    //    if (intersected.Select(x => x) == ((Resource)m.Key).Id)
+                    //}
+                    
+                    //foreach (var model in allObjectsCasted) {
+                    //    if 
+                    //}
+                    //fetchedIModelsFromDatabase = allObjectsCasted.ToDictionary(x => x, x => intersected.Contains(x.Id));
+
+                    //fetchedIModelsFromDatabase = allObjectsCasted.To
+
+                    //fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => intersected.Contains(x));
+                    //fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room_Resource)x).RoomId.Equals(((Room)target).Id));
+                } else
                     throw new Exception("unhandled type");
-
-                // Now we set "True" to the objects that are 
-                // Setting WHERE-clause 
-                //object identifyingValue = target.GetIdentifyingAttributes().First().Value;
-                //var whereParams = new Dictionary<string, object>();
-                //if (target is Building && iModelToFetch is Room)
-                //    whereParams["bname"] = identifyingValue;
-                //List<IModel> currentlyReferencedObjects = dal.Get(iModelToFetch, whereParams);
-
-
-                //if (isExistingObjectInDatabase) {
-
-                // Setting WHERE-clause 
-                //object identifyingValue = target.GetIdentifyingAttributes().First().Value;
-                //var whereParams = new Dictionary<string, object>();
-                //if (target is Building && iModelToFetch is Room)
-                //    whereParams["bname"] = identifyingValue;
-                //    //else if (target is Room && iModelToFetch is Building) 
-
-                //    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, whereParams);
-
-                //} else {
-                //    fetchedIModelsFromDatabase = dal.Get(iModelToFetch, selectAll: true);
-                //}
-
             }
 
             return fetchedIModelsFromDatabase;
@@ -241,19 +239,8 @@ namespace Termin4CSharp.Controller {
                 this.changedStatusOnReferencingModels[modelType] = new Dictionary<IModel, bool>();
             }
             Dictionary<IModel, bool> changedList = this.changedStatusOnReferencingModels[modelType];
-            //if (changedList.ContainsKey(selectedIModel))
                 this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
 
-
-            //if (!listOfIModelsToBeReferenced.ContainsKey(modelType) && !listOfIModelsToBeUnReferenced.ContainsKey(modelType)) {
-            //    this.listOfIModelsToBeReferenced[modelType] = new List<IModel>();
-            //    this.listOfIModelsToBeUnReferenced[modelType] = new List<IModel>();
-            //}
-
-            //if (check.NewValue == CheckState.Checked)
-            //    //this.listOfIModelsToBeReferenced[modelType].Add((IModel)checkBox.SelectedItem);
-            //else if (check.NewValue == CheckState.Unchecked)
-            //    //this.listOfIModelsToBeUnReferenced[modelType].Add((IModel)checkBox.SelectedItem);
         }
 
         public void HandleCloseButtonClick() {

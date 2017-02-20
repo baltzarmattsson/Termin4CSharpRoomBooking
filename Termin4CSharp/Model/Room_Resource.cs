@@ -8,10 +8,10 @@ namespace Termin4CSharp.Model {
     class Room_Resource : IModel {
 
         public string RoomId { get; set; }
-        public string ResId { get; set; }
+        public int ResId { get; set; }
         public Room Room { get; set; }
         public Room_Resource() { }
-        public Room_Resource(string roomId, string resId) {
+        public Room_Resource(string roomId, int resId) {
             this.RoomId = roomId;
             this.ResId = resId;
         }

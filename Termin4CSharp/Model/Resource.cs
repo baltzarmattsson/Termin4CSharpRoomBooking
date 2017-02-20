@@ -8,6 +8,7 @@ namespace Termin4CSharp.Model
 {
     public class Resource : IModel
     {
+        public int Id { get; set; }
         public string Type { get; set; }
 
         public Resource() { }
@@ -18,7 +19,7 @@ namespace Termin4CSharp.Model
 
         public Dictionary<string, object> GetIdentifyingAttributes() {
             var dict = new Dictionary<string, object>();
-            dict["Type"] = this.Type;
+            dict["Id"] = this.Id;
             return dict;
         }
         public Dictionary<string, object> GetReferencedModels() {
@@ -27,13 +28,13 @@ namespace Termin4CSharp.Model
         }
 
         public override string ToString() {
-            return string.Format("{0}", Type);
+            return string.Format("{0} {1}", Id, Type);
         }
         public override bool Equals(object obj) {
             var other = obj as Resource;
             if (other == null)
                 return false;
-            return this.Type.Equals(other.Type);
+            return this.Id.Equals(other.Id) && this.Type.Equals(other.Type);
         }
     }
 }

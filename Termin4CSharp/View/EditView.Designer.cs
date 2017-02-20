@@ -113,6 +113,10 @@ namespace Termin4CSharp.View {
                     } else if (value.GetType().IsGenericType) {
                         Controller.ViewHasListOfIModels = true;
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
+                        //Sets the initial values to know what to update and insert when Save is pressed 
+                        if (imodels.Any())
+                            this.Controller.InitialStatusOnReferencingModels[imodels.Keys.First().GetType()] = imodels;
+                        //refModels[attName].GetType().GetGenericArguments()[0];
                         CheckedListBox checkBox = new CheckedListBox();
                         checkBox.Name = kv.Key;
                         checkBox.Width = 500;

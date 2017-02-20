@@ -20,9 +20,10 @@ namespace Termin4CSharp.Controller {
 
         public bool ViewHasListOfIModels = false;
 
-        public Dictionary<IModel, bool> InitialStatusOnReferencingModels;
-        private List<IModel> listOfIModelsToBeReferenced;
-        private List<IModel> listOfIModelsToBeUnReferenced;
+        public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
+        private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
+        //private Dictionary<Type, List<IModel>> listOfIModelsToBeReferenced;
+        //private Dictionary<Type, List<IModel>> listOfIModelsToBeUnReferenced;
 
         public EditViewController(EditView editView, AdminTabController adminController = null) {
             this.EditView = editView;
@@ -31,9 +32,10 @@ namespace Termin4CSharp.Controller {
             this.AdminController = adminController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
 
-            this.listOfIModelsToBeReferenced = new List<IModel>();
-            this.listOfIModelsToBeUnReferenced = new List<IModel>();
-            this.InitialStatusOnReferencingModels = new Dictionary<IModel, bool>();
+            //this.listOfIModelsToBeReferenced = new Dictionary<Type, List<IModel>>();
+            //this.listOfIModelsToBeUnReferenced = new Dictionary<Type, List<IModel>>();
+            this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
+            this.changedStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
 
             this.EditView.InitializeLoad();
         }
@@ -90,7 +92,58 @@ namespace Termin4CSharp.Controller {
                 if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
                     this.Save(model, oldIdentifyingAttributes);
                     if (this.ViewHasListOfIModels) {
+                        // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
+                        //foreach (var initStatusForType in InitialStatusOnReferencingModels) {
+                        foreach (var changedStatusForType in this.changedStatusOnReferencingModels) {
 
+                            Type referencedType = changedStatusForType.Key;
+                            Dictionary<IModel, bool> changedStatus = changedStatusForType.Value;
+                            Dictionary<IModel, bool> initialStatus = this.InitialStatusOnReferencingModels.ContainsKey(referencedType) ? this.InitialStatusOnReferencingModels[referencedType] : null;
+
+
+                            //Type referencedType = initStatusForType.Key;
+                            //Dictionary<IModel, bool> initialStatus = initStatusForType.Value;
+                            //Dictionary<IModel, bool> changedStatus = this.changedStatusOnReferencingModels[referencedType];
+                            //var imodelsToBeReferenced = this.listOfIModelsToBeReferenced[referencedType];
+
+                            //List<IModel> toBeAdded = initialStatus.Select(x => x.Key).Intersect(changedStatus);
+
+                            //resultDict = primaryDict.Keys.Intersect(secondaryDict.Keys)
+                            //.ToDictionary(t => t, t => primaryDict[t]);
+                            //var resDict = initialStatus.Keys.Intersect(changedStatus.Keys);
+
+                            List<IModel> toBeAdded = new List<IModel>();
+                            List<IModel> toUpdateToNull = new List<IModel>();
+
+                            var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
+                            foreach (var intersectedModel in intersected) {
+                                if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
+                                    toUpdateToNull.Add(intersectedModel);
+                                else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
+                                    toBeAdded.Add(intersectedModel);
+                            }
+
+                            //SqlCommand add = null, setnull = null;
+                            //if (toBeAdded.Any())
+                            //    add = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                            //if (toUpdateToNull.Any())
+                            //    setnull = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
+
+                            DAL dal = new DAL(this);
+                            int added = 0, updated = 0;
+                            if (toBeAdded.Any())
+                                added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                            if (toUpdateToNull.Any())
+                                updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
+
+                            Console.WriteLine();
+
+
+
+                            //List<IModel> toBeAdded = initialStatus.Select(x => x).Where(y => y.Value).Intersect()
+                            //List<IModel> toUpdateToNull = null;
+
+                        }
                     }
                 }
 
@@ -133,7 +186,7 @@ namespace Termin4CSharp.Controller {
                 List<IModel> allObjects = dal.Get(iModelToFetch, selectAll: true);
 
                 if (target is Building && iModelToFetch is Room)
-                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).BName.Equals(((Building)target).Name));
+                    fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room)x).BName != null ? ((Room)x).BName.Equals(((Building)target).Name) : false);
                 //else if (target is )
                 else if (target is Person && iModelToFetch is Role)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Role)x).RoleName.Equals(((Person)target).RoleName));
@@ -184,11 +237,27 @@ namespace Termin4CSharp.Controller {
         public void HandleListOfIModelsBoxCheck(object sender, EventArgs e) {
             CheckedListBox checkBox = (CheckedListBox)sender;
             ItemCheckEventArgs check = (ItemCheckEventArgs)e;
-            Console.WriteLine();
-            if (check.NewValue == CheckState.Checked)
-                this.listOfIModelsToBeReferenced.Add((IModel)checkBox.SelectedItem);
-            else if (check.NewValue == CheckState.Unchecked)
-                this.listOfIModelsToBeUnReferenced.Add((IModel)checkBox.SelectedItem);
+            IModel selectedIModel = (IModel)checkBox.SelectedItem;
+            Type modelType = selectedIModel.GetType();
+
+            // If the lists arent initialized, initialize them
+            if (this.changedStatusOnReferencingModels.ContainsKey(modelType) == false) {
+                this.changedStatusOnReferencingModels[modelType] = new Dictionary<IModel, bool>();
+            }
+            Dictionary<IModel, bool> changedList = this.changedStatusOnReferencingModels[modelType];
+            //if (changedList.ContainsKey(selectedIModel))
+                this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
+
+
+            //if (!listOfIModelsToBeReferenced.ContainsKey(modelType) && !listOfIModelsToBeUnReferenced.ContainsKey(modelType)) {
+            //    this.listOfIModelsToBeReferenced[modelType] = new List<IModel>();
+            //    this.listOfIModelsToBeUnReferenced[modelType] = new List<IModel>();
+            //}
+
+            //if (check.NewValue == CheckState.Checked)
+            //    //this.listOfIModelsToBeReferenced[modelType].Add((IModel)checkBox.SelectedItem);
+            //else if (check.NewValue == CheckState.Unchecked)
+            //    //this.listOfIModelsToBeUnReferenced[modelType].Add((IModel)checkBox.SelectedItem);
         }
 
         public void HandleCloseButtonClick() {
@@ -218,12 +287,12 @@ namespace Termin4CSharp.Controller {
                     controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First().Value;
                 } else if (c is CheckedListBox) {
                     // Skip, handled after the main-query is done
-                    //controlValues[c.Name] = ((CheckedListBox)c).CheckedItems;
                 }
             }
             return controlValues;
         }
 
+        // TODO ta bort denna och bara stäng fönstret istället
         private void ClearFields(Control.ControlCollection controls) {
             foreach (Control c in controls) {
                 if (c is TextBox) {

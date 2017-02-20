@@ -121,7 +121,7 @@ namespace Termin4CSharp {
             return dOne.Hour == dTwo.Hour && dOne.Minute == dTwo.Minute && dOne.Second == dTwo.Second;
         }
 
-        public static SqlCommand ConnectReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool addModels) {
+        public static SqlCommand ConnectOrNullReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool connect) {
             string tableName = Utils.IModelTableName(referencedIModels.First());
             if (tableName == null)
                 throw new Exception(String.Format("Table could not be found! IModel: {0}", referencedIModels.First()));
@@ -131,11 +131,11 @@ namespace Termin4CSharp {
             string foreignKeyAtt = null, foreignKeyVal = null;
             if (referencedIModels.First() is Room && targetModel is Building) {
                 foreignKeyAtt = "bname";
-                if (addModels)
+                if (connect)
                     foreignKeyVal = ((Building)targetModel).Name;
             }
-            if (foreignKeyAtt == null || foreignKeyVal == null)
-                throw new Exception(string.Format("FKAtt({0}) or FKVal({1}) == null", foreignKeyAtt, foreignKeyVal));
+            if (foreignKeyAtt == null)
+                throw new Exception(string.Format("FKAtt = null"));
 
             Dictionary<string, object> fkAttributes = new Dictionary<string, object>();
             sqlBuilder.Append(string.Format("update {0} set {1} = @{1}", tableName, foreignKeyAtt));

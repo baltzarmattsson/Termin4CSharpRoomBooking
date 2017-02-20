@@ -22,8 +22,6 @@ namespace Termin4CSharp.Controller {
 
         public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
         private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
-        //private Dictionary<Type, List<IModel>> listOfIModelsToBeReferenced;
-        //private Dictionary<Type, List<IModel>> listOfIModelsToBeUnReferenced;
 
         public EditViewController(EditView editView, AdminTabController adminController = null) {
             this.EditView = editView;
@@ -31,9 +29,7 @@ namespace Termin4CSharp.Controller {
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
-
-            //this.listOfIModelsToBeReferenced = new Dictionary<Type, List<IModel>>();
-            //this.listOfIModelsToBeUnReferenced = new Dictionary<Type, List<IModel>>();
+            
             this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
             this.changedStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
 
@@ -93,27 +89,17 @@ namespace Termin4CSharp.Controller {
                     this.Save(model, oldIdentifyingAttributes);
                     if (this.ViewHasListOfIModels) {
                         // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
-                        //foreach (var initStatusForType in InitialStatusOnReferencingModels) {
                         foreach (var changedStatusForType in this.changedStatusOnReferencingModels) {
 
                             Type referencedType = changedStatusForType.Key;
                             Dictionary<IModel, bool> changedStatus = changedStatusForType.Value;
                             Dictionary<IModel, bool> initialStatus = this.InitialStatusOnReferencingModels.ContainsKey(referencedType) ? this.InitialStatusOnReferencingModels[referencedType] : null;
 
-
-                            //Type referencedType = initStatusForType.Key;
-                            //Dictionary<IModel, bool> initialStatus = initStatusForType.Value;
-                            //Dictionary<IModel, bool> changedStatus = this.changedStatusOnReferencingModels[referencedType];
-                            //var imodelsToBeReferenced = this.listOfIModelsToBeReferenced[referencedType];
-
-                            //List<IModel> toBeAdded = initialStatus.Select(x => x.Key).Intersect(changedStatus);
-
-                            //resultDict = primaryDict.Keys.Intersect(secondaryDict.Keys)
-                            //.ToDictionary(t => t, t => primaryDict[t]);
-                            //var resDict = initialStatus.Keys.Intersect(changedStatus.Keys);
-
                             List<IModel> toBeAdded = new List<IModel>();
                             List<IModel> toUpdateToNull = new List<IModel>();
+
+
+                            //} else {
 
                             var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
                             foreach (var intersectedModel in intersected) {
@@ -122,27 +108,28 @@ namespace Termin4CSharp.Controller {
                                 else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
                                     toBeAdded.Add(intersectedModel);
                             }
-
-                            //SqlCommand add = null, setnull = null;
-                            //if (toBeAdded.Any())
-                            //    add = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
-                            //if (toUpdateToNull.Any())
-                            //    setnull = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
+                            //}
+                            bool doOrdinaryAddAndDelete = false;
+                            if (model is Room && initialStatus.Any() && initialStatus.First().Key is Resource) {
+                                toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                toUpdateToNull = toUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                doOrdinaryAddAndDelete = true;
+                            }
 
                             DAL dal = new DAL(this);
                             int added = 0, updated = 0;
-                            if (toBeAdded.Any())
-                                added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
-                            if (toUpdateToNull.Any())
+                            if (toBeAdded.Any()) {
+                                if (doOrdinaryAddAndDelete)
+                                    added = dal.Add();
+                                else
+                                    added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                            }
+                            if (toUpdateToNull.Any()) {
                                 updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
-                            
-                            //List<IModel> toBeAdded = initialStatus.Select(x => x).Where(y => y.Value).Intersect()
-                            //List<IModel> toUpdateToNull = null;
-
+                            }
                         }
                     }
                 }
-
             } else {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
@@ -177,10 +164,8 @@ namespace Termin4CSharp.Controller {
                     Type typeThatListHolds = referencedIModelOrList.GetType().GetGenericArguments()[0];
                     iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
                 }
-
-
-                List<IModel> allObjects = null;
                 
+                List<IModel> allObjects = null;
                 allObjects = dal.Get(iModelToFetch, selectAll: true);
 
                 if (target is Building && iModelToFetch is Room)
@@ -202,25 +187,14 @@ namespace Termin4CSharp.Controller {
                     var whereParams = new Dictionary<string, object>();
                     whereParams["roomID"] = ((Room)target).Id;
 
-                    var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>();
-                    var allObjectsCasted = allObjects.Cast<Resource>().ToList();
+                    //var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>();
+                    //var allObjectsCasted = allObjects.Cast<Resource>().ToList();
+                    var allObjectsCasted = allObjects.Cast<Resource>().ToDictionary(x => x.Id, x => x);
+                    var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>().ToDictionary(x => x.ResId, x => x);
 
-                    var intersected = allObjectsCasted.Select(a => a.Id).Intersect(objectsFromAssociationTable.Select(b => b.ResId));
-
-                    fetchedIModelsFromDatabase = allObjects.ToDictionary(a => a, a => false);
-                    //foreach (var m in fetchedIModelsFromDatabase) {
-                    //    if (intersected.Select(x => x) == ((Resource)m.Key).Id)
-                    //}
+                    Dictionary<IModel, bool> res = allObjectsCasted.ToDictionary(x => (IModel)x.Value, x => objectsFromAssociationTable.ContainsKey(x.Key));
+                    fetchedIModelsFromDatabase = res;
                     
-                    //foreach (var model in allObjectsCasted) {
-                    //    if 
-                    //}
-                    //fetchedIModelsFromDatabase = allObjectsCasted.ToDictionary(x => x, x => intersected.Contains(x.Id));
-
-                    //fetchedIModelsFromDatabase = allObjectsCasted.To
-
-                    //fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => intersected.Contains(x));
-                    //fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Room_Resource)x).RoomId.Equals(((Room)target).Id));
                 } else
                     throw new Exception("unhandled type");
             }

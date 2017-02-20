@@ -160,6 +160,51 @@ namespace Termin4CSharp {
             Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
             return cmd;
         }
+
+        public static SqlCommand ListOfIModelsToAddQuery(List<IModel> models, Dictionary<string, object> optWhereParams = null, string optTableName = null) {
+            Utils u = new Utils();
+            return u.PrivateListOfIModelsToAddQuery(models, optWhereParams, optTableName);
+        }
+
+        // Private since the indexCounter doesn't need to be static
+        private SqlCommand PrivateListOfIModelsToAddQuery(List<IModel> models, Dictionary<string, object> optWhereParams = null, string optTableName = null) {
+            IModel modelListType = models.First();
+            string tableName = optTableName != null ? optTableName : Utils.IModelTableName(modelListType);
+
+            //if (queryType == QueryType.GET)
+            //    throw new Exception("nope");
+            if (tableName == null)
+                throw new Exception("Table is null");
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            var modelAttributes = Utils.GetAttributeInfo(modelListType);
+            Dictionary<string, object> queryParams = new Dictionary<string, object>();
+
+            string modelKeys = null;
+            if (modelListType is Room_Resource)
+                modelKeys = "RoomId, ResId";
+
+            sqlBuilder.Append(string.Format("insert into {0} ({1}) values (", tableName, modelKeys));
+
+            int indexCounter = 0;
+            string key = null;
+            foreach (IModel model in models) {
+                sqlBuilder.Append("(");
+                if (modelListType is Room_Resource) {
+                    Room_Resource rr = (Room_Resource)model;
+                    sqlBuilder.Append(string.Format("@RoomId{0}, @ResId{0}", indexCounter));
+                    queryParams["RoomId" + indexCounter] = rr.RoomId;
+                    queryParams["ResId" + indexCounter] = rr.ResId;
+                }
+                indexCounter++;
+                sqlBuilder.Append("), ");
+            }
+            sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", 
+
+            SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
+            Utils.FillSqlCmd(cmd, queryParams);
+            return cmd;
+        }
         
         public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);

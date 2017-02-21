@@ -15,6 +15,8 @@ namespace Termin4CSharp.Controller {
 
         public GUIMain GUIMain { get; set; }
         private List<string> buildingFilters, roomFilters, resourceFilters;
+        public Person LoggedInUser { get; private set; }
+
         public int MinCapacity { get; set; }
 
         public GUIMainController(GUIMain guiMain) {
@@ -25,8 +27,28 @@ namespace Termin4CSharp.Controller {
             buildingFilters = new List<string>();
             roomFilters = new List<string>();
             resourceFilters = new List<string>();
-        }
 
+            this.LoginUser("19930217217", "hej123");
+        }
+        private void LoginUser(string username, string password) {
+            Login login = new Login(username, password);
+            DAL dal = new DAL(this);
+            var whereParams = new Dictionary<string, object>();
+            whereParams["password"] = password;
+            List<IModel> result = dal.Get(login, whereParams);
+            if (result.Any()) {
+                Person tempHolder = new Person();
+                tempHolder.Id = username;
+                this.LoggedInUser = dal.Get(tempHolder).First() as Person;
+
+                if (String.IsNullOrEmpty(LoggedInUser.RoleName) == false) {
+                    // Getting the role of the user
+                    Role tempRoleObject = new Role(LoggedInUser.RoleName);
+                    this.LoggedInUser.Role = dal.Get(tempRoleObject).First() as Role;
+                    
+                }
+            }
+        }
         public void LoadRooms() {
             DAL dal = new DAL(this);
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
@@ -35,8 +57,6 @@ namespace Termin4CSharp.Controller {
 
         public void LoadFilters() {
             DAL dal = new DAL(this);
-            //var whereParams = new Dictionary<string, object>();
-            //whereParams["1"] = 1;
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
             var buildings = dal.Get(new Building(), selectAll: true).Cast<Building>().ToList();
             var resources = dal.Get(new Resource(), selectAll: true).Cast<Resource>().ToList();

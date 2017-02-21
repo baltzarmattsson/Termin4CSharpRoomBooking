@@ -96,52 +96,41 @@ namespace Termin4CSharp.Controller {
                             Dictionary<IModel, bool> initialStatus = this.InitialStatusOnReferencingModels.ContainsKey(referencedType) ? this.InitialStatusOnReferencingModels[referencedType] : null;
 
                             List<IModel> toBeAdded = new List<IModel>();
-                            List<IModel> toUpdateToNull = new List<IModel>();
+                            List<IModel> toDeleteOrUpdateToNull = new List<IModel>();
 
                             bool doOrdinaryAddAndDelete = false;
                             IModel deleteFromTable = null;
+
+                            var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
+                            foreach (var intersectedModel in intersected) {
+                                if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
+                                    toDeleteOrUpdateToNull.Add(intersectedModel);
+                                else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
+                                    toBeAdded.Add(intersectedModel);
+                            }
                             // If it's an associationtable, and a changedStatus-dict contains elements
                             // delete all from that table where the models-id is present, and
                             // re-add all the checked items in the checklistbox. (Until a better solution)
                             if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource) {
-                                //toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
-                                //toUpdateToNull = toUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
-                                toBeAdded = this.GetCheckListBoxByType(referencedType);
-                                deleteFromTable = (IModel)toBeAdded.GetType().GetGenericArguments()[0];
+                                toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                toDeleteOrUpdateToNull = toDeleteOrUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
                                 doOrdinaryAddAndDelete = true;
-                            } else {
-                                var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
-                                foreach (var intersectedModel in intersected) {
-                                    if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
-                                        toUpdateToNull.Add(intersectedModel);
-                                    else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
-                                        toBeAdded.Add(intersectedModel);
-                                }
                             }
 
                             DAL dal = new DAL(this);
-                            int added = 0, updated = 0;
+                            int added = 0, updatedOrRemoved = 0;
 
-                            if (doOrdinaryAddAndDelete && toBeAdded.Any()) {
-                                dal.RemoveAllFromTableWhereIModelIsPresent(model, deleteFromTable);
-                                //dal.ListOf
+                            if (doOrdinaryAddAndDelete && toBeAdded.Any() || toDeleteOrUpdateToNull.Any()) {
+                                foreach (IModel add in toBeAdded)
+                                    added += dal.Add(add);
+                                foreach (IModel remove in toDeleteOrUpdateToNull)
+                                    updatedOrRemoved += dal.Remove(remove);
                             } else if (!doOrdinaryAddAndDelete) {
                                 if (toBeAdded.Any())
                                     added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
-                                if (toUpdateToNull.Any())
-                                    updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
+                                if (toDeleteOrUpdateToNull.Any())
+                                    updatedOrRemoved = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toDeleteOrUpdateToNull, model, false);
                             }
-
-
-                            //if (toBeAdded.Any()) {
-                            //    if (doOrdinaryAddAndDelete)
-                            //        added = dal.Add();
-                            //    else
-                            //        added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
-                            //}
-                            //if (toUpdateToNull.Any()) {
-                            //    updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
-                            //}
                         }
                     }
                 }

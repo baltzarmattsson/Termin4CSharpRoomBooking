@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model {
-    class Role : IModel {
+    public class Role : IModel {
 
         public string Name { get; set; }
         public Role() { }

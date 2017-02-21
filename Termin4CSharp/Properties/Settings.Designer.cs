@@ -43,5 +43,16 @@ namespace Termin4CSharp.Properties {
                 return ((string)(this["EbbaCRONUS"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql5024.smarterasp.net;Persist Security Info=True;User ID=DB_A15DA9_c" +
+            "ranus_admin;Password=cranus123")]
+        public string CRANUS {
+            get {
+                return ((string)(this["CRANUS"]));
+            }
+        }
     }
 }

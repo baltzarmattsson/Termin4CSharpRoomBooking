@@ -25,7 +25,7 @@ namespace Termin4CSharp.DataAccessLayer
                                               
             //"Data Source=EBBA-DATOR;Initial Catalog=\"Demo Database NAV(5-0)\";User ID=a;Password=a"; 
 
-            private static string URL2 = "Data Source=EBBA-DATOR;Initial Catalog=\"Demo Database NAV(5-0)\";User ID=a;Password=a";
+            private static string URL2 = "Data Source=sql5024.smarterasp.net;Persist Security Info=True;User ID=DB_A15DA9_cranus_admin;Password=cranus123";
         public static SqlConnection GetConnection()
         {
             try

@@ -17,7 +17,7 @@ namespace Termin4CSharp.DataAccessLayer {
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                Console.WriteLine(dr[0]);
+                Console.WriteLine(dr[0].ToString());
             }
             //EmployeeStatement = Connector.GetConnection();
             return null;
@@ -38,7 +38,7 @@ namespace Termin4CSharp.DataAccessLayer {
         }
         public string GetEmployeeAbscence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate=)2004"; // kolla query
+            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate = '2004'"; // kolla query
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();

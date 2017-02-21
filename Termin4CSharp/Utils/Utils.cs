@@ -67,24 +67,24 @@ namespace Termin4CSharp {
             return attributeValues;
         }
 
-        public static SqlCommand RemoveAllFromTableWhereIModelIsPresent(IModel model, IModel fromTable) {
-            string refColumn = null, tableName = null;
-            tableName = Utils.IModelTableName(fromTable);
+        //public static SqlCommand RemoveAllFromTableWhereIModelIsPresent(IModel model, IModel fromTable) {
+        //    string refColumn = null, tableName = null;
+        //    tableName = Utils.IModelTableName(fromTable);
 
-            if (model is Room && fromTable is Room_Resource)
-                refColumn = "roomid";
-            if (refColumn == null || tableName == null)
-                throw new Exception("null");
+        //    if (model is Room && fromTable is Room_Resource)
+        //        refColumn = "roomid";
+        //    if (refColumn == null || tableName == null)
+        //        throw new Exception("null");
             
-            var whereParams = new Dictionary<string, object>();
-            whereParams[refColumn] = model.GetIdentifyingAttributes().First().Value;
+        //    var whereParams = new Dictionary<string, object>();
+        //    whereParams[refColumn] = model.GetIdentifyingAttributes().First().Value;
 
-            string sql = string.Format("delete from {0} where {1} = @@{2}", tableName, refColumn, refColumn);
+        //    string sql = string.Format("delete from {0} where {1} = @@{2}", tableName, refColumn, refColumn);
 
-            SqlCommand cmd = new SqlCommand(sql);
-            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
-            return cmd;
-        }
+        //    SqlCommand cmd = new SqlCommand(sql);
+        //    Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
+        //    return cmd;
+        //}
 
         public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr, bool findResursiveIModels = true) {
             var attributeInfo = Utils.GetAttributeInfo(model);
@@ -313,9 +313,8 @@ namespace Termin4CSharp {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
-            string modelKeys = string.Join(", ", modelAttributes.Keys);
-            sqlBuilder.Append(string.Format("select {0} from {1} r ", modelKeys, DbFields.RoomTable));
-
+            string modelKeys = "ro." + string.Join(", ro.", modelAttributes.Keys);
+            sqlBuilder.Append(string.Format("select distinct {0} from {1} ro ", modelKeys, DbFields.RoomTable));
 
             var whereParams = new Dictionary<string, object>();
             bool whereAdded = false;
@@ -324,34 +323,55 @@ namespace Termin4CSharp {
             WhereCondition whereCondition = WhereCondition.EQUAL;
 
             if (freeText != null) {
-                sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
-                    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
-                for (int i = 0; i < 6; i++)
+                //sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
+                //    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
+
+                sqlBuilder.Append(" left join Room_Resource rr on rr.roomID = ro.id " +
+                 " left join Resource re on rr.resID = re.id " +
+                 " where ro.bname like @@freeText0 " +
+                 " or ro.id like @@freeText1 " +
+                 " or re.id like (select innerRes.id from Resource innerRes where type in (@@freeText3)) " +
+                 " or ro.floor like @@freeText4 ");
+                 //" or ro.capacity >= @@freeText5 ");
+                for (int i = 0; i < 5; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
             } else {
+
+                /*
+                select * from Room ro
+                left join Room_Resource rr
+                on rr.roomID = ro.id
+                left join Resource re
+                on rr.resID = re.id */
+
+                sqlBuilder.Append("left join Room_Resource rr " + 
+                                  "on rr.roomID = ro.id " +
+                                  "left join Resource re " +
+                                  "on rr.resID = re.id ");
+
                 // Adding building filters
-                if (buildingNames.Count > 0) {
-                    sqlBuilder.Append("where r.bname in (");
+                if (buildingNames.Any()) {
+                    sqlBuilder.Append("where ro.bname in (");
                     string key = "";
                     foreach (string buildName in buildingNames) {
                         key = "index" + indexCounter++;
                         sqlBuilder.Append("@@" + key + ", ");
                         whereParams[key] = buildName;
                     }
+                    whereAdded = true;
                     sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
                     sqlBuilder.Append(")");
-                    whereAdded = true;
                 }
-                // Adding room filters
-                if (roomIDs.Count > 0) {
+                // Adding roomid filters
+                if (roomIDs.Any()) {
                     if (whereAdded) {
                         sqlBuilder.Append(" and ");
                     } else {
                         sqlBuilder.Append(" where ");
                         whereAdded = true;
                     }
-                    sqlBuilder.Append(" r.id in (");
+                    sqlBuilder.Append("ro.id in (");
                     string key = "";
                     foreach (string roomID in roomIDs) {
                         key = "index" + indexCounter++;
@@ -362,29 +382,31 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                 }
                 // Adding resource filters
-                if (resourceNames.Count > 0) {
+                if (resourceNames.Any()) {
                     if (whereAdded)
                         sqlBuilder.Append(" and ");
                     else {
                         sqlBuilder.Append(" where ");
                         whereAdded = true;
                     }
-                    sqlBuilder.Append(" r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID in (");
+                    sqlBuilder.Append("re.id in (select innerRes.id from Resource innerRes where type in (");
                     string key = "";
-                    foreach (string resourceName in resourceNames) {
+                    foreach (string resID in resourceNames) {
                         key = "index" + indexCounter++;
                         sqlBuilder.Append("@@" + key + ", ");
-                        whereParams[key] = resourceName;
+                        whereParams[key] = resID;
                     }
                     sqlBuilder.Remove(sqlBuilder.Length - 2, 2); //Removes ", "
                     sqlBuilder.Append("))");
+
                 }
+
                 // Adding minimum capacity filter
                 if (whereAdded)
                     sqlBuilder.Append(" and ");
                 else
                     sqlBuilder.Append(" where ");
-                sqlBuilder.Append(" r.capacity >= " + minCapacity);
+                sqlBuilder.Append(" ro.capacity >= " + minCapacity);
             }
             Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());

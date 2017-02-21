@@ -24,8 +24,8 @@ namespace Termin4CSharp {
             Application.Run(mainGui);
 
             //DALCronus dal = new DALCronus();
-            //dal.GetEmployees();
-
+            //var result = dal.GetEmployees();
+            //var result2 = dal.GetEmployeeAbscence();
         }
     }
 }

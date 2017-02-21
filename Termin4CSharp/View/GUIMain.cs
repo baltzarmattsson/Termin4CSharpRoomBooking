@@ -198,20 +198,20 @@ namespace Termin4CSharp.View
         }
 
         public void SetRooms(List<Room> rooms) {
-            this.listView1.Items.Clear();
+            this.roomView.Items.Clear();
             foreach (var room in rooms)
-                this.listView1.Items.Add(new ListViewItem(Utils.GetAttributeInfo(room).Values.Select(x => x != null ? x.ToString() : "").ToArray()));
+                this.roomView.Items.Add(new ListViewItem(Utils.GetAttributeInfo(room).Values.Select(x => x != null ? x.ToString() : "").ToArray()));
         }
         private void InitializeMainRoomViewColumns() {
-            this.listView1.Columns.Clear();
+            this.roomView.Columns.Clear();
             ColumnHeader c = null;
             var attInfo = Utils.GetAttributeInfo(new Room());
             foreach (var kv in attInfo) {
                 c = new ColumnHeader();
                 c.Text = kv.Key;
                 c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                c.Width = this.listView1.Width / attInfo.Count;
-                this.listView1.Columns.Add(c);
+                c.Width = this.roomView.Width / attInfo.Count;
+                this.roomView.Columns.Add(c);
             }
         }
 

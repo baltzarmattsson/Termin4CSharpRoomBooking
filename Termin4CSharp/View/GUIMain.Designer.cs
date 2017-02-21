@@ -30,7 +30,6 @@ namespace Termin4CSharp.View {
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIMain));
             this.OK = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -45,7 +44,7 @@ namespace Termin4CSharp.View {
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button5 = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.roomView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -78,9 +77,8 @@ namespace Termin4CSharp.View {
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.editLabel = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -89,7 +87,6 @@ namespace Termin4CSharp.View {
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.adminTab.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // OK
@@ -238,9 +235,8 @@ namespace Termin4CSharp.View {
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.toolStrip1);
             this.tabPage5.Controls.Add(this.button5);
-            this.tabPage5.Controls.Add(this.listView1);
+            this.tabPage5.Controls.Add(this.roomView);
             this.tabPage5.Controls.Add(this.textBox3);
             this.tabPage5.Controls.Add(this.label11);
             this.tabPage5.Controls.Add(this.trackBar1);
@@ -276,21 +272,21 @@ namespace Termin4CSharp.View {
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // listView1
+            // roomView
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.roomView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
-            this.listView1.Location = new System.Drawing.Point(332, 167);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(717, 377);
-            this.listView1.TabIndex = 20;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.roomView.Location = new System.Drawing.Point(176, 101);
+            this.roomView.Margin = new System.Windows.Forms.Padding(4);
+            this.roomView.Name = "roomView";
+            this.roomView.Size = new System.Drawing.Size(1055, 476);
+            this.roomView.TabIndex = 20;
+            this.roomView.UseCompatibleStateImageBehavior = false;
+            this.roomView.View = System.Windows.Forms.View.Details;
+            this.roomView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -471,6 +467,8 @@ namespace Termin4CSharp.View {
             // 
             // adminTab
             // 
+            this.adminTab.Controls.Add(this.label14);
+            this.adminTab.Controls.Add(this.editLabel);
             this.adminTab.Controls.Add(this.button4);
             this.adminTab.Controls.Add(this.button3);
             this.adminTab.Controls.Add(this.createTypeBox);
@@ -646,36 +644,25 @@ namespace Termin4CSharp.View {
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
-            // toolStrip1
+            // editLabel
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
-            this.toolStrip1.Location = new System.Drawing.Point(4, 4);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1231, 27);
-            this.toolStrip1.TabIndex = 22;
-            this.toolStrip1.Text = "toolStrip1";
+            this.editLabel.AutoSize = true;
+            this.editLabel.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editLabel.Location = new System.Drawing.Point(129, 77);
+            this.editLabel.Name = "editLabel";
+            this.editLabel.Size = new System.Drawing.Size(85, 27);
+            this.editLabel.TabIndex = 7;
+            this.editLabel.Text = "Editera";
             // 
-            // toolStripButton1
+            // label14
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton2.Text = "toolStripButton2";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(129, 188);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(80, 27);
+            this.label14.TabIndex = 8;
+            this.label14.Text = "Skapa";
             // 
             // GUIMain
             // 
@@ -697,10 +684,9 @@ namespace Termin4CSharp.View {
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.adminTab.ResumeLayout(false);
+            this.adminTab.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -726,7 +712,7 @@ namespace Termin4CSharp.View {
         private Label label2;
         private Label label1;
         private TabPage tabPage5;
-        private ListView listView1;
+        private ListView roomView;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
@@ -756,8 +742,7 @@ namespace Termin4CSharp.View {
         private Button button5;
         private Label label13;
         private Label label12;
-        private ToolStrip toolStrip1;
-        private ToolStripButton toolStripButton1;
-        private ToolStripButton toolStripButton2;
+        private Label editLabel;
+        private Label label14;
     }
 }

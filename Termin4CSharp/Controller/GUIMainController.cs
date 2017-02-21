@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.View;
+using System.Text.RegularExpressions;
 
 namespace Termin4CSharp.Controller {
 
@@ -54,6 +56,12 @@ namespace Termin4CSharp.Controller {
         public void LoadRooms() {
             DAL dal = new DAL(this);
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
+            //rooms.Select(x => x.Bookable = dal.FindBookableTimesForRoom(x));
+            foreach (Room r in rooms) {
+                var bookable = dal.FindBookableTimesForRoom(r);
+                //Console.WriteLine(String.Join(", ", bookable));
+                r.Bookable = bookable;
+            }
             this.GUIMain.SetRooms(rooms);
         }
 
@@ -123,6 +131,22 @@ namespace Termin4CSharp.Controller {
 
         public void NotifyExceptionToView(string s) {
             throw new NotImplementedException();
+        }
+
+        public void HandleCellDoubleClick(object sender, CellClickEventArgs e) {
+            string itemText = e.SubItem.Text;
+            if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}")) {
+                Room targetRoom = (Room)e.Model;
+                Booking b = new Booking();
+                b.RoomId = targetRoom.Id;
+                b.PersonId = this.LoggedInUser.Id;
+                b.Start_time = DateTime.Parse(e.SubItem.Text);
+                b.End_time = b.Start_time.AddHours(1);
+                EditView ev = new EditView(b, false);
+                EditViewController editController = null;
+                editController = new EditViewController(ev, null);
+                ev.Show();
+            }
         }
     }
 }

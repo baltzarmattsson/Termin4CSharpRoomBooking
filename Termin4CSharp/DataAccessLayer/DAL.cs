@@ -56,11 +56,17 @@ namespace Termin4CSharp.DataAccessLayer {
             return this.PerformNonQuery(targetModel, cmd);
         }
 
-        //public bool[] FindBookableTimesForRoom(Room room, DateTime date = default(DateTime)) {
-        //    bool[] availableAtHourIndex = new bool[24];
-        //    availableAtHourIndex.Initialize();
-        //    SqlCommand cmd = 
-        //}
+        public static Random randomInstance = new Random();
+        public bool[] FindBookableTimesForRoom(Room room, DateTime date = default(DateTime)) {
+            bool[] availableAtHourIndex = null;
+            availableAtHourIndex = new bool[24];
+            for (int i = 0; i < 24; i++) {
+                availableAtHourIndex[i] = randomInstance.Next() % 2 == 0;
+            }
+            //SqlCommand cmd =
+            //Console.WriteLine(String.Join(",", availableAtHourIndex));
+            return availableAtHourIndex;
+        }
 
         public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
 
@@ -71,9 +77,13 @@ namespace Termin4CSharp.DataAccessLayer {
             try {
                 IModel model = new Room();
                 dr = cmd.ExecuteReader();
+                bool[] avail = null;
                 while (dr.Read()) {
                     Room parsedRoom = Utils.ParseDataReaderToIModel(model, dr) as Room;
+                    avail = FindBookableTimesForRoom(parsedRoom);
+                    parsedRoom.Bookable = avail;
                     resultList.Add(parsedRoom);
+                    avail = null;
                 }
             } catch (SqlException sqle) {
                 this.HandleSqlException(new Room(), sqle);
@@ -132,7 +142,6 @@ namespace Termin4CSharp.DataAccessLayer {
 
         private void HandleSqlException(IModel model, SqlException sqle) {
             string message = null;
-            Console.WriteLine();
             switch (sqle.Number) {
                 case SqlCodes.PrimaryKey:
                     var regmatch = Regex.Match(sqle.Message, "(?<=\\()(.*?)(?=\\))").Groups[0]; //finds (Names within paranthesis)

@@ -132,8 +132,9 @@ namespace Termin4CSharp.View {
                         datePicker.Width = 500;
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-                        if (model is Building) {
-                            datePicker.Format = DateTimePickerFormat.Time;
+                        if (model is Building || (model is Booking && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
+                            datePicker.Format = DateTimePickerFormat.Custom;
+                            datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
                             datePicker.ShowUpDown = true;
                         }
                         control = datePicker;

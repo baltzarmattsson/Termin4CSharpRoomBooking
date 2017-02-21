@@ -19,6 +19,7 @@ namespace Termin4CSharp.View
     public partial class GUIMain : Form
     {
         public GUIMainController Controller { get; set; }
+        private delegate bool IsBookableDelegate(object sender, EventArgs e);
         public AdminTabController AdminController { get; set; }
         private string textFilter;
 
@@ -199,37 +200,42 @@ namespace Termin4CSharp.View
             Controller.HandleFreeTextFilterChange(senderAsTextBox, e);
         }
 
+        private void formatRow(object sender, FormatCellEventArgs e) {
+            // 4 since at index 4 the Room-attributes stop, and the 24h columns begins
+            if (e.ColumnIndex > 4) {
+                Room r = (Room)e.Model;
+                int index = e.ColumnIndex - 5;
+                e.SubItem.BackColor = r.Bookable[index] ? Color.LightGreen : Color.Red;
+                e.SubItem.Text = (index < 10 ? "0" : "") + index + ":00";
+            }
+        }
+
         public void SetRooms(List<Room> rooms) {
+            Random r = new Random();
+            foreach (var room in rooms) {
+                room.Bookable = new bool[24];
+                for (int i = 0; i < 24; i++)
+                    room.Bookable[i] = r.Next() % 2 == 0;
+            }
             this.roomHolder.SetObjects(rooms);
         }
         private void InitializeMainRoomViewColumns() {
-
+            //Random r = new Random();
+            //foreach (var room in rooms) {
+            //    room.Bookable = new bool[24];
+            //    for (int i = 0; i < 24; i++)
+            //        room.Bookable[i] = r.Next() % 2 == 0;
+            //}
             foreach (OLVColumn c in roomHolder.Columns) {
-                Console.WriteLine();
                 c.Text = Utils.ConvertAttributeNameToDisplayName(new Room(), c.AspectName);
             }
-
-            //this.roomView.Columns.Clear();
-            //ColumnHeader c = null;
-            //var attInfo = Utils.GetAttributeInfo(new Room());
-            //foreach (var kv in attInfo) {
-            //    c = new ColumnHeader();
-            //    c.Text = kv.Key;
-            //    c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                // Divided by two because we want the rest of the view for timeline
-                //c.Width = (this.roomView.Width / 2) / attInfo.Count;
-                //this.roomView.Columns.Add(c);
-            ////}
-            //int maxHours = 24;
-            //for (int i = 0; i < maxHours; i++) {
-            //    c = new ColumnHeader();
-            //    c.Text = (i < 10 ? "0" : "") + i + ":00";
-            //    //c.Width = (this.roomView.Width / 2) / maxHours;
-            //    c.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-            //    //c.Colo
-            //    //this.roomView.Columns.Add(c);
+            //OLVColumn col = null;
+            //for (int i = 0; i < 24; i++) {
+            //    col = new OLVColumn();
+            //    col.Text = (i < 10 ? "0" : "") + i + ":00";
+            //    roomHolder.Columns.Add(col);
             //}
-
+                   
         }
 
         public void SetBuildingFilters(List<Building> buildings) {

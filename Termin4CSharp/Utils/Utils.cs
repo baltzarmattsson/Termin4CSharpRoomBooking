@@ -24,7 +24,7 @@ namespace Termin4CSharp {
         public static Dictionary<string, object> GetAttributeInfo(Object paramObj, MembersOptimizedFor memOptFor = MembersOptimizedFor.QUERIES) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
-            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels";
+            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels|Bookable";
             if (memOptFor == MembersOptimizedFor.QUERIES)
                 excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b|\\bResources\\b";
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
@@ -459,7 +459,7 @@ namespace Termin4CSharp {
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
 
-            if (model == null)
+            if (model == null || key == null)
                 return null;
             string retName = key;
 

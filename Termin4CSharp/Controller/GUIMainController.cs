@@ -63,7 +63,7 @@ namespace Termin4CSharp.Controller {
             var buildings = dal.Get(new Building(), selectAll: true).Cast<Building>().ToList();
             var resources = dal.Get(new Resource(), selectAll: true).Cast<Resource>().ToList();
 
-            int highestCapacity = rooms.Count > 0 ? rooms.Max(x => x.Capacity) : 10;
+            int highestCapacity = rooms.Any() ? rooms.Max(x => x.Capacity) : 10;
 
             this.GUIMain.SetRoomFilters(rooms);
             this.GUIMain.SetBuildingFilters(buildings);

@@ -46,6 +46,11 @@ namespace Termin4CSharp.View {
             this.roomBookTab = new System.Windows.Forms.TabPage();
             this.clearFiltersButtonRoomBookingTab = new System.Windows.Forms.Button();
             this.roomHolder = new BrightIdeasSoftware.ObjectListView();
+            this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.bnameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.capacityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.floorColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rtypeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.freeTextFilterTextbox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.capacityTrackbarRoomBookingTab = new System.Windows.Forms.TrackBar();
@@ -80,11 +85,30 @@ namespace Termin4CSharp.View {
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.bnameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.capacityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.floorColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.rtypeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn14 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn15 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn16 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn18 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn22 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn23 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn24 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.mainLabel1PK.SuspendLayout();
@@ -286,20 +310,93 @@ namespace Termin4CSharp.View {
             this.roomHolder.AllColumns.Add(this.capacityColumn);
             this.roomHolder.AllColumns.Add(this.floorColumn);
             this.roomHolder.AllColumns.Add(this.rtypeColumn);
+            this.roomHolder.AllColumns.Add(this.olvColumn1);
+            this.roomHolder.AllColumns.Add(this.olvColumn2);
+            this.roomHolder.AllColumns.Add(this.olvColumn3);
+            this.roomHolder.AllColumns.Add(this.olvColumn4);
+            this.roomHolder.AllColumns.Add(this.olvColumn5);
+            this.roomHolder.AllColumns.Add(this.olvColumn6);
+            this.roomHolder.AllColumns.Add(this.olvColumn7);
+            this.roomHolder.AllColumns.Add(this.olvColumn8);
+            this.roomHolder.AllColumns.Add(this.olvColumn9);
+            this.roomHolder.AllColumns.Add(this.olvColumn10);
+            this.roomHolder.AllColumns.Add(this.olvColumn11);
+            this.roomHolder.AllColumns.Add(this.olvColumn12);
+            this.roomHolder.AllColumns.Add(this.olvColumn13);
+            this.roomHolder.AllColumns.Add(this.olvColumn14);
+            this.roomHolder.AllColumns.Add(this.olvColumn15);
+            this.roomHolder.AllColumns.Add(this.olvColumn16);
+            this.roomHolder.AllColumns.Add(this.olvColumn17);
+            this.roomHolder.AllColumns.Add(this.olvColumn18);
+            this.roomHolder.AllColumns.Add(this.olvColumn19);
+            this.roomHolder.AllColumns.Add(this.olvColumn20);
+            this.roomHolder.AllColumns.Add(this.olvColumn21);
+            this.roomHolder.AllColumns.Add(this.olvColumn22);
+            this.roomHolder.AllColumns.Add(this.olvColumn23);
+            this.roomHolder.AllColumns.Add(this.olvColumn24);
             this.roomHolder.CellEditUseWholeCell = false;
             this.roomHolder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.idColumn,
             this.bnameColumn,
             this.capacityColumn,
             this.floorColumn,
-            this.rtypeColumn});
+            this.rtypeColumn,
+            this.olvColumn1,
+            this.olvColumn2,
+            this.olvColumn3,
+            this.olvColumn4,
+            this.olvColumn5,
+            this.olvColumn6,
+            this.olvColumn7,
+            this.olvColumn8,
+            this.olvColumn9,
+            this.olvColumn10,
+            this.olvColumn11,
+            this.olvColumn12,
+            this.olvColumn13,
+            this.olvColumn14,
+            this.olvColumn15,
+            this.olvColumn16,
+            this.olvColumn17,
+            this.olvColumn18,
+            this.olvColumn19,
+            this.olvColumn20,
+            this.olvColumn21,
+            this.olvColumn22,
+            this.olvColumn23,
+            this.olvColumn24});
             this.roomHolder.Cursor = System.Windows.Forms.Cursors.Default;
             this.roomHolder.Location = new System.Drawing.Point(176, 101);
+            //this.roomHolder.FormatRow += new System.EventHandler(this.formatRow);
+            this.roomHolder.UseCellFormatEvents = true;
+            this.roomHolder.FormatCell += new System.EventHandler<FormatCellEventArgs>(this.formatRow);
             this.roomHolder.Name = "roomHolder";
+            this.roomHolder.SelectedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.roomHolder.ShowGroups = false;
             this.roomHolder.Size = new System.Drawing.Size(1055, 476);
             this.roomHolder.TabIndex = 22;
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
+            // 
+            // idColumn
+            // 
+            this.idColumn.AspectName = "Id";
+            // 
+            // bnameColumn
+            // 
+            this.bnameColumn.AspectName = "BName";
+            // 
+            // capacityColumn
+            // 
+            this.capacityColumn.AspectName = "Capacity";
+            // 
+            // floorColumn
+            // 
+            this.floorColumn.AspectName = "Floor";
+            // 
+            // rtypeColumn
+            // 
+            this.rtypeColumn.AspectName = "RType";
             // 
             // freeTextFilterTextbox
             // 
@@ -677,26 +774,6 @@ namespace Termin4CSharp.View {
             this.columnHeader4.Text = "Minst antal platser: ";
             this.columnHeader4.Width = 129;
             // 
-            // idColumn
-            // 
-            this.idColumn.AspectName = "Id";
-            // 
-            // bnameColumn
-            // 
-            this.bnameColumn.AspectName = "BName";
-            // 
-            // capacityColumn
-            // 
-            this.capacityColumn.AspectName = "Capacity";
-            // 
-            // floorColumn
-            // 
-            this.floorColumn.AspectName = "Floor";
-            // 
-            // rtypeColumn
-            // 
-            this.rtypeColumn.AspectName = "RType";
-            // 
             // GUIMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -723,6 +800,10 @@ namespace Termin4CSharp.View {
             this.mainLabel3ERP.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private void RoomHolder_FormatRow(object sender, FormatRowEventArgs e) {
+            throw new System.NotImplementedException();
         }
 
         #endregion
@@ -784,5 +865,29 @@ namespace Termin4CSharp.View {
         private OLVColumn capacityColumn;
         private OLVColumn floorColumn;
         private OLVColumn rtypeColumn;
+        private OLVColumn olvColumn1;
+        private OLVColumn olvColumn2;
+        private OLVColumn olvColumn3;
+        private OLVColumn olvColumn4;
+        private OLVColumn olvColumn5;
+        private OLVColumn olvColumn6;
+        private OLVColumn olvColumn7;
+        private OLVColumn olvColumn8;
+        private OLVColumn olvColumn9;
+        private OLVColumn olvColumn10;
+        private OLVColumn olvColumn11;
+        private OLVColumn olvColumn12;
+        private OLVColumn olvColumn13;
+        private OLVColumn olvColumn14;
+        private OLVColumn olvColumn15;
+        private OLVColumn olvColumn16;
+        private OLVColumn olvColumn17;
+        private OLVColumn olvColumn18;
+        private OLVColumn olvColumn19;
+        private OLVColumn olvColumn20;
+        private OLVColumn olvColumn21;
+        private OLVColumn olvColumn22;
+        private OLVColumn olvColumn23;
+        private OLVColumn olvColumn24;
     }
 }

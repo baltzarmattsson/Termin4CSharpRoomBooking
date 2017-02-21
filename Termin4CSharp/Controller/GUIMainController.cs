@@ -119,10 +119,15 @@ namespace Termin4CSharp.Controller {
         }
 
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e) {
-            DAL dal = new DAL(this);
-            List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
-            this.ClearFilterSelections();
-            this.GUIMain.SetRooms(filteredRooms);
+
+            ObjectListView roomHolder = this.GUIMain.GetRoomHolder();
+            roomHolder.ModelFilter = TextMatchFilter.Contains(roomHolder, sender.Text);
+
+
+            //DAL dal = new DAL(this);
+            //List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            //this.ClearFilterSelections();
+            //this.GUIMain.SetRooms(filteredRooms);
         }
 
         public void ClearFilterSelections() {
@@ -134,19 +139,30 @@ namespace Termin4CSharp.Controller {
         }
 
         public void HandleCellDoubleClick(object sender, CellClickEventArgs e) {
-            string itemText = e.SubItem.Text;
-            if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}")) {
-                Room targetRoom = (Room)e.Model;
-                Booking b = new Booking();
-                b.RoomId = targetRoom.Id;
-                b.PersonId = this.LoggedInUser.Id;
-                b.Start_time = DateTime.Parse(e.SubItem.Text);
-                b.End_time = b.Start_time.AddHours(1);
-                EditView ev = new EditView(b, false);
-                EditViewController editController = null;
-                editController = new EditViewController(ev, null);
-                ev.Show();
-            }
+            //    e.SubItem.BackColor = Color.Yellow;
+            //    this.Controller.HandleCellDoubleClick(sender, e);
+            //} else if (e.ClickCount == 1 && e.ColumnIndex > 4) {
+            //    e.SubItem.BackColor = Color.Yellow;
+            if (e.ColumnIndex > 4) {
+                if (e.ClickCount == 2) {
+e.SubItem.BackColor = System.Drawing.Color.Yellow;
+                    string itemText = e.SubItem.Text;
+                    if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}")) {
+                        Room targetRoom = (Room)e.Model;
+                        Booking b = new Booking();
+                        b.RoomId = targetRoom.Id;
+                        b.PersonId = this.LoggedInUser.Id;
+                        b.Start_time = DateTime.Parse(e.SubItem.Text);
+                        b.End_time = b.Start_time.AddHours(1);
+                        EditView ev = new EditView(b, false);
+                        EditViewController editController = null;
+                        editController = new EditViewController(ev, null);
+                        ev.Show();
+                    }
+                } else {
+                    e.SubItem.BackColor = System.Drawing.Color.Yellow;
+                }
+            } 
         }
     }
 }

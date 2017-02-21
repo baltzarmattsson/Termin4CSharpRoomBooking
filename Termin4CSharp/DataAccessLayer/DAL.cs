@@ -56,15 +56,13 @@ namespace Termin4CSharp.DataAccessLayer {
             return this.PerformNonQuery(targetModel, cmd);
         }
 
-        public static Random randomInstance = new Random();
+        //TODO Ta bort randominstansen
+        public Random randomInstance = new Random();
         public bool[] FindBookableTimesForRoom(Room room, DateTime date = default(DateTime)) {
             bool[] availableAtHourIndex = null;
             availableAtHourIndex = new bool[24];
-            for (int i = 0; i < 24; i++) {
+            for (int i = 0; i < 24; i++)
                 availableAtHourIndex[i] = randomInstance.Next() % 2 == 0;
-            }
-            //SqlCommand cmd =
-            //Console.WriteLine(String.Join(",", availableAtHourIndex));
             return availableAtHourIndex;
         }
 
@@ -83,6 +81,7 @@ namespace Termin4CSharp.DataAccessLayer {
                     avail = FindBookableTimesForRoom(parsedRoom);
                     parsedRoom.Bookable = avail;
                     resultList.Add(parsedRoom);
+                    // TODO koppla Room.Bookable så den visar bool[] när den är bokbar
                     avail = null;
                 }
             } catch (SqlException sqle) {

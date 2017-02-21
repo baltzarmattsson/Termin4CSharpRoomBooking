@@ -194,19 +194,16 @@ namespace Termin4CSharp.View
         private void resourceFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
             Controller.HandleFilterChange(FilterBox.RESOURCE, sender as CheckedListBox, e);
         }
+
+        public ObjectListView GetRoomHolder() {
+            return this.roomHolder;
+        }
+
         private void textBox3_TextChanged_1(object sender, EventArgs e) {
             TextBox senderAsTextBox = (TextBox)sender;
             Controller.HandleFreeTextFilterChange(senderAsTextBox, e);
         }
 
-        private void RoomHolder_CellClick(object sender, CellClickEventArgs e) {
-            if (e.ClickCount == 2 && e.ColumnIndex > 4) {
-                e.SubItem.BackColor = Color.Yellow;
-                this.Controller.HandleCellDoubleClick(sender, e);
-            } else if (e.ClickCount == 1 && e.ColumnIndex > 4) {
-                e.SubItem.BackColor = Color.Yellow;
-            }
-        }
         private void formatRow(object sender, FormatCellEventArgs e) {
             // 4 since at index 4 the Room-attributes stop, and the 24h columns begins
             if (e.ColumnIndex > 4) {
@@ -222,7 +219,10 @@ namespace Termin4CSharp.View
         }
         private void InitializeMainRoomViewColumns() {
             foreach (OLVColumn c in roomHolder.Columns)
-                c.Text = Utils.ConvertAttributeNameToDisplayName(new Room(), c.AspectName);
+                if (c.Index < 5)
+                    c.Text = Utils.ConvertAttributeNameToDisplayName(new Room(), c.AspectName);
+                else
+                    break;
             
         }
 

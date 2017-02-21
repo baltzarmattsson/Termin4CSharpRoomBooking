@@ -365,7 +365,6 @@ namespace Termin4CSharp.View {
             this.roomHolder.View = System.Windows.Forms.View.Details;
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
             this.roomHolder.CellClick += RoomHolder_CellClick;
-
             // 
             // idColumn
             // 
@@ -391,98 +390,122 @@ namespace Termin4CSharp.View {
             // 
             this.olvColumn1.ButtonPadding = new System.Drawing.Size(1, 1);
             this.olvColumn1.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn1.Text = "00:00";
             // 
             // olvColumn2
             // 
             this.olvColumn2.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn2.Text = "01:00";
             // 
             // olvColumn3
             // 
             this.olvColumn3.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn3.Text = "02:00";
             // 
             // olvColumn4
             // 
             this.olvColumn4.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn4.Text = "03:00";
             // 
             // olvColumn5
             // 
             this.olvColumn5.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn5.Text = "04:00";
             // 
             // olvColumn6
             // 
             this.olvColumn6.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn6.Text = "05:00";
             // 
             // olvColumn7
             // 
             this.olvColumn7.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn7.Text = "06:00";
             // 
             // olvColumn8
             // 
             this.olvColumn8.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn8.Text = "07:00";
             // 
             // olvColumn9
             // 
             this.olvColumn9.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn9.Text = "08:00";
             // 
             // olvColumn10
             // 
             this.olvColumn10.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn10.Text = "09:00";
             // 
             // olvColumn11
             // 
             this.olvColumn11.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn11.Text = "10:00";
             // 
             // olvColumn12
             // 
             this.olvColumn12.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn12.Text = "11:00";
             // 
             // olvColumn13
             // 
             this.olvColumn13.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn13.Text = "12:00";
             // 
             // olvColumn14
             // 
             this.olvColumn14.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn14.Text = "13:00";
             // 
             // olvColumn15
             // 
             this.olvColumn15.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn15.Text = "14:00";
             // 
             // olvColumn16
             // 
             this.olvColumn16.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn16.Text = "15:00";
             // 
             // olvColumn17
             // 
             this.olvColumn17.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn17.Text = "16:00";
             // 
             // olvColumn18
             // 
             this.olvColumn18.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn18.Text = "17:00";
             // 
             // olvColumn19
             // 
             this.olvColumn19.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn19.Text = "18:00";
             // 
             // olvColumn20
             // 
             this.olvColumn20.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn20.Text = "19:00";
             // 
             // olvColumn21
             // 
             this.olvColumn21.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn21.Text = "20:00";
             // 
             // olvColumn22
             // 
             this.olvColumn22.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn22.Text = "21:00";
             // 
             // olvColumn23
             // 
             this.olvColumn23.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn23.Text = "22:00";
             // 
             // olvColumn24
             // 
             this.olvColumn24.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.olvColumn24.Text = "23:00";
             // 
             // freeTextFilterTextbox
             // 
@@ -861,6 +884,11 @@ namespace Termin4CSharp.View {
             this.ResumeLayout(false);
 
         }
+
+        private void RoomHolder_CellClick(object sender, CellClickEventArgs e) {
+            this.Controller.HandleCellDoubleClick(sender, e);
+        }
+
 
         #endregion
 

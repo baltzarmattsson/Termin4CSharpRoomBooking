@@ -66,6 +66,26 @@ namespace Termin4CSharp {
             }
             return attributeValues;
         }
+
+        public static SqlCommand RemoveAllFromTableWhereIModelIsPresent(IModel model, IModel fromTable) {
+            string refColumn = null, tableName = null;
+            tableName = Utils.IModelTableName(fromTable);
+
+            if (model is Room && fromTable is Room_Resource)
+                refColumn = "roomid";
+            if (refColumn == null || tableName == null)
+                throw new Exception("null");
+            
+            var whereParams = new Dictionary<string, object>();
+            whereParams[refColumn] = model.GetIdentifyingAttributes().First().Value;
+
+            string sql = string.Format("delete from {0} where {1} = @@{2}", tableName, refColumn, refColumn);
+
+            SqlCommand cmd = new SqlCommand(sql);
+            Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
+            return cmd;
+        }
+
         public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr, bool findResursiveIModels = true) {
             var attributeInfo = Utils.GetAttributeInfo(model);
             object instance = Utils.GetInstanceFromIModel(model);

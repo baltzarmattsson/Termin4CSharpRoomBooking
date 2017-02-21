@@ -98,29 +98,38 @@ namespace Termin4CSharp.Controller {
                             List<IModel> toBeAdded = new List<IModel>();
                             List<IModel> toUpdateToNull = new List<IModel>();
 
-
-                            //} else {
-
-                            var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
-                            foreach (var intersectedModel in intersected) {
-                                if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
-                                    toUpdateToNull.Add(intersectedModel);
-                                else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
-                                    toBeAdded.Add(intersectedModel);
-                            }
-                            //}
                             bool doOrdinaryAddAndDelete = false;
-                            if (model is Room && initialStatus.Any() && initialStatus.First().Key is Resource) {
-                                toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
-                                toUpdateToNull = toUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                            IModel deleteFromTable = null;
+                            // If it's an associationtable, and a changedStatus-dict contains elements
+                            // delete all from that table where the models-id is present, and
+                            // re-add all the checked items in the checklistbox. (Until a better solution)
+                            if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource) {
+                                //toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                //toUpdateToNull = toUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                toBeAdded = this.GetCheckListBoxByType(referencedType);
+                                deleteFromTable = (IModel)toBeAdded.GetType().GetGenericArguments()[0];
                                 doOrdinaryAddAndDelete = true;
+                            } else {
+                                var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
+                                foreach (var intersectedModel in intersected) {
+                                    if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
+                                        toUpdateToNull.Add(intersectedModel);
+                                    else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
+                                        toBeAdded.Add(intersectedModel);
+                                }
                             }
 
                             DAL dal = new DAL(this);
                             int added = 0, updated = 0;
 
                             if (doOrdinaryAddAndDelete && toBeAdded.Any()) {
-
+                                dal.RemoveAllFromTableWhereIModelIsPresent(model, deleteFromTable);
+                                //dal.ListOf
+                            } else if (!doOrdinaryAddAndDelete) {
+                                if (toBeAdded.Any())
+                                    added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                                if (toUpdateToNull.Any())
+                                    updated = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toUpdateToNull, model, false);
                             }
 
 
@@ -140,6 +149,19 @@ namespace Termin4CSharp.Controller {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
         }
+
+        private List<IModel> GetCheckListBoxByType(Type referencedType) {
+            var controls = this.EditView.GetControls();
+            foreach (var control in controls) {
+                if (control is CheckedListBox && ((CheckedListBox)control).Items?[0].GetType() == referencedType) {
+                    Console.WriteLine();
+                    List<IModel> ret = ((CheckedListBox)control).CheckedItems.OfType<object>().Cast<IModel>().ToList();
+                    return ret;
+                }
+            }
+            return null;
+        }
+
         public void HandleDeleteButtonClick() {
             IModel model = null;
             var controlValues = this.ViewControlsToDictionary(EditView.GetControls());

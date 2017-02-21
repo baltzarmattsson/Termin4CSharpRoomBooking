@@ -55,6 +55,10 @@ namespace Termin4CSharp.DataAccessLayer {
             SqlCommand cmd = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(referencedIModels, targetModel, connect);
             return this.PerformNonQuery(targetModel, cmd);
         }
+        public int RemoveAllFromTableWhereIModelIsPresent(IModel model, IModel fromTable) {
+            SqlCommand cmd = Utils.RemoveAllFromTableWhereIModelIsPresent(model, fromTable);
+            return this.PerformNonQuery(model, cmd);
+        }
 
         public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
 

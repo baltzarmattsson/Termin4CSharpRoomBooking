@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using BrightIdeasSoftware;
+using System.Windows.Forms;
 using Termin4CSharp.View.CustomControls;
 
 namespace Termin4CSharp.View {
@@ -44,11 +45,7 @@ namespace Termin4CSharp.View {
             this.usernameLabelLoginTab = new System.Windows.Forms.Label();
             this.roomBookTab = new System.Windows.Forms.TabPage();
             this.clearFiltersButtonRoomBookingTab = new System.Windows.Forms.Button();
-            this.roomView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.roomHolder = new BrightIdeasSoftware.ObjectListView();
             this.freeTextFilterTextbox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.capacityTrackbarRoomBookingTab = new System.Windows.Forms.TrackBar();
@@ -64,6 +61,8 @@ namespace Termin4CSharp.View {
             this.fromDatePickerRoomBookingTab = new System.Windows.Forms.DateTimePicker();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.adminTab = new System.Windows.Forms.TabPage();
+            this.createLabelAdminTab = new System.Windows.Forms.Label();
+            this.editLabelAdminTab = new System.Windows.Forms.Label();
             this.editObjectButton = new System.Windows.Forms.Button();
             this.createObjectButton = new System.Windows.Forms.Button();
             this.createTypeBox = new System.Windows.Forms.ComboBox();
@@ -77,13 +76,21 @@ namespace Termin4CSharp.View {
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
-            this.editLabelAdminTab = new System.Windows.Forms.Label();
-            this.createLabelAdminTab = new System.Windows.Forms.Label();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.bnameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.capacityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.floorColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rtypeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.mainLabel1PK.SuspendLayout();
             this.loginTab.SuspendLayout();
             this.roomBookTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roomHolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.capacityTrackbarRoomBookingTab)).BeginInit();
             this.adminTab.SuspendLayout();
             this.mainLabel3ERP.SuspendLayout();
@@ -236,7 +243,7 @@ namespace Termin4CSharp.View {
             // roomBookTab
             // 
             this.roomBookTab.Controls.Add(this.clearFiltersButtonRoomBookingTab);
-            this.roomBookTab.Controls.Add(this.roomView);
+            this.roomBookTab.Controls.Add(this.roomHolder);
             this.roomBookTab.Controls.Add(this.freeTextFilterTextbox);
             this.roomBookTab.Controls.Add(this.label11);
             this.roomBookTab.Controls.Add(this.capacityTrackbarRoomBookingTab);
@@ -272,41 +279,27 @@ namespace Termin4CSharp.View {
             this.clearFiltersButtonRoomBookingTab.UseVisualStyleBackColor = true;
             this.clearFiltersButtonRoomBookingTab.Click += new System.EventHandler(this.button5_Click);
             // 
-            // roomView
+            // roomHolder
             // 
-            this.roomView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
-            this.roomView.Location = new System.Drawing.Point(176, 101);
-            this.roomView.Margin = new System.Windows.Forms.Padding(4);
-            this.roomView.Name = "roomView";
-            this.roomView.Size = new System.Drawing.Size(1055, 476);
-            this.roomView.TabIndex = 20;
-            this.roomView.UseCompatibleStateImageBehavior = false;
-            this.roomView.View = System.Windows.Forms.View.Details;
-            this.roomView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Byggnad";
-            this.columnHeader1.Width = 129;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Rum";
-            this.columnHeader2.Width = 129;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Tidslinje";
-            this.columnHeader3.Width = 129;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Minst antal platser: ";
-            this.columnHeader4.Width = 129;
+            this.roomHolder.AllColumns.Add(this.idColumn);
+            this.roomHolder.AllColumns.Add(this.bnameColumn);
+            this.roomHolder.AllColumns.Add(this.capacityColumn);
+            this.roomHolder.AllColumns.Add(this.floorColumn);
+            this.roomHolder.AllColumns.Add(this.rtypeColumn);
+            this.roomHolder.CellEditUseWholeCell = false;
+            this.roomHolder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.idColumn,
+            this.bnameColumn,
+            this.capacityColumn,
+            this.floorColumn,
+            this.rtypeColumn});
+            this.roomHolder.Cursor = System.Windows.Forms.Cursors.Default;
+            this.roomHolder.Location = new System.Drawing.Point(176, 101);
+            this.roomHolder.Name = "roomHolder";
+            this.roomHolder.Size = new System.Drawing.Size(1055, 476);
+            this.roomHolder.TabIndex = 22;
+            this.roomHolder.UseCompatibleStateImageBehavior = false;
+            this.roomHolder.View = System.Windows.Forms.View.Details;
             // 
             // freeTextFilterTextbox
             // 
@@ -483,6 +476,26 @@ namespace Termin4CSharp.View {
             this.adminTab.Text = "Admin";
             this.adminTab.UseVisualStyleBackColor = true;
             // 
+            // createLabelAdminTab
+            // 
+            this.createLabelAdminTab.AutoSize = true;
+            this.createLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.createLabelAdminTab.Location = new System.Drawing.Point(129, 188);
+            this.createLabelAdminTab.Name = "createLabelAdminTab";
+            this.createLabelAdminTab.Size = new System.Drawing.Size(80, 27);
+            this.createLabelAdminTab.TabIndex = 8;
+            this.createLabelAdminTab.Text = "Skapa";
+            // 
+            // editLabelAdminTab
+            // 
+            this.editLabelAdminTab.AutoSize = true;
+            this.editLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editLabelAdminTab.Location = new System.Drawing.Point(129, 77);
+            this.editLabelAdminTab.Name = "editLabelAdminTab";
+            this.editLabelAdminTab.Size = new System.Drawing.Size(85, 27);
+            this.editLabelAdminTab.TabIndex = 7;
+            this.editLabelAdminTab.Text = "Editera";
+            // 
             // editObjectButton
             // 
             this.editObjectButton.Location = new System.Drawing.Point(129, 143);
@@ -644,25 +657,45 @@ namespace Termin4CSharp.View {
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
-            // editLabelAdminTab
+            // columnHeader1
             // 
-            this.editLabelAdminTab.AutoSize = true;
-            this.editLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editLabelAdminTab.Location = new System.Drawing.Point(129, 77);
-            this.editLabelAdminTab.Name = "editLabelAdminTab";
-            this.editLabelAdminTab.Size = new System.Drawing.Size(85, 27);
-            this.editLabelAdminTab.TabIndex = 7;
-            this.editLabelAdminTab.Text = "Editera";
+            this.columnHeader1.Text = "Byggnad";
+            this.columnHeader1.Width = 129;
             // 
-            // createLabelAdminTab
+            // columnHeader2
             // 
-            this.createLabelAdminTab.AutoSize = true;
-            this.createLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createLabelAdminTab.Location = new System.Drawing.Point(129, 188);
-            this.createLabelAdminTab.Name = "createLabelAdminTab";
-            this.createLabelAdminTab.Size = new System.Drawing.Size(80, 27);
-            this.createLabelAdminTab.TabIndex = 8;
-            this.createLabelAdminTab.Text = "Skapa";
+            this.columnHeader2.Text = "Rum";
+            this.columnHeader2.Width = 129;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Tidslinje";
+            this.columnHeader3.Width = 129;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Minst antal platser: ";
+            this.columnHeader4.Width = 129;
+            // 
+            // idColumn
+            // 
+            this.idColumn.AspectName = "Id";
+            // 
+            // bnameColumn
+            // 
+            this.bnameColumn.AspectName = "BName";
+            // 
+            // capacityColumn
+            // 
+            this.capacityColumn.AspectName = "Capacity";
+            // 
+            // floorColumn
+            // 
+            this.floorColumn.AspectName = "Floor";
+            // 
+            // rtypeColumn
+            // 
+            this.rtypeColumn.AspectName = "RType";
             // 
             // GUIMain
             // 
@@ -682,6 +715,7 @@ namespace Termin4CSharp.View {
             this.loginTab.PerformLayout();
             this.roomBookTab.ResumeLayout(false);
             this.roomBookTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roomHolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.capacityTrackbarRoomBookingTab)).EndInit();
             this.adminTab.ResumeLayout(false);
             this.adminTab.PerformLayout();
@@ -712,7 +746,8 @@ namespace Termin4CSharp.View {
         private Label passwordLabelLoginTab;
         private Label usernameLabelLoginTab;
         private TabPage roomBookTab;
-        private ListView roomView;
+        //private ListView roomView;
+        private ObjectListView roomHolder;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
@@ -744,5 +779,10 @@ namespace Termin4CSharp.View {
         private Label label12;
         private Label editLabelAdminTab;
         private Label createLabelAdminTab;
+        private OLVColumn idColumn;
+        private OLVColumn bnameColumn;
+        private OLVColumn capacityColumn;
+        private OLVColumn floorColumn;
+        private OLVColumn rtypeColumn;
     }
 }

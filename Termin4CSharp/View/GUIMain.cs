@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,6 +11,7 @@ using System.Windows.Forms;
 using Termin4CSharp.Controller;
 using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
+using static System.Windows.Forms.ListViewItem;
 using static Termin4CSharp.Controller.GUIMainController;
 
 namespace Termin4CSharp.View
@@ -198,21 +200,36 @@ namespace Termin4CSharp.View
         }
 
         public void SetRooms(List<Room> rooms) {
-            this.roomView.Items.Clear();
-            foreach (var room in rooms)
-                this.roomView.Items.Add(new ListViewItem(Utils.GetAttributeInfo(room).Values.Select(x => x != null ? x.ToString() : "").ToArray()));
+            this.roomHolder.SetObjects(rooms);
         }
         private void InitializeMainRoomViewColumns() {
-            this.roomView.Columns.Clear();
-            ColumnHeader c = null;
-            var attInfo = Utils.GetAttributeInfo(new Room());
-            foreach (var kv in attInfo) {
-                c = new ColumnHeader();
-                c.Text = kv.Key;
-                c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                c.Width = this.roomView.Width / attInfo.Count;
-                this.roomView.Columns.Add(c);
+
+            foreach (OLVColumn c in roomHolder.Columns) {
+                Console.WriteLine();
+                c.Text = Utils.ConvertAttributeNameToDisplayName(new Room(), c.AspectName);
             }
+
+            //this.roomView.Columns.Clear();
+            //ColumnHeader c = null;
+            //var attInfo = Utils.GetAttributeInfo(new Room());
+            //foreach (var kv in attInfo) {
+            //    c = new ColumnHeader();
+            //    c.Text = kv.Key;
+            //    c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                // Divided by two because we want the rest of the view for timeline
+                //c.Width = (this.roomView.Width / 2) / attInfo.Count;
+                //this.roomView.Columns.Add(c);
+            ////}
+            //int maxHours = 24;
+            //for (int i = 0; i < maxHours; i++) {
+            //    c = new ColumnHeader();
+            //    c.Text = (i < 10 ? "0" : "") + i + ":00";
+            //    //c.Width = (this.roomView.Width / 2) / maxHours;
+            //    c.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            //    //c.Colo
+            //    //this.roomView.Columns.Add(c);
+            //}
+
         }
 
         public void SetBuildingFilters(List<Building> buildings) {

@@ -99,7 +99,6 @@ namespace Termin4CSharp.Controller {
                             List<IModel> toDeleteOrUpdateToNull = new List<IModel>();
 
                             bool doOrdinaryAddAndDelete = false;
-                            IModel deleteFromTable = null;
 
                             var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
                             foreach (var intersectedModel in intersected) {
@@ -109,8 +108,7 @@ namespace Termin4CSharp.Controller {
                                     toBeAdded.Add(intersectedModel);
                             }
                             // If it's an associationtable, and a changedStatus-dict contains elements
-                            // delete all from that table where the models-id is present, and
-                            // re-add all the checked items in the checklistbox. (Until a better solution)
+                            // delete all associated-table-objects with ID from each IDs
                             if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource) {
                                 toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
                                 toDeleteOrUpdateToNull = toDeleteOrUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
@@ -143,7 +141,6 @@ namespace Termin4CSharp.Controller {
             var controls = this.EditView.GetControls();
             foreach (var control in controls) {
                 if (control is CheckedListBox && ((CheckedListBox)control).Items?[0].GetType() == referencedType) {
-                    Console.WriteLine();
                     List<IModel> ret = ((CheckedListBox)control).CheckedItems.OfType<object>().Cast<IModel>().ToList();
                     return ret;
                 }

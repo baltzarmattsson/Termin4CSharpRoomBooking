@@ -30,7 +30,9 @@ namespace Termin4CSharp.Controller {
 
             this.LoginUser("19930217217", "hej123");
         }
-        private void LoginUser(string username, string password) {
+        public void LoginUser(string username, string password) {
+            if (this.LoggedInUser != null)
+                this.LoggedInUser = null;
             Login login = new Login(username, password);
             DAL dal = new DAL(this);
             var whereParams = new Dictionary<string, object>();

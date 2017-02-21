@@ -158,12 +158,6 @@ namespace Termin4CSharp.View
         }
 
         internal void ClearFilterSelections() {
-
-
-            //Temp fix since Windows Forms sucks
-            //this.textBox3.Text = " ";
-            //this.textBox3.Text = "";
-
             CheckedListBox[] filterBoxes = { this.buildingFilterBox, this.resourceFilterBox, this.roomFilterBox };
             foreach (var fbox in filterBoxes) {
                 fbox.SelectedItems.Clear();
@@ -272,6 +266,14 @@ namespace Termin4CSharp.View
         }
         public int GetMinCapacityFilterValue() {
             return this.trackBar1.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            //this.Controller.LoginUser()
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e) {
+
         }
     }
 }

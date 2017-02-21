@@ -29,7 +29,7 @@ namespace Termin4CSharp.Controller {
               
             this.LoadComboBoxes();  
         }
-
+        // TODO Role loggedInUserRole bestämmer vilka typer som ska vara tillgängliga
         private void LoadComboBoxes() {
             DAL dal = new DAL(this);
 

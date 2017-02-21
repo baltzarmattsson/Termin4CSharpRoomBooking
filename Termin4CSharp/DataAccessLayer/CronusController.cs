@@ -14,57 +14,58 @@ namespace Termin4CSharp.DataAccessLayer
         
         public string GetEmployees()
         {
-            return DALCronus.GetEmployees();
+
+            return dal.GetEmployees();
         }
 
         public string GetRelatives()
         {
-            return DALCronus.GetRelatives();
+            return dal.GetRelatives();
         }
 
         public string GetEmployeeAbsence()
         {
-            return DALCronus.GetEmployeeAbsence();
+            return dal.GetEmployeeAbsence();
         }
 
         public string GetSickestEmployee()
         {
-            return DALCronus.GetSickestEmployee();
+            return dal.GetSickestEmployee();
         }
 
         public string GetKeys()
         {
-            return DALCronus.GetKeys();
+            return dal.GetKeys();
         }
 
         public string GetIndexes()
         {
-            return DALCronus.GetIndexes();
+            return dal.GetIndexes();
         }
 
         public string GetConstraints()
         {
-            return DALCronus.GetConstraints();
+            return dal.GetConstraints();
         }
 
-        public string GetAllTables()
+        public string GetTables()
         {
-            return DALCronus.GetAllTables();
+            return dal.GetTables();
         }
 
         public string GetAllTables2()
         {
-            return DALCronus.GetAllTables2();
+            return dal.GetTables2();
         }
 
         public string GetMetaEmployees()
         {
-            return DALCronus.GetMetaEmployees();
+            return dal.GetMetaEmployees();
         }
 
         public string GetMetaEmployees2()
         {
-            return DALCronus.GetMetaEmployees2 ();
+            return dal.GetMetaEmployees2 ();
         } 
     }
 }

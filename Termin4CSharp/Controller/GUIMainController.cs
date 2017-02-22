@@ -24,7 +24,7 @@ namespace Termin4CSharp.Controller {
         public GUIMainController(GUIMain guiMain) {
             this.GUIMain = guiMain;
             this.GUIMain.Controller = this;
-            this.LoadRooms();
+            this.LoadRooms(DateTime.Now);
             this.LoadFilters();
             buildingFilters = new List<string>();
             roomFilters = new List<string>();
@@ -53,15 +53,9 @@ namespace Termin4CSharp.Controller {
                 }
             }
         }
-        public void LoadRooms() {
+        public void LoadRooms(DateTime onDate) {
             DAL dal = new DAL(this);
-            var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
-            //rooms.Select(x => x.Bookable = dal.FindBookableTimesForRoom(x));
-            //foreach (Room r in rooms) {
-            //    //var bookable = dal.FindBookableTimesForRoom(r);
-            //    //Console.WriteLine(String.Join(", ", bookable));
-            //    r.Bookable = bookable;
-            //}
+            List<Room> rooms = dal.FindRoomsWithOptionalFiltersOnDate(onDate);
             this.GUIMain.SetRooms(rooms);
         }
 

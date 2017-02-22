@@ -113,7 +113,7 @@ namespace Termin4CSharp.View {
                             }
                         }
                         control = comboBox;
-                        if (model is Login && kv.Key.Equals("Person"))
+                        if (IsExistingItemInDatabase && model is Login && kv.Key.Equals("Person"))
                             control.Enabled = false;
                     } else if (value.GetType().IsGenericType) {
                         Controller.ViewHasListOfIModels = true;

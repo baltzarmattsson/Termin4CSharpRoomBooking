@@ -349,22 +349,9 @@ namespace Termin4CSharp {
                 for (int i = 0; i < 5; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
-            } else {
-
-                /*
-                select * from Room ro
-                left join Room_Resource rr
-                on rr.roomID = ro.id
-                left join Resource re
-                on rr.resID = re.id */
-
-                //sqlBuilder.Append("left join Room_Resource rr " + 
-                //                  "on rr.roomID = ro.id " +
-                //                  "left join Resource re " +
-                //                  "on rr.resID = re.id ");
-
+            } else if (buildingNames != null || roomIDs != null || resourceNames != null) {
                 // Adding building filters
-                if (buildingNames.Any()) {
+                if (buildingNames != null && buildingNames.Any()) {
                     sqlBuilder.Append("where ro.bname in (");
                     string key = "";
                     foreach (string buildName in buildingNames) {
@@ -377,7 +364,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                 }
                 // Adding roomid filters
-                if (roomIDs.Any()) {
+                if (roomIDs != null && roomIDs.Any()) {
                     if (whereAdded) {
                         sqlBuilder.Append(" and ");
                     } else {
@@ -395,7 +382,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                 }
                 // Adding resource filters
-                if (resourceNames.Any()) {
+                if (resourceNames != null && resourceNames.Any()) {
                     if (whereAdded)
                         sqlBuilder.Append(" and ");
                     else {

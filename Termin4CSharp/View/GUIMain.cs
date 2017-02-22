@@ -32,7 +32,7 @@ namespace Termin4CSharp.View
         private void tabPage5_GotFocus(object sender, EventArgs e)
         {
             this.Controller.LoadFilters();
-            this.Controller.LoadRooms();
+            this.Controller.LoadRooms(DateTime.Now);
         }
 
         public void SetMinCapacityFilter(int highestCapacity) {

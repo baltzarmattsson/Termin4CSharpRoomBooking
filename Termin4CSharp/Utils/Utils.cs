@@ -226,7 +226,7 @@ namespace Termin4CSharp {
             return cmd;
         }
         
-        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
+        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false, DateTime bookingSearchOnDate = default(DateTime)) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
             if (tableName == null)
@@ -304,7 +304,11 @@ namespace Termin4CSharp {
                 Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
-
+            if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
+                cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
+                cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
+                cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
+            }
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
@@ -415,45 +419,59 @@ namespace Termin4CSharp {
             return cmd; 
         }
 
-        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false, WhereCondition whereCondition = WhereCondition.EQUAL) {
-            foreach (KeyValuePair<string, object> attKV in queryParams) {
+        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false, WhereCondition whereCondition = WhereCondition.EQUAL, DateTime bookingSearchOnDate = default(DateTime)) {
 
-                string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
-                object val = attKV.Value;
+            if (queryParams != null) {
+                foreach (KeyValuePair<string, object> attKV in queryParams) {
 
-                if (val is IModel)
-                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
-                
-                /*      NULL        **/
-                if (val == null)
-                    cmd.Parameters.AddWithValue(key, DBNull.Value);
-                /**     TEXT        **/
-                else if (val is string) {
-                    if (whereCondition == WhereCondition.LIKE)
-                        val = "%" + val + "%";
-                    cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                    string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
+                    object val = attKV.Value;
+
+                    if (val is IModel)
+                        val = ((IModel)val).GetIdentifyingAttributes().First().Value;
+
+                    /*      NULL        **/
+                    if (val == null)
+                        cmd.Parameters.AddWithValue(key, DBNull.Value);
+                    /**     TEXT        **/
+                    else if (val is string) {
+                        if (whereCondition == WhereCondition.LIKE)
+                            val = "%" + val + "%";
+                        cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                    }
+                    /**     NUMBERS     **/
+                    else if (val is Int32)
+                        cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
+                    else if (val is Int64)
+                        cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
+                    else if (val is double)
+                        cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
+                    else if (val is decimal)
+                        cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
+                    /**     DATETIME    **/
+                    else if (val is DateTime)
+                        cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
+                    /**     BOOL        **/
+                    else if (val is bool)
+                        cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
+
+                    else
+                        throw new Exception("Type not implemented: " + val.GetType());
+
+                    Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
                 }
-                /**     NUMBERS     **/
-                else if (val is Int32)
-                    cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
-                else if (val is Int64)
-                    cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
-                else if (val is double)
-                    cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
-                else if (val is decimal)
-                    cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-                /**     DATETIME    **/
-                else if (val is DateTime)
-                    cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-                /**     BOOL        **/
-                else if (val is bool)
-                    cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
-
-                else
-                    throw new Exception("Type not implemented: " + val.GetType());
-
-                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+                Console.WriteLine();
             }
+        }
+
+        public static void ConnectRoomsWithBookableTimes(List<Room> rooms, DateTime onDate) {
+            DAL dal = new DAL(null);
+            var allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
+
+            bool[] bookable = new bool[24];
+            //Initializes all values to true
+            for (int i = 0; i < 24; i++)
+                bookable[i] = true;
             Console.WriteLine();
         }
 

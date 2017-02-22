@@ -57,11 +57,11 @@ namespace Termin4CSharp.Controller {
             DAL dal = new DAL(this);
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
             //rooms.Select(x => x.Bookable = dal.FindBookableTimesForRoom(x));
-            foreach (Room r in rooms) {
-                var bookable = dal.FindBookableTimesForRoom(r);
-                //Console.WriteLine(String.Join(", ", bookable));
-                r.Bookable = bookable;
-            }
+            //foreach (Room r in rooms) {
+            //    //var bookable = dal.FindBookableTimesForRoom(r);
+            //    //Console.WriteLine(String.Join(", ", bookable));
+            //    r.Bookable = bookable;
+            //}
             this.GUIMain.SetRooms(rooms);
         }
 

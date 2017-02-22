@@ -30,7 +30,7 @@ namespace Termin4CSharp.Controller {
             roomFilters = new List<string>();
             resourceFilters = new List<string>();
 
-            this.LoginUser("19930217217", "hej123");
+            this.LoginUser("2", "hej123");
         }
         public void LoginUser(string username, string password) {
             if (this.LoggedInUser != null)

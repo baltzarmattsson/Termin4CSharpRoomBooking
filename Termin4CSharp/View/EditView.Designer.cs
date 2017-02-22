@@ -76,14 +76,17 @@ namespace Termin4CSharp.View {
             foreach (var kv in attributes) {
                 bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key) || (model is Login && kv.Key.Equals("Person"));
 
+                bool controlIsVisible= true;
                 // If the models id is autoincrementing, and we're not creating a new item, skip inserting a control for that value
-                if (!IsExistingItemInDatabase && isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model))
-                    continue;
+                if (isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model)) //!IsExisting
+                    controlIsVisible = false; //continue;
 
                 var value = kv.Value;
-                attributeName = new Label();
-                attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
-                this.flowLayoutPanel1.Controls.Add(attributeName);
+                if (controlIsVisible) {
+                    attributeName = new Label();
+                    attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
+                    this.flowLayoutPanel1.Controls.Add(attributeName);
+                }
                 
                 Control control = null;
                 //bool isListOfIModels = false;
@@ -110,7 +113,7 @@ namespace Termin4CSharp.View {
                             }
                         }
                         control = comboBox;
-                        this.oldIdentifyingAttribute[control.Name] = comboBox.SelectedItem;
+                        //this.oldIdentifyingAttribute[control.Name] = comboBox.SelectedItem;
                     } else if (value.GetType().IsGenericType) {
                         Controller.ViewHasListOfIModels = true;
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
@@ -164,8 +167,9 @@ namespace Termin4CSharp.View {
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)
                     if (!(control is ComboBox || control is CheckedListBox))
                         this.oldIdentifyingAttribute[control.Name] = control.Text;
+                control.Visible = controlIsVisible;
                 this.flowLayoutPanel1.Controls.Add(control);
-                flowLayoutPanel1.SetFlowBreak(control, true);
+                flowLayoutPanel1.SetFlowBreak(control, controlIsVisible);
             }
 
             // Adding responselabel

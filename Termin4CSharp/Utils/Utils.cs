@@ -108,9 +108,9 @@ namespace Termin4CSharp {
             return castedInstance;
         }
 
-        public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
+        public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues, QueryType queryType) {
             var attributeInfo = Utils.GetAttributeInfo(model, MembersOptimizedFor.QUERIES);
-            if (Utils.IdIsAutoIncrementInDb(model))
+            if (queryType != QueryType.REMOVE && Utils.IdIsAutoIncrementInDb(model))
                 attributeInfo.Remove(model.GetIdentifyingAttributes().First().Key);
 
             object instance = Utils.GetInstanceFromIModel(model);

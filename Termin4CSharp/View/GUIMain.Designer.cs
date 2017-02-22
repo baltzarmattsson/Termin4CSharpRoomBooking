@@ -141,7 +141,6 @@ namespace Termin4CSharp.View {
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "ERP";
             this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
             // label13
             // 
@@ -223,7 +222,6 @@ namespace Termin4CSharp.View {
             this.OK.SelectedIndex = 0;
             this.OK.Size = new System.Drawing.Size(2403, 1312);
             this.OK.TabIndex = 0;
-            this.OK.SelectedIndexChanged += new System.EventHandler(this.OK_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -236,7 +234,6 @@ namespace Termin4CSharp.View {
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programkonstruktion";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // mainLabel1PK
             // 
@@ -249,7 +246,6 @@ namespace Termin4CSharp.View {
             this.mainLabel1PK.SelectedIndex = 0;
             this.mainLabel1PK.Size = new System.Drawing.Size(2395, 1275);
             this.mainLabel1PK.TabIndex = 3;
-            this.mainLabel1PK.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // loginTab
             // 
@@ -269,7 +265,6 @@ namespace Termin4CSharp.View {
             this.loginTab.TabIndex = 0;
             this.loginTab.Text = "Logga in ";
             this.loginTab.UseVisualStyleBackColor = true;
-            this.loginTab.Click += new System.EventHandler(this.tabPage4_Click);
             // 
             // mainLabelLoginTab
             // 
@@ -322,7 +317,6 @@ namespace Termin4CSharp.View {
             this.passwordTextfieldLogin.PasswordChar = '*';
             this.passwordTextfieldLogin.Size = new System.Drawing.Size(580, 29);
             this.passwordTextfieldLogin.TabIndex = 3;
-            this.passwordTextfieldLogin.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // usernameTextfieldLogin
             // 
@@ -331,7 +325,6 @@ namespace Termin4CSharp.View {
             this.usernameTextfieldLogin.Name = "usernameTextfieldLogin";
             this.usernameTextfieldLogin.Size = new System.Drawing.Size(580, 29);
             this.usernameTextfieldLogin.TabIndex = 1;
-            this.usernameTextfieldLogin.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // passwordLabelLoginTab
             // 
@@ -342,7 +335,6 @@ namespace Termin4CSharp.View {
             this.passwordLabelLoginTab.Size = new System.Drawing.Size(100, 25);
             this.passwordLabelLoginTab.TabIndex = 2;
             this.passwordLabelLoginTab.Text = "Lösenord:";
-            this.passwordLabelLoginTab.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // usernameLabelLoginTab
             // 
@@ -353,7 +345,6 @@ namespace Termin4CSharp.View {
             this.usernameLabelLoginTab.Size = new System.Drawing.Size(152, 25);
             this.usernameLabelLoginTab.TabIndex = 0;
             this.usernameLabelLoginTab.Text = "Användarnamn:";
-            this.usernameLabelLoginTab.Click += new System.EventHandler(this.label1_Click);
             // 
             // roomBookTab
             // 
@@ -629,7 +620,6 @@ namespace Termin4CSharp.View {
             this.label11.Size = new System.Drawing.Size(126, 25);
             this.label11.TabIndex = 19;
             this.label11.Text = "Antal platser:";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // capacityTrackbarRoomBookingTab
             // 
@@ -752,7 +742,6 @@ namespace Termin4CSharp.View {
             this.fromDatePickerRoomBookingTab.Name = "fromDatePickerRoomBookingTab";
             this.fromDatePickerRoomBookingTab.Size = new System.Drawing.Size(363, 29);
             this.fromDatePickerRoomBookingTab.TabIndex = 4;
-            this.fromDatePickerRoomBookingTab.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // comboBox4
             // 
@@ -766,7 +755,6 @@ namespace Termin4CSharp.View {
             this.comboBox4.Size = new System.Drawing.Size(180, 32);
             this.comboBox4.TabIndex = 3;
             this.comboBox4.Text = "Användarnamn";
-            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // adminTab
             // 
@@ -877,7 +865,6 @@ namespace Termin4CSharp.View {
             this.mainLabel2WS.TabIndex = 1;
             this.mainLabel2WS.Text = "Webbservice";
             this.mainLabel2WS.UseVisualStyleBackColor = true;
-            this.mainLabel2WS.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // mainLabel3ERP
             // 
@@ -894,7 +881,6 @@ namespace Termin4CSharp.View {
             this.mainLabel3ERP.TabIndex = 2;
             this.mainLabel3ERP.Text = "ERP";
             this.mainLabel3ERP.UseVisualStyleBackColor = true;
-            this.mainLabel3ERP.Click += new System.EventHandler(this.tabPage3_Click);
             // 
             // label12
             // 
@@ -977,7 +963,6 @@ namespace Termin4CSharp.View {
             this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "GUIMain";
             this.Text = "Lunds universitet";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.OK.ResumeLayout(false);

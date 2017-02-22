@@ -32,6 +32,9 @@ namespace Termin4CSharp.View {
         /// </summary>
         private void InitializeComponent()
         {
+
+
+            this.tabPage3 = new TabPage();
             this.OK = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.mainLabel1PK = new System.Windows.Forms.TabControl();
@@ -979,7 +982,7 @@ namespace Termin4CSharp.View {
         //private Label label13;
         private ComboBox editArticleBox;
         private ComboBox editTypeBox;
-        //private Label label12;
+        private Label label12;
         private Button editObjectButton;
         private Button clearFiltersButtonRoomBookingTab;
         private Label label13;
@@ -1015,5 +1018,10 @@ namespace Termin4CSharp.View {
         private OLVColumn olvColumn22;
         private OLVColumn olvColumn23;
         private OLVColumn olvColumn24;
+        private Button ERPButton;
+        private ComboBox ComboBoxERP;
+        private VScrollBar ScrollBarERP;
+        private ListView ListViewERP;
+        private TabPage tabPage3;
     }
 }

@@ -9,13 +9,16 @@ using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.View;
 
-namespace Termin4CSharp {
-    static class Program {
+namespace Termin4CSharp
+{
+    static class Program
+    {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        static void Main()
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             GUIMain mainGui = new GUIMain();

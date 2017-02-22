@@ -10,8 +10,10 @@ using Termin4CSharp.Model;
 using Termin4CSharp.View;
 using Termin4CSharp.View.CustomControls;
 
-namespace Termin4CSharp.Controller {
-    public class EditViewController : IController {
+namespace Termin4CSharp.Controller
+{
+    public class EditViewController : IController
+    {
 
         public EditView EditView { get; set; }
         public AdminTabController AdminController { get; set; }
@@ -23,73 +25,92 @@ namespace Termin4CSharp.Controller {
         public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
         private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
 
-        public EditViewController(EditView editView, AdminTabController adminController = null) {
+        public EditViewController(EditView editView, AdminTabController adminController = null)
+        {
             this.EditView = editView;
             this.EditView.Controller = this;
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
-            
+
             this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
             this.changedStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
 
             this.EditView.InitializeLoad();
         }
 
-        public int Save(IModel model, Dictionary<string, object> oldIdentifyingAttributes = null) {
+        public int Save(IModel model, Dictionary<string, object> oldIdentifyingAttributes = null)
+        {
             DAL dal = new DAL(this);
             int affectedRows = 0;
             string dbMethod = "";
-            if (isExistingObjectInDatabase) {
+            if (isExistingObjectInDatabase)
+            {
                 if (oldIdentifyingAttributes != null && oldIdentifyingAttributes.Count > 0)
                     affectedRows = dal.Update(model, oldIdentifyingAttributes);
                 else
                     affectedRows = dal.Update(model);
                 dbMethod = "uppdaterad";
-            } else {
+            }
+            else
+            {
                 affectedRows = dal.Add(model);
                 dbMethod = "tillagd";
             }
-            if (affectedRows > 0) {
+            if (affectedRows > 0)
+            {
                 this.UpdateResponseLabel(string.Format("{0} {1}", model.GetType().Name, dbMethod));
                 this.isExistingObjectInDatabase = true;
-            } else if (affectedRows != -1) { //-1 is error from DAL
+            }
+            else if (affectedRows != -1)
+            { //-1 is error from DAL
                 this.UpdateResponseLabel(string.Format("Ingen {0} {1}", model.GetType().Name, dbMethod));
             }
             return affectedRows;
         }
-        public void Close() {
+        public void Close()
+        {
             EditView.Close();
             if (this.AdminController != null)
                 this.AdminController.HandleEditViewClosed();
 
         }
-        public int Delete(IModel model) {
+        public int Delete(IModel model)
+        {
             DAL dal = new DAL(this);
             int affectedRows = dal.Remove(model);
-            if (affectedRows > 0) {
+            if (affectedRows > 0)
+            {
                 this.ClearFields(EditView.GetControls());
                 this.UpdateResponseLabel(string.Format("{0} borttagen", model.GetType().Name));
-            } else {
+            }
+            else
+            {
                 this.UpdateResponseLabel(string.Format("Ingen {0} borttagen", model.GetType().Name));
             }
             return affectedRows;
         }
 
-        private void UpdateResponseLabel(string message) {
+        private void UpdateResponseLabel(string message)
+        {
             this.EditView.SetResponseLabel(message);
         }
-        
-        public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null) {
-            if (this.IdentifyingValuesAreNotEmpty()) {
+
+        public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null)
+        {
+            if (this.IdentifyingValuesAreNotEmpty())
+            {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
                 model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.ADD);
-                if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
+                if (model != null && model.GetIdentifyingAttributes().First().Value != null)
+                {
                     this.Save(model, oldIdentifyingAttributes);
-                    if (this.ViewHasListOfIModels) {
+                    if (this.ViewHasListOfIModels)
+                    {
                         // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
-                        foreach (var changedStatusForType in this.changedStatusOnReferencingModels) {
+                        foreach (var changedStatusForType in this.changedStatusOnReferencingModels)
+                        {
 
                             Type referencedType = changedStatusForType.Key;
                             Dictionary<IModel, bool> changedStatus = changedStatusForType.Value;
@@ -101,7 +122,8 @@ namespace Termin4CSharp.Controller {
                             bool doOrdinaryAddAndDelete = false;
 
                             var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
-                            foreach (var intersectedModel in intersected) {
+                            foreach (var intersectedModel in intersected)
+                            {
                                 if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
                                     toDeleteOrUpdateToNull.Add(intersectedModel);
                                 else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
@@ -109,7 +131,8 @@ namespace Termin4CSharp.Controller {
                             }
                             // If it's an associationtable, and a changedStatus-dict contains elements
                             // delete all associated-table-objects with ID from each IDs
-                            if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource) {
+                            if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource)
+                            {
                                 toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
                                 toDeleteOrUpdateToNull = toDeleteOrUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
                                 doOrdinaryAddAndDelete = true;
@@ -118,13 +141,16 @@ namespace Termin4CSharp.Controller {
                             DAL dal = new DAL(this);
                             int added = 0, updatedOrRemoved = 0;
 
-                            if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any())) {
+                            if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any()))
+                            {
                                 // TODO skapa metod som lägger till / tar bort multiple IModels så de slipper for-eachas
                                 foreach (IModel add in toBeAdded)
                                     added += dal.Add(add);
                                 foreach (IModel remove in toDeleteOrUpdateToNull)
                                     updatedOrRemoved += dal.Remove(remove);
-                            } else if (!doOrdinaryAddAndDelete) {
+                            }
+                            else if (!doOrdinaryAddAndDelete)
+                            {
                                 if (toBeAdded.Any())
                                     added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
                                 if (toDeleteOrUpdateToNull.Any())
@@ -133,15 +159,20 @@ namespace Termin4CSharp.Controller {
                         }
                     }
                 }
-            } else {
+            }
+            else
+            {
                 this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
         }
 
-        private List<IModel> GetCheckListBoxByType(Type referencedType) {
+        private List<IModel> GetCheckListBoxByType(Type referencedType)
+        {
             var controls = this.EditView.GetControls();
-            foreach (var control in controls) {
-                if (control is CheckedListBox && ((CheckedListBox)control).Items?[0].GetType() == referencedType) {
+            foreach (var control in controls)
+            {
+                if (control is CheckedListBox && ((CheckedListBox)control).Items?[0].GetType() == referencedType)
+                {
                     List<IModel> ret = ((CheckedListBox)control).CheckedItems.OfType<object>().Cast<IModel>().ToList();
                     return ret;
                 }
@@ -149,37 +180,45 @@ namespace Termin4CSharp.Controller {
             return null;
         }
 
-        public void HandleDeleteButtonClick() {
+        public void HandleDeleteButtonClick()
+        {
             IModel model = null;
             var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
             model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.REMOVE);
-            if (model != null) {
+            if (model != null)
+            {
                 this.Delete(model);
-                this.isExistingObjectInDatabase = false;         
+                this.isExistingObjectInDatabase = false;
             }
         }
 
-        public enum ReferencedIModelType {
+        public enum ReferencedIModelType
+        {
             SINGLE_IMODEL, LIST_OF_IMODELS
         }
 
         // Gets a list of all values that can be referenced by the target-model. The bool-parameter tells us
         // if it's a currently connected/referenced object or not. If it is, it's later marked as checked/selected in the
         // EditView
-        public Dictionary<IModel, bool> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList) {
-            
+        public Dictionary<IModel, bool> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList)
+        {
+
             Dictionary<IModel, bool> fetchedIModelsFromDatabase = new Dictionary<IModel, bool>();
 
-            if (referencedIModelOrList != null) {
+            if (referencedIModelOrList != null)
+            {
                 DAL dal = new DAL(this);
                 IModel iModelToFetch = null;
-                if (refModelType == ReferencedIModelType.SINGLE_IMODEL) {
+                if (refModelType == ReferencedIModelType.SINGLE_IMODEL)
+                {
                     iModelToFetch = referencedIModelOrList as IModel;
-                } else if (refModelType == ReferencedIModelType.LIST_OF_IMODELS) {
+                }
+                else if (refModelType == ReferencedIModelType.LIST_OF_IMODELS)
+                {
                     Type typeThatListHolds = referencedIModelOrList.GetType().GetGenericArguments()[0];
                     iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
                 }
-                
+
                 List<IModel> allObjects = null;
                 allObjects = dal.Get(iModelToFetch, selectAll: true);
 
@@ -197,7 +236,8 @@ namespace Termin4CSharp.Controller {
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((Building)x).Name.Equals(((Room)target).BName));
                 else if (target is Room && iModelToFetch is RoomType)
                     fetchedIModelsFromDatabase = allObjects.ToDictionary(x => x, x => ((RoomType)x).Type.Equals(((Room)target).RType));
-                else if (target is Room && iModelToFetch is Resource) {
+                else if (target is Room && iModelToFetch is Resource)
+                {
                     // Since they're connected in an associationtable
                     var whereParams = new Dictionary<string, object>();
                     whereParams["roomID"] = ((Room)target).Id;
@@ -209,58 +249,78 @@ namespace Termin4CSharp.Controller {
 
                     Dictionary<IModel, bool> res = allObjectsCasted.ToDictionary(x => (IModel)x.Value, x => objectsFromAssociationTable.ContainsKey(x.Key));
                     fetchedIModelsFromDatabase = res;
-                    
-                } else
+
+                }
+                else
                     throw new Exception("unhandled type");
             }
 
             return fetchedIModelsFromDatabase;
         }
 
-        public void HandleListOfIModelsBoxCheck(object sender, EventArgs e) {
+        public void HandleListOfIModelsBoxCheck(object sender, EventArgs e)
+        {
             CheckedListBox checkBox = (CheckedListBox)sender;
             ItemCheckEventArgs check = (ItemCheckEventArgs)e;
             IModel selectedIModel = (IModel)checkBox.SelectedItem;
             Type modelType = selectedIModel.GetType();
 
             // If the lists arent initialized, initialize them
-            if (this.changedStatusOnReferencingModels.ContainsKey(modelType) == false) {
+            if (this.changedStatusOnReferencingModels.ContainsKey(modelType) == false)
+            {
                 this.changedStatusOnReferencingModels[modelType] = new Dictionary<IModel, bool>();
             }
             Dictionary<IModel, bool> changedList = this.changedStatusOnReferencingModels[modelType];
-                this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
+            this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
 
         }
 
-        public void HandleCloseButtonClick() {
+        public void HandleCloseButtonClick()
+        {
             this.Close();
         }
 
-        private Dictionary<string, object> ViewControlsToDictionary(Control.ControlCollection controls) {
+        private Dictionary<string, object> ViewControlsToDictionary(Control.ControlCollection controls)
+        {
             Dictionary<string, object> controlValues = new Dictionary<string, object>();
-            foreach (Control c in controls) {
-                if (c is NumberTextBox) {
+            foreach (Control c in controls)
+            {
+                if (c is NumberTextBox)
+                {
                     NumberTextBox numTextBox = (NumberTextBox)c;
-                    if (numTextBox.Text.Length > 0) {
-                        try {
+                    if (numTextBox.Text.Length > 0)
+                    {
+                        try
+                        {
                             controlValues[c.Name] = Int32.Parse(numTextBox.Text);
-                        } catch (FormatException) {
+                        }
+                        catch (FormatException)
+                        {
                             EditView.SetResponseLabel("Ett nummer är för stort, försök igen");
                         }
-                    } else
+                    }
+                    else
                         controlValues[c.Name] = null;
-                } else if (c is TextBox) {
+                }
+                else if (c is TextBox)
+                {
                     TextBox txtBox = (TextBox)c;
-                    controlValues[c.Name] = String.IsNullOrEmpty(txtBox.Text) ? null : txtBox.Text; 
-                } else if (c is DateTimePicker) {
+                    controlValues[c.Name] = String.IsNullOrEmpty(txtBox.Text) ? null : txtBox.Text;
+                }
+                else if (c is DateTimePicker)
+                {
                     controlValues[c.Name] = ((DateTimePicker)c).Value;
-                } else if (c is ComboBox) {
+                }
+                else if (c is ComboBox)
+                {
                     IModel selectedIModel = (IModel)((ComboBox)c).SelectedItem;
                     if (selectedIModel != null)
                         controlValues[c.Name] = selectedIModel.GetIdentifyingAttributes().First().Value;
                     else
                         controlValues[c.Name] = null;
-                } else if (c is CheckedListBox) {
+                }
+                else if (c is CheckedListBox)
+                {
                     // Skip, handled after the main-query is done
                 }
             }
@@ -268,34 +328,45 @@ namespace Termin4CSharp.Controller {
         }
 
         // TODO ta bort denna och bara stäng fönstret istället
-        private void ClearFields(Control.ControlCollection controls) {
-            foreach (Control c in controls) {
-                if (c is TextBox) {
+        private void ClearFields(Control.ControlCollection controls)
+        {
+            foreach (Control c in controls)
+            {
+                if (c is TextBox)
+                {
                     ((TextBox)c).Text = "";
-                } else if (c is NumberTextBox) {
+                }
+                else if (c is NumberTextBox)
+                {
                     ((NumberTextBox)c).Text = "";
-                } else if (c is DateTimePicker) {
+                }
+                else if (c is DateTimePicker)
+                {
                     ((DateTimePicker)c).Value = DateTime.Now;
                 }
             }
         }
 
-        public void HandleIdentifyingAttributesValueChange(object sender, EventArgs e) {
+        public void HandleIdentifyingAttributesValueChange(object sender, EventArgs e)
+        {
             if (sender is TextBox)
                 identifyingAttributesValues[((TextBox)sender).Name] = ((TextBox)sender).Text;
             else if (sender is NumberTextBox)
                 identifyingAttributesValues[((NumberTextBox)sender).Name] = ((NumberTextBox)sender).Text;
-            else if (sender is ComboBox) {
+            else if (sender is ComboBox)
+            {
                 ComboBox cb = (ComboBox)sender;
                 IModel selVal = (IModel)cb.SelectedItem;
                 var kv = selVal.GetIdentifyingAttributes();
                 var kvfirstval = kv.First().Value;
                 identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedItem).GetIdentifyingAttributes().First().Value;
-            } else
+            }
+            else
                 throw new Exception("What type then...." + sender.GetType());
         }
 
-        private bool IdentifyingValuesAreNotEmpty() {
+        private bool IdentifyingValuesAreNotEmpty()
+        {
             if (Utils.IdIsAutoIncrementInDb(EditView.Model))
                 return true;
             if (this.identifyingAttributesValues.Count == 0)
@@ -306,8 +377,9 @@ namespace Termin4CSharp.Controller {
             return true;
         }
 
-        public void NotifyExceptionToView(string s) {
+        public void NotifyExceptionToView(string s)
+        {
             this.UpdateResponseLabel(s);
-        }        
+        }
     }
 }

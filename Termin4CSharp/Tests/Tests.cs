@@ -4,11 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Termin4CSharp.Model;
 using Termin4CSharp.DataAccessLayer;
 
-namespace Termin4CSharp.Tests {
+namespace Termin4CSharp.Tests
+{
     [TestClass]
-    public class Tests {
+    public class Tests
+    {
         [TestMethod]
-        public void DALAddGetUpdateRemove() {
+        public void DALAddGetUpdateRemove()
+        {
             Person p = new Person("testname", "testid", "testemail", "testphonenbr", null);
             Building b = new Building("testname", "testaddress", DateTime.Now, DateTime.Now, null);
             RoomType rt = new RoomType("testtype");
@@ -18,7 +21,8 @@ namespace Termin4CSharp.Tests {
             DAL dal = new DAL(null);
             IModel[] imodels = new IModel[] { p, b, rt, r, l };
 
-            try {
+            try
+            {
                 //Testing add
                 foreach (IModel model in imodels)
                     dal.Add(model);
@@ -56,7 +60,9 @@ namespace Termin4CSharp.Tests {
                 Assert.AreEqual(retrievedPerson, p);
                 Assert.AreEqual(retrievedBuilding, b);
                 Assert.AreEqual(retrievedRoom, r);
-            } finally {
+            }
+            finally
+            {
                 //Testing remove
                 dal.Remove(p);
                 dal.Remove(b);

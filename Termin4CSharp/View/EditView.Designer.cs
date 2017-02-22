@@ -7,8 +7,10 @@ using Termin4CSharp.View.CustomControls;
 using static Termin4CSharp.Controller.EditViewController;
 using static Termin4CSharp.Utils;
 
-namespace Termin4CSharp.View {
-    public partial class EditView : Form {
+namespace Termin4CSharp.View
+{
+    public partial class EditView : Form
+    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -18,8 +20,10 @@ namespace Termin4CSharp.View {
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -31,7 +35,8 @@ namespace Termin4CSharp.View {
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
@@ -55,12 +60,14 @@ namespace Termin4CSharp.View {
 
         }
 
-        public void InitializeLoad() {
+        public void InitializeLoad()
+        {
             if (this.Model != null)
                 this.LoadModel(this.Model);
         }
 
-        private void LoadModel(IModel model) {
+        private void LoadModel(IModel model)
+        {
 
             Label mainTitleLabel = new Label();
             mainTitleLabel.Size = new System.Drawing.Size(1500, 50);
@@ -71,32 +78,36 @@ namespace Termin4CSharp.View {
             mainTitleLabel.Text = string.Format("{0} {1} ", createOrEditLabelText, Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name));
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
             this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
-            
+
             var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
             Label attributeName = null;
-            foreach (var kv in attributes) {
+            foreach (var kv in attributes)
+            {
                 bool isIdentifyingAttribute = model.GetIdentifyingAttributes().ContainsKey(kv.Key) || (model is Login && kv.Key.Equals("Person"));
 
-                bool controlIsVisible= true;
+                bool controlIsVisible = true;
                 // If the models id is autoincrementing, and we're not creating a new item, skip inserting a control for that value
                 if (isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model)) //!IsExisting
                     controlIsVisible = false; //continue;
 
                 var value = kv.Value;
-                if (controlIsVisible) {
+                if (controlIsVisible)
+                {
                     attributeName = new Label();
                     attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
                     this.flowLayoutPanel1.Controls.Add(attributeName);
                 }
-                
+
                 Control control = null;
-                
+
                 // If IModel or List<IModel>, it's a referenced IModel/List<IModel>. For example, a Building that contains List<Room>, or Person that has a Role
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
-                if (value is IModel || (value != null && value.GetType().IsGenericType)) {
+                if (value is IModel || (value != null && value.GetType().IsGenericType))
+                {
                     //List<IModel> imodels = Controller.GetReferenceAbleIModels(model, (IModel)value);
-                    if (value is IModel) {
-                        Dictionary <IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
+                    if (value is IModel)
+                    {
+                        Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
                         ComboBox comboBox = new ComboBox();
                         if (isIdentifyingAttribute)
                             comboBox.SelectedValueChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
@@ -104,10 +115,12 @@ namespace Termin4CSharp.View {
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
                         comboBox.Items.AddRange(imodels.Keys.ToArray());
-                        if (imodels.Count > 0) {
+                        if (imodels.Count > 0)
+                        {
                             var filteredValues = imodels.Select(x => x).Where(x => x.Value);
                             object selectedValue = null;
-                            if (filteredValues.Any()) {
+                            if (filteredValues.Any())
+                            {
                                 selectedValue = filteredValues.First().Key;
                                 comboBox.SelectedItem = selectedValue;
                             }
@@ -115,7 +128,9 @@ namespace Termin4CSharp.View {
                         control = comboBox;
                         if (IsExistingItemInDatabase && model is Login && kv.Key.Equals("Person"))
                             control.Enabled = false;
-                    } else if (value.GetType().IsGenericType) {
+                    }
+                    else if (value.GetType().IsGenericType)
+                    {
                         Controller.ViewHasListOfIModels = true;
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
                         //Sets the initial values to know what to update and insert when Save is pressed 
@@ -129,14 +144,18 @@ namespace Termin4CSharp.View {
                         checkBox.ItemCheck += new ItemCheckEventHandler(this.Controller.HandleListOfIModelsBoxCheck);
                         control = checkBox;
                     }
-                } else {
+                }
+                else
+                {
                     // DateTime
-                    if (value is DateTime) {
+                    if (value is DateTime)
+                    {
                         DateTimePicker datePicker = new DateTimePicker();
                         datePicker.Width = 500;
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-                        if (model is Building || (model is Booking)) {// && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
+                        if (model is Building || (model is Booking))
+                        {// && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
                             datePicker.Format = DateTimePickerFormat.Custom;
                             if (kv.Key.Equals("Timestamp"))
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:mm:ss";
@@ -147,8 +166,10 @@ namespace Termin4CSharp.View {
                         control = datePicker;
                         if (model is Booking && kv.Key.Equals("Timestamp"))
                             control.Enabled = false;
-                    // Numbers
-                    } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
+                        // Numbers
+                    }
+                    else if (value is Int16 || value is Int32 || value is Int64 || value is double)
+                    {
                         NumberTextBox numTextBox = new NumberTextBox();
                         numTextBox.Width = 500;
                         numTextBox.Name = kv.Key;
@@ -157,8 +178,10 @@ namespace Termin4CSharp.View {
                         numTextBox.Text = "dummyval";
                         numTextBox.Text = value == null ? "0" : value.ToString();
                         control = numTextBox;
-                    // Else
-                    } else {
+                        // Else
+                    }
+                    else
+                    {
                         TextBox textBox = new TextBox();
                         textBox.Width = 500;
                         textBox.Name = kv.Key;

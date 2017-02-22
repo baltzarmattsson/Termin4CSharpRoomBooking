@@ -55,7 +55,8 @@ namespace Termin4CSharp.View
             return this.buildingFilterBox.CheckedItems;
         }
 
-        public void ClearFilterSelections() {
+        public void ClearFilterSelections()
+        {
 
             CheckedListBox[] filterBoxes = { this.buildingFilterBox, this.resourceFilterBox, this.roomFilterBox };
             foreach (var fbox in filterBoxes)
@@ -69,7 +70,8 @@ namespace Termin4CSharp.View
             }
         }
 
-        internal void SetLoginResponseLabelText(string text) {
+        internal void SetLoginResponseLabelText(string text)
+        {
             this.responseLabelLoginTab.Text = text;
         }
 
@@ -107,8 +109,10 @@ namespace Termin4CSharp.View
 
                 string text = null;
                 Color backColor = default(Color);
-                if (r.RoomStateOnHour != null) {
-                    switch (r.RoomStateOnHour[index]) {
+                if (r.RoomStateOnHour != null)
+                {
+                    switch (r.RoomStateOnHour[index])
+                    {
                         case RoomState.AVAILABLE:
                             text = (index < 10 ? "0" : "") + index + ":00";
                             backColor = Color.LightGreen;

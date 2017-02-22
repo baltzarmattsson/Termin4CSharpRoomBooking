@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Termin4CSharp.Model {
-    interface IView {
+namespace Termin4CSharp.Model
+{
+    interface IView
+    {
     }
 }

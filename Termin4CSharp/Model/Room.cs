@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model
 {
-    public class Room : IModel {
+    public class Room : IModel
+    {
         public string BName { get; set; }
         public string Id { get; set; }
         public int Capacity { get; set; }
@@ -18,7 +19,8 @@ namespace Termin4CSharp.Model
         public RoomState[] RoomStateOnHour { get; set; }
         public Room() { }
 
-        public Room(string building, string id, int capacity, string floor, string rType) {
+        public Room(string building, string id, int capacity, string floor, string rType)
+        {
             this.BName = building;
             this.Id = id;
             this.Capacity = capacity;
@@ -26,12 +28,14 @@ namespace Termin4CSharp.Model
             this.RType = rType;
         }
 
-        public Dictionary<string, object> GetIdentifyingAttributes() {
+        public Dictionary<string, object> GetIdentifyingAttributes()
+        {
             var dict = new Dictionary<string, object>();
             dict["Id"] = this.Id;
             return dict;
         }
-        public Dictionary<string, object> GetReferencedModels() {
+        public Dictionary<string, object> GetReferencedModels()
+        {
             var dict = new Dictionary<string, object>();
             dict["Building"] = new Building();
             dict["RoomType"] = new RoomType();
@@ -39,10 +43,12 @@ namespace Termin4CSharp.Model
             return dict;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("{0} {1} {2} {3}", BName, Id, Capacity, Floor);
         }
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             var other = obj as Room;
             if (other == null)
                 return false;

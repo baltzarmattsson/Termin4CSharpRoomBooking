@@ -34,12 +34,13 @@ namespace Termin4CSharp.DataAccessLayer
                 //Console.WriteLine("Connection open!"); 
                 //conn.Close(); 
                 return conn;
-                
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.ToString()); 
+
             }
-            return null; 
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return null;
         }
     }
 }

@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Termin4CSharp.DataAccessLayer {
-    class DALCronus {
+namespace Termin4CSharp.DataAccessLayer
+{
+    class DALCronus
+    {
         private SqlCommand cmd;
         private string sql;
 
@@ -179,8 +181,7 @@ namespace Termin4CSharp.DataAccessLayer {
     }
 }
 
-        
-       
 
 
-   
+
+

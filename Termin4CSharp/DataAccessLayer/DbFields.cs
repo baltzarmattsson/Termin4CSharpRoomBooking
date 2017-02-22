@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Termin4CSharp.DataAccessLayer {
-    
-    public abstract class DbFields {
+namespace Termin4CSharp.DataAccessLayer
+{
+
+    public abstract class DbFields
+    {
 
         public const string PersonRoleTable = "Role";
         public const string RoomTypeTable = "RoomType";
@@ -22,7 +24,8 @@ namespace Termin4CSharp.DataAccessLayer {
 
     }
 
-    public abstract class SqlCodes {
+    public abstract class SqlCodes
+    {
         public const int PrimaryKey = 2627;
         public const int ForeignKey = 547;
         public const int DataWouldBeTruncated = 8152;

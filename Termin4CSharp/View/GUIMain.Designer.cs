@@ -3,7 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using Termin4CSharp.View.CustomControls;
 
-namespace Termin4CSharp.View {
+namespace Termin4CSharp.View
+{
     public partial class GUIMain
     {
         /// <summary>
@@ -993,11 +994,13 @@ namespace Termin4CSharp.View {
 
         }
 
-        private void RoomHolder_CellClick1(object sender, CellClickEventArgs e) {
+        private void RoomHolder_CellClick1(object sender, CellClickEventArgs e)
+        {
             throw new System.NotImplementedException();
         }
 
-        private void RoomHolder_CellClick(object sender, CellClickEventArgs e) {
+        private void RoomHolder_CellClick(object sender, CellClickEventArgs e)
+        {
             this.Controller.HandleCellDoubleClick(sender, e);
         }
 

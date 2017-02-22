@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Termin4CSharp.DataAccessLayer {
+namespace Termin4CSharp.DataAccessLayer
+{
 
 
-    enum QueryType {
+    enum QueryType
+    {
         ADD, REMOVE, UPDATE, GET
     }
 
-    enum WhereCondition {
+    enum WhereCondition
+    {
         EQUAL, LIKE
     }
 
-    enum SqlExceptionCode {
+    enum SqlExceptionCode
+    {
         PK_RESTRAINT, FK_RESTRAINT
     }
 }

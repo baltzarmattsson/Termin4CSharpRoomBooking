@@ -24,20 +24,24 @@ namespace Termin4CSharp.Model
             this.Rooms = rooms;
         }
 
-        public Dictionary<string, object> GetIdentifyingAttributes() {
+        public Dictionary<string, object> GetIdentifyingAttributes()
+        {
             var dict = new Dictionary<string, object>();
             dict["Name"] = this.Name;
             return dict;
         }
-        public Dictionary<string, object> GetReferencedModels() {
+        public Dictionary<string, object> GetReferencedModels()
+        {
             var dict = new Dictionary<string, object>();
             dict["Rooms"] = new List<Room>();
             return dict;
         }
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("{0} {1} {2} {3}", Name, Address, Avail_start, Avail_end);
         }
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             var other = obj as Building;
             if (other == null)
                 return false;

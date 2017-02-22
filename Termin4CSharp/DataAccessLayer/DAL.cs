@@ -10,18 +10,22 @@ using Termin4CSharp.Model;
 using Termin4CSharp.Model.DbHelpers;
 using static System.Windows.Forms.CheckedListBox;
 
-namespace Termin4CSharp.DataAccessLayer {
-    class DAL {
+namespace Termin4CSharp.DataAccessLayer
+{
+    class DAL
+    {
 
         public IController Controller { get; set; }
 
         //public DAL() { }
 
-        public DAL(IController controller) {
+        public DAL(IController controller)
+        {
             this.Controller = controller;
         }
 
-        public IModel GetIModel(IModel model) {
+        public IModel GetIModel(IModel model)
+        {
 
             IModel returnModel = null;
             Type modelType = model.GetType();
@@ -29,7 +33,8 @@ namespace Termin4CSharp.DataAccessLayer {
             string modelIdAttName = modelIdAtt.Key, modelIdAttValue = (string)modelIdAtt.Value;
             var whereParams = new Dictionary<string, object>();
             // BUILDING
-            if (modelType == typeof(Building)) {
+            if (modelType == typeof(Building))
+            {
                 Building b = new Building();
                 b.Name = modelIdAttValue;
                 b = this.Get(b).First() as Building;
@@ -38,7 +43,8 @@ namespace Termin4CSharp.DataAccessLayer {
                 returnModel = b;
             }
             // ROOM
-            else if (modelType == typeof(Room)) {
+            else if (modelType == typeof(Room))
+            {
                 Room r = new Room();
                 r.Id = modelIdAttValue;
                 r = this.Get(r).First() as Room;
@@ -47,13 +53,15 @@ namespace Termin4CSharp.DataAccessLayer {
                 returnModel = r;
             }
             // ELSE 
-            else {
+            else
+            {
                 return this.Get(model).First();
             }
             return returnModel;
         }
 
-        public int ConnectOrNullReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool connect) {
+        public int ConnectOrNullReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool connect)
+        {
             SqlCommand cmd = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(referencedIModels, targetModel, connect);
             return this.PerformNonQuery(targetModel, cmd);
         }
@@ -61,35 +69,43 @@ namespace Termin4CSharp.DataAccessLayer {
 
         // Finds all bookings for one date. Keys are RoomID and List<Booking> is the bookings for that room on the 
         // specified date given in the parameter
-        public Dictionary<string, List<Booking>> FindAllBookingsOnDate(DateTime dateToSearch) {
+        public Dictionary<string, List<Booking>> FindAllBookingsOnDate(DateTime dateToSearch)
+        {
             Dictionary<string, List<Booking>> roomBookings = new Dictionary<string, List<Booking>>();
 
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, new Booking(), selectAll: true, bookingSearchOnDate: dateToSearch);
-            
+
             SqlDataReader dr = null;
             var resultList = new List<Booking>();
             cmd.Connection = Connector.GetConnection();
-            try {
+            try
+            {
                 IModel model = new Booking();
                 dr = cmd.ExecuteReader();
                 string key = null;
-                while (dr.Read()) {
+                while (dr.Read())
+                {
                     Booking parsedBooking = Utils.ParseDataReaderToIModel(new Booking(), dr) as Booking;
                     key = parsedBooking.RoomId;
                     if (!roomBookings.ContainsKey(key))
                         roomBookings[key] = new List<Booking>();
                     roomBookings[key].Add(parsedBooking);
                 }
-            } catch (SqlException sqle) {
+            }
+            catch (SqlException sqle)
+            {
                 this.HandleSqlException(new Booking(), sqle);
-            } finally {
+            }
+            finally
+            {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
 
             return roomBookings;
         }
 
-        public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate) {
+        public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate)
+        {
             DAL dal = new DAL(null);
             Dictionary<string, List<Booking>> allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
 
@@ -99,7 +115,8 @@ namespace Termin4CSharp.DataAccessLayer {
             DateTime opening = default(DateTime), closing = default(DateTime);
             Room loopedRoom = null;
             RoomState[] roomStateOnHour = null;
-            foreach (var idAndHolder in rooms) {
+            foreach (var idAndHolder in rooms)
+            {
                 roomId = idAndHolder.Key;
                 loopedRoom = idAndHolder.Value.Room;
                 opening = idAndHolder.Value.OpeningHour;
@@ -114,7 +131,8 @@ namespace Termin4CSharp.DataAccessLayer {
                 for (; i < 24; i++)
                     roomStateOnHour[i] = RoomState.BUILDING_CLOSED;
 
-                if (allBookingsForRoomOnDate.ContainsKey(roomId) && allBookingsForRoomOnDate[roomId].Any()) {
+                if (allBookingsForRoomOnDate.ContainsKey(roomId) && allBookingsForRoomOnDate[roomId].Any())
+                {
                     List<Booking> bookingsForLoopedRoom = allBookingsForRoomOnDate[roomId];
                     foreach (Booking booking in bookingsForLoopedRoom)
                         roomStateOnHour[booking.Start_time.Hour] = RoomState.BOOKED;
@@ -122,91 +140,116 @@ namespace Termin4CSharp.DataAccessLayer {
                 loopedRoom.RoomStateOnHour = roomStateOnHour;
                 resultList.Add(loopedRoom);
             }
-            
+
             return resultList;
         }
 
 
-        public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0) {
+        public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0)
+        {
 
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
             var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
             cmd.Connection = Connector.GetConnection();
-            try {
+            try
+            {
                 RoomAndOpeningHoursHolder holder = null;
                 Room fetchedRoom = null;
                 DateTime openingHour = default(DateTime);
                 DateTime closingHour = default(DateTime);
                 dr = cmd.ExecuteReader();
-                while (dr.Read()) {
+                while (dr.Read())
+                {
                     fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
                     openingHour = (DateTime)dr["opening"];
                     closingHour = (DateTime)dr["closing"];
                     holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
                     resultList[fetchedRoom.Id] = holder;
                 }
-            } catch (SqlException sqle) {
+            }
+            catch (SqlException sqle)
+            {
                 this.HandleSqlException(new Room(), sqle);
-            } finally {
+            }
+            finally
+            {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
 
             List<Room> returnRooms = this.ConnectListOfRoomsWithTheirBookableTimes(resultList, onDate);
-            
+
             return returnRooms;
         }
 
-        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
+        public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false)
+        {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition, selectAll);
             SqlDataReader dr = null;
             var resultList = new List<IModel>();
             cmd.Connection = Connector.GetConnection();
-            try {
+            try
+            {
                 dr = cmd.ExecuteReader();
-                while (dr.Read()) {
+                while (dr.Read())
+                {
                     IModel parsedModel = Utils.ParseDataReaderToIModel(model, dr);
                     resultList.Add(parsedModel);
                 }
-            } catch (SqlException sqle) {
+            }
+            catch (SqlException sqle)
+            {
                 this.HandleSqlException(model, sqle);
-            } finally {
+            }
+            finally
+            {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
             return resultList;
         }
 
-        public int Add(IModel model) {
+        public int Add(IModel model)
+        {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             return this.PerformNonQuery(model, cmd);
         }
 
-        public int Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public int Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL)
+        {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.REMOVE, model, whereParams, tableName, optWhereCondition);
             return this.PerformNonQuery(model, cmd);
         }
 
-        public int Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL) {
+        public int Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL)
+        {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.UPDATE, model, whereParams, tableName, optWhereCondition);
             return this.PerformNonQuery(model, cmd);
         }
 
-        private int PerformNonQuery(IModel model, SqlCommand cmd) {
+        private int PerformNonQuery(IModel model, SqlCommand cmd)
+        {
             int affectedRows = -1;
             cmd.Connection = Connector.GetConnection();
-            try {
+            try
+            {
                 affectedRows = cmd.ExecuteNonQuery();
-            } catch (SqlException sqle) {
+            }
+            catch (SqlException sqle)
+            {
                 this.HandleSqlException(model, sqle);
-            } finally {
+            }
+            finally
+            {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
             return affectedRows;
         }
 
-        private void HandleSqlException(IModel model, SqlException sqle) {
+        private void HandleSqlException(IModel model, SqlException sqle)
+        {
             string message = null;
-            switch (sqle.Number) {
+            switch (sqle.Number)
+            {
                 case SqlCodes.PrimaryKey:
                     var regmatch = Regex.Match(sqle.Message, "(?<=\\()(.*?)(?=\\))").Groups[0]; //finds (Names within paranthesis)
                     string duplicateValue = regmatch.Captures[0].ToString();
@@ -221,7 +264,7 @@ namespace Termin4CSharp.DataAccessLayer {
                     string table = tableRegmatch.Captures[0].ToString();
                     int indexOfLastDot = table.LastIndexOf('.');
                     if (indexOfLastDot != -1)
-                        table = table.Substring(indexOfLastDot+1, (table.Length - 1) - indexOfLastDot); //Extracts tablename: dbo.Person -> Person
+                        table = table.Substring(indexOfLastDot + 1, (table.Length - 1) - indexOfLastDot); //Extracts tablename: dbo.Person -> Person
                     table = Utils.GenericDbValuesToDisplayValue(table);
 
                     //Getting column name

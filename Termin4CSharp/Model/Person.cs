@@ -25,22 +25,26 @@ namespace Termin4CSharp.Model
             this.RoleName = roleName;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("{0} {1} {2} {3} {4}", Name, Id, Email, PhoneNbr, RoleName);
         }
 
-        public Dictionary<string, object> GetIdentifyingAttributes() {
+        public Dictionary<string, object> GetIdentifyingAttributes()
+        {
             var dict = new Dictionary<string, object>();
             dict["Id"] = this.Id;
             return dict;
         }
-        public Dictionary<string, object> GetReferencedModels() {
+        public Dictionary<string, object> GetReferencedModels()
+        {
             var dict = new Dictionary<string, object>();
             dict["Role"] = new Role();
             return dict;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             var other = obj as Person;
             if (other == null)
                 return false;

@@ -11,11 +11,9 @@ using Termin4CSharp.Model;
 using Termin4CSharp.View;
 using System.Text.RegularExpressions;
 
-namespace Termin4CSharp.Controller
-{
+namespace Termin4CSharp.Controller {
 
-    public class GUIMainController : IController
-    {
+    public class GUIMainController : IController {
 
         public GUIMain GUIMain { get; set; }
         private List<string> buildingFilters, roomFilters, resourceFilters;
@@ -25,8 +23,7 @@ namespace Termin4CSharp.Controller
 
         public int MinCapacity { get; set; }
 
-        public GUIMainController(GUIMain guiMain)
-        {
+        public GUIMainController(GUIMain guiMain) {
             this.GUIMain = guiMain;
             this.GUIMain.Controller = this;
             this.LoadRooms(DateTime.Now);
@@ -37,8 +34,7 @@ namespace Termin4CSharp.Controller
 
             this.LoginUser("1", "1");
         }
-        public void LoginUser(string username, string password)
-        {
+        public void LoginUser(string username, string password) {
             if (this.LoggedInUser != null)
                 this.LoggedInUser = null;
             Login login = new Login(username, password);
@@ -46,8 +42,7 @@ namespace Termin4CSharp.Controller
             var whereParams = new Dictionary<string, object>();
             whereParams["password"] = password;
             List<IModel> result = dal.Get(login, whereParams);
-            if (result.Any())
-            {
+            if (result.Any()) {
                 Person tempHolder = new Person();
                 tempHolder.Id = username;
                 this.LoggedInUser = dal.Get(tempHolder).First() as Person;
@@ -67,8 +62,7 @@ namespace Termin4CSharp.Controller
             this.GUIMain.SetRooms(rooms);
         }
 
-        public void LoadFilters()
-        {
+        public void LoadFilters() {
             DAL dal = new DAL(this);
             var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
             var buildings = dal.Get(new Building(), selectAll: true).Cast<Building>().ToList();
@@ -83,20 +77,16 @@ namespace Termin4CSharp.Controller
 
         }
 
-        public void NotifyExceptionToView()
-        {
+        public void NotifyExceptionToView() {
             throw new NotImplementedException();
         }
-        public enum FilterBox
-        {
+        public enum FilterBox {
             BUILDING, ROOM, RESOURCE, TRACKBAR
         }
-        public void HandleFilterChange(FilterBox filterBox, CheckedListBox sender, ItemCheckEventArgs e)
-        {
+        public void HandleFilterChange(FilterBox filterBox, CheckedListBox sender, ItemCheckEventArgs e) {
 
             List<string> selectedList = null;
-            switch (filterBox)
-            {
+            switch (filterBox) {
                 case FilterBox.BUILDING:
                     selectedList = this.buildingFilters;
                     break;
@@ -111,8 +101,7 @@ namespace Termin4CSharp.Controller
                     break;
 
             }
-            if (filterBox != FilterBox.TRACKBAR)
-            {
+            if (filterBox != FilterBox.TRACKBAR) {
                 string selval = (string)sender.SelectedItem;
                 if (e.NewValue == CheckState.Checked)
                     selectedList.Add(selval);
@@ -131,8 +120,7 @@ namespace Termin4CSharp.Controller
 
         private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
 
-        public void HandleFreeTextFilterChange(TextBox sender, EventArgs e)
-        {
+        public void HandleFreeTextFilterChange(TextBox sender, EventArgs e) {
 
             ObjectListView roomHolder = this.GUIMain.GetRoomHolder();
             roomHolder.ModelFilter = TextMatchFilter.Contains(roomHolder, sender.Text);
@@ -144,24 +132,20 @@ namespace Termin4CSharp.Controller
             //this.GUIMain.SetRooms(filteredRooms);
         }
 
-        public void ClearFilterSelections()
-        {
+        public void ClearFilterSelections() {
             this.GUIMain.ClearFilterSelections();
         }
 
-        public void NotifyExceptionToView(string s)
-        {
+        public void NotifyExceptionToView(string s) {
             throw new NotImplementedException();
         }
 
-        public void HandleCellDoubleClick(object sender, CellClickEventArgs e)
-        {
+        public void HandleCellDoubleClick(object sender, CellClickEventArgs e) {
             if (e.ColumnIndex > 4) {
                 e.SubItem.BackColor = System.Drawing.Color.Yellow;
                 if (e.ClickCount == 2) {
                     string itemText = e.SubItem.Text;
-                    if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}"))
-                    {
+                    if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}")) {
                         Room targetRoom = (Room)e.Model;
                         Booking b = new Booking();
                         b.RoomId = targetRoom.Id;
@@ -173,29 +157,27 @@ namespace Termin4CSharp.Controller
                         editController = new EditViewController(ev, null);
                         ev.Show();
                     }
-                } 
-                  
                 }
+
             }
+
         }
 
-        public void HandleERPComboBoxSelectedIndexChanged(object sender, EventArgs e)
-        {
+        public void HandleERPComboBoxSelectedIndexChanged(object sender, EventArgs e) {
             string selectedItem = ((ComboBox)sender).SelectedItem as string;
             {
 
-                if (selectedItem.Equals("Personalanhörig"))
-                {
+                if (selectedItem.Equals("Personalanhörig")) {
                     DALCronus dal = new DALCronus();
                     this.GUIMain.SetERPData(dal.GetRelatives());
                 }
             }
         }
     }
-} 
-           
-                       
-                        
-                
-              
-               
+}
+
+
+
+
+
+

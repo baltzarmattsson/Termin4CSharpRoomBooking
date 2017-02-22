@@ -11,7 +11,7 @@ namespace Termin4CSharp.DataAccessLayer {
         private SqlCommand cmd;
         private string sql;
 
-        public List <string> GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
+        public List<string> GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
         {
             String sql = "SELECT * FROM [CRONUS Sverige AB$Employee]";
             SqlCommand cmd = new SqlCommand(sql);
@@ -25,7 +25,7 @@ namespace Termin4CSharp.DataAccessLayer {
             return null;
         }
 
-        public List <string> GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
+        public List<string> GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
         {
             String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Relative]";
             SqlCommand cmd = new SqlCommand(sql);
@@ -44,7 +44,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //RekativesStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetEmployeeAbsence() //Information om anställda som har varit borta pga sjukdom år 2004 
+        public List<string> GetEmployeeAbsence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
             String sql = "SELECT * FROM[CRONUS Sverige AB$Employee Absence] WHERE[From Date] between '2004-01-01' AND '2004-12-31' AND[Description] = 'Sjuk'";
             SqlCommand cmd = new SqlCommand(sql);
@@ -58,7 +58,7 @@ namespace Termin4CSharp.DataAccessLayer {
             return null;
 
         }
-        public List <string> GetSickestEmployee()  //First name på anställda som har varit mest sjuka
+        public List<string> GetSickestEmployee()  //First name på anställda som har varit mest sjuka
         {
             //String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )" //osäker
             String sql = "SELECT e.[First Name] FROM[CRONUS Sverige AB$Employee] e INNER JOIN [CRONUS Sverige AB$Employee Absence] a on e.No_ = a.[Employee No_] and a.[Cause of Absence Code] = 'SJUK' group by e.[First Name] order by count(*) desc";
@@ -72,10 +72,10 @@ namespace Termin4CSharp.DataAccessLayer {
             //SickestEmployeeStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetKeys() //Alla nycklar 
+        public List<string> GetKeys() //Alla nycklar 
         {
 
-            String sql = "SELECT * FROM sys.key_constraints"; 
+            String sql = "SELECT * FROM sys.key_constraints";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -86,7 +86,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //KeysStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetIndexes() //Alla indexes 
+        public List<string> GetIndexes() //Alla indexes 
         {
             string sql = "SELECT * FROM sys.indexes";
             SqlCommand cmd = new SqlCommand(sql);
@@ -99,7 +99,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //IndexesStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetConstraints() // Alla table_constraints 
+        public List<string> GetConstraints() // Alla table_constraints 
         {
             string sql = "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS";
             SqlCommand cmd = new SqlCommand(sql);
@@ -112,7 +112,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //ConstraintsStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetTables() // Alla tabeller
+        public List<string> GetTables() // Alla tabeller
         {
             string sql = "SELECT * FROM sys.tables";
             SqlCommand cmd = new SqlCommand(sql);
@@ -125,7 +125,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //TablesStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetTables2() //Alla tabeller
+        public List<string> GetTables2() //Alla tabeller
         {
             string sql = "SELECT * FROM sysobjects WHERE xtype = 'U'";
             SqlCommand cmd = new SqlCommand(sql);
@@ -138,7 +138,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //Tables2Statement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetMetaEmployees() //Alla kolumner i tabellen Employee 
+        public List<string> GetMetaEmployees() //Alla kolumner i tabellen Employee 
         {
             string sql = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'CRONUS Sverige AB$Employee'";
             SqlCommand cmd = new SqlCommand(sql);
@@ -151,7 +151,7 @@ namespace Termin4CSharp.DataAccessLayer {
             //MetaEmployeesStatement = Connector.GetConnection();
             return null;
         }
-        public List <string> GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. 
+        public List<string> GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. 
         {
 
             string sql = "SELECT * FROM sys.columns c INNER JOIN sys.tables t ON c.object_id = t.object_id WHERE t.name = 'CRONUS Sverige AB$Employee'";
@@ -165,5 +165,21 @@ namespace Termin4CSharp.DataAccessLayer {
             //MetaEmployees2Statement = Connector.GetConnection();
             return null;
         }
+        //insert(add?), update, delete from Employee
+        public void AddEmployee(string id, string firstName)
+            
+        {
+        public void UpdateEmployee(string id, string firstName)
+        {
+        public void deleteEmployee(string id, string firstName)
+        {
+
+        }
     }
 }
+
+        
+       
+
+
+   

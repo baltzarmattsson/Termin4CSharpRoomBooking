@@ -110,6 +110,11 @@ namespace Termin4CSharp.View {
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.HeaderERP = new System.Windows.Forms.Label();
+            this.ERPButton = new System.Windows.Forms.Button();
+            this.ComboBoxERP = new System.Windows.Forms.ComboBox();
+            this.ScrollBarERP = new System.Windows.Forms.VScrollBar();
+            this.ListViewERP = new System.Windows.Forms.ListView();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.mainLabel1PK.SuspendLayout();
@@ -669,6 +674,23 @@ namespace Termin4CSharp.View {
             // 
             // createLabelAdminTab
             // 
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.HeaderERP);
+            this.tabPage3.Controls.Add(this.ERPButton);
+            this.tabPage3.Controls.Add(this.ComboBoxERP);
+            this.tabPage3.Controls.Add(this.ScrollBarERP);
+            this.tabPage3.Controls.Add(this.ListViewERP);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(931, 500);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "ERP";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
+			//
+			// createLabelAdminTab
+			//
             this.createLabelAdminTab.AutoSize = true;
             this.createLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createLabelAdminTab.Location = new System.Drawing.Point(97, 153);
@@ -793,17 +815,37 @@ namespace Termin4CSharp.View {
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(159, 122);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 24;
-            this.button2.Text = "Visa";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(31, 61);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(78, 20);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "CRONUS\r\n";
             // 
-            // comboBox1
+            // HeaderERP
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.HeaderERP.AutoSize = true;
+            this.HeaderERP.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HeaderERP.Location = new System.Drawing.Point(29, 24);
+            this.HeaderERP.Name = "HeaderERP";
+            this.HeaderERP.Size = new System.Drawing.Size(439, 50);
+            this.HeaderERP.TabIndex = 25;
+            this.HeaderERP.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            // 
+            // ERPButton
+            // 
+            this.ERPButton.Location = new System.Drawing.Point(159, 122);
+            this.ERPButton.Name = "ERPButton";
+            this.ERPButton.Size = new System.Drawing.Size(75, 23);
+            this.ERPButton.TabIndex = 24;
+            this.ERPButton.Text = "Visa";
+            this.ERPButton.UseVisualStyleBackColor = true;
+            // 
+            // ComboBoxERP
+            // 
+            this.ComboBoxERP.FormattingEnabled = true;
+            this.ComboBoxERP.Items.AddRange(new object[] {
             "Personal",
             "Personalanhörig",
             "Personalfrånvaro 2004",
@@ -817,26 +859,26 @@ namespace Termin4CSharp.View {
             "METADATA - Tabeller2",
             "METADATA - Kolumner",
             "METADATA - Kolumner2"});
-            this.comboBox1.Location = new System.Drawing.Point(32, 124);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 23;
+            this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
+            this.ComboBoxERP.Name = "ComboBoxERP";
+            this.ComboBoxERP.Size = new System.Drawing.Size(121, 21);
+            this.ComboBoxERP.TabIndex = 23;
             // 
-            // vScrollBar5
+            // ScrollBarERP
             // 
-            this.vScrollBar5.Location = new System.Drawing.Point(551, 163);
-            this.vScrollBar5.Name = "vScrollBar5";
-            this.vScrollBar5.Size = new System.Drawing.Size(20, 307);
-            this.vScrollBar5.TabIndex = 22;
+            this.ScrollBarERP.Location = new System.Drawing.Point(551, 163);
+            this.ScrollBarERP.Name = "ScrollBarERP";
+            this.ScrollBarERP.Size = new System.Drawing.Size(20, 307);
+            this.ScrollBarERP.TabIndex = 22;
             // 
-            // listView2
+            // ListViewERP
             // 
-            this.listView2.Location = new System.Drawing.Point(32, 163);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(539, 307);
-            this.listView2.TabIndex = 21;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
+            this.ListViewERP.Location = new System.Drawing.Point(32, 163);
+            this.ListViewERP.Name = "ListViewERP";
+            this.ListViewERP.Size = new System.Drawing.Size(539, 307);
+            this.ListViewERP.TabIndex = 21;
+            this.ListViewERP.UseCompatibleStateImageBehavior = false;
+            this.ListViewERP.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -941,7 +983,7 @@ namespace Termin4CSharp.View {
         private Button editObjectButton;
         private Button clearFiltersButtonRoomBookingTab;
         private Label label13;
-        private Label label12;
+        private Label HeaderERP;
         private Label editLabelAdminTab;
         private Label createLabelAdminTab;
         private OLVColumn idColumn;

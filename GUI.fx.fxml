@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControllerCronus.Java">
+   <children>
+      <TabPane layoutX="1.0" layoutY="-2.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Webbservice">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="ERP">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="397.0" prefWidth="623.0">
+                     <children>
+                        <Button layoutX="185.0" layoutY="118.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Visa" />
+                        <Label layoutX="14.0" layoutY="14.0" text="Integrering och konfigurering av ERP-system">
+                           <font>
+                              <Font size="15.75" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="45.0" text="CRONUS" />
+                        <ListView layoutX="21.0" layoutY="149.0" prefHeight="200.0" prefWidth="308.0" />
+                        <ChoiceBox layoutX="21.0" layoutY="118.0" prefWidth="150.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

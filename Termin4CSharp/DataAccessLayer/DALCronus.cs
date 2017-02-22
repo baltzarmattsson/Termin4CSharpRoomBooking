@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.DataAccessLayer {
     class DALCronus {
+        private SqlCommand cmd;
+        private string sql;
 
         public string GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
         {
@@ -36,9 +38,9 @@ namespace Termin4CSharp.DataAccessLayer {
             //RekativesStatement = Connector.GetConnection();
             return null;
         }
-        public string GetEmployeeAbscence() //Information om anställda som har varit borta pga sjukdom år 2004 
+        public string GetEmployeeAbsence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Absence] WHERE OrderDate = '2004'"; // kolla query
+            String sql = "SELECT * FROM[CRONUS Sverige AB$Employee Absence] WHERE[From Date] between '2004-01-01' AND '2004-12-31' AND[Description] = 'Sjuk'";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -52,7 +54,8 @@ namespace Termin4CSharp.DataAccessLayer {
         }
         public string GetSickestEmployee()  //First name på anställda som har varit mest sjuka
         {
-            String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )"; //osäker
+            //String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )" //osäker
+            String sql = "SELECT e.[First Name] FROM[CRONUS Sverige AB$Employee] e INNER JOIN [CRONUS Sverige AB$Employee Absence] a on e.No_ = a.[Employee No_] and a.[Cause of Absence Code] = 'SJUK' group by e.[First Name] order by count(*) desc";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -65,7 +68,8 @@ namespace Termin4CSharp.DataAccessLayer {
         }
         public string GetKeys() //Alla nycklar 
         {
-            String sql = "SELECT * FROM sys.key_constraints";
+
+            String sql = "SELECT * FROM sys.key_constraints"; 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -91,7 +95,7 @@ namespace Termin4CSharp.DataAccessLayer {
         }
         public string GetConstraints() // Alla table_constraints 
         {
-            string sql = "";
+            string sql = "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -143,7 +147,8 @@ namespace Termin4CSharp.DataAccessLayer {
         }
         public string GetMetaEmployees2() //Alla kolumner i tabellen Employee version2. 
         {
-            string sql = "";
+
+            string sql = "SELECT * FROM sys.columns c INNER JOIN sys.tables t ON c.object_id = t.object_id WHERE t.name = 'CRONUS Sverige AB$Employee'";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = CRONUSConnector.GetConnection();
             SqlDataReader dr = cmd.ExecuteReader();

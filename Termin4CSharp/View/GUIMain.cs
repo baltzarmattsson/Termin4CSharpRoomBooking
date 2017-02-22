@@ -14,9 +14,10 @@ using Termin4CSharp.Model;
 using static System.Windows.Forms.ListViewItem;
 using static Termin4CSharp.Controller.GUIMainController;
 
+
 namespace Termin4CSharp.View
 {
-    public partial class GUIMain : Form
+    public partial class GUIMain : Form 
     {
         public GUIMainController Controller { get; set; }
         private delegate bool IsBookableDelegate(object sender, EventArgs e);

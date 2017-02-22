@@ -468,6 +468,7 @@ namespace Termin4CSharp.View {
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
+            this.roomHolder.CellClick += RoomHolder_CellClick;
             // 
             // idColumn
             // 
@@ -999,7 +1000,6 @@ namespace Termin4CSharp.View {
         private void RoomHolder_CellClick(object sender, CellClickEventArgs e) {
             this.Controller.HandleCellDoubleClick(sender, e);
         }
-
 
         #endregion
 

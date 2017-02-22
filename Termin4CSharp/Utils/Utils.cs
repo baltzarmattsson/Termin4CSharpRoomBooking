@@ -466,7 +466,7 @@ namespace Termin4CSharp {
             if (model is Person) {
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "en person";
+                        retName = "En person";
                         break;
                     case "name":
                         retName = "Namn";
@@ -483,7 +483,7 @@ namespace Termin4CSharp {
             } else if (model is Room) {
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "ett rum";
+                        retName = "Ett rum";
                         break;
                     case "bname":
                         retName = "Byggnadsnamn";
@@ -501,7 +501,7 @@ namespace Termin4CSharp {
             } else if (model is Building) { 
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "en byggnad";
+                        retName = "En byggnad";
                         break;
                     case "address":
                         retName = "Adress";
@@ -519,7 +519,7 @@ namespace Termin4CSharp {
             } else if (model is Booking) {
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "en bokning";
+                        retName = "En bokning";
                         break;
                     case "id":
                         retName = "ID";
@@ -544,14 +544,16 @@ namespace Termin4CSharp {
             else if (model is Institution) {
                 switch (key.ToLower()) {
                     case "modeleqv":
+                        retName = "En institution";
                         break;
                     case "name":
+                        retName = "Namn";
                         break;
                 }
             } else if (model is Resource) {
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "en resurs";
+                        retName = "En resurs";
                         break;
                     case "type":
                         retName = "Typ";
@@ -599,7 +601,7 @@ namespace Termin4CSharp {
             } else if (model is RoomType) {
                 switch (key.ToLower()) {
                     case "modeleqv":
-                        retName = "en rumtyp";
+                        retName = "En rumstyp";
                         break;
                     case "id":
                         retName = "ID";
@@ -638,7 +640,7 @@ namespace Termin4CSharp {
 
             // Person
             } else if (model is Person && key.Equals("role")) {
-                keyEqv = "RoleName";
+                keyEqv = "RollNamn";
             }
             if (keyEqv == null)
                 throw new Exception("keyEqv is null");
@@ -687,22 +689,22 @@ namespace Termin4CSharp {
 
             switch (dbValue) {
                 case DbFields.PersonTable:
-                    display = "person";
+                    display = "Person";
                     break;
                 case DbFields.RoomTable:
-                    display = "rum";
+                    display = "Rum";
                     break;
                 case DbFields.BuildingTable:
-                    display = "byggnad";
+                    display = "Byggnad";
                     break;
                 case DbFields.InstitutionTable:
-                    display = "institution";
+                    display = "Institution";
                     break;
                 case DbFields.ResourceTable:
-                    display = "resurs";
+                    display = "Resurs";
                     break;
                 case DbFields.BookingTable:
-                    display = "bokning";
+                    display = "okning";
                     break;
                 case DbFields.InstBuildTable:
                     break;
@@ -711,22 +713,22 @@ namespace Termin4CSharp {
                 case DbFields.PersonRoleTable:
                     break;
                 case DbFields.LoginTable:
-                    display = "inloggning";
+                    display = "Inloggning";
                     break;
                 case DbFields.RoomTypeTable:
                     break;
                 case "name":
-                    display = "det namnet";
+                    display = "Det namnet";
                     break;
                 case "id":
-                    display = "det ID:t";
+                    display = "Det ID:t";
                     break;
                 case "rolename":
                 case "role":
-                    display = "den rollen";
+                    display = "Den rollen";
                     break;
                 case "type":
-                    display = "den typen";
+                    display = "Den typen";
                     break;
                 default:
                     throw new Exception("But what: " + dbValue);

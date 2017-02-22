@@ -9,7 +9,7 @@ namespace Termin4CSharp.DataAccessLayer
 {
     class CronusController
     {
-        DALCronus dal = new DALCronus();
+        DALCronus dal = new DALCronus();/*
         
         public string GetEmployees()
         {
@@ -65,6 +65,6 @@ namespace Termin4CSharp.DataAccessLayer
         public string GetMetaEmployees2()
         {
             return dal.GetMetaEmployees2 ();
-        } 
+        } */
     }
 }

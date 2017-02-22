@@ -15,7 +15,7 @@ namespace Termin4CSharp.Model
         public Building Building { get; set; }
         public RoomType RoomType { get; set; }
         public List<Resource> Resources { get; set; }
-        public bool[] Bookable { get; set; }
+        public RoomState[] RoomStateOnHour { get; set; }
         public Room() { }
 
         public Room(string building, string id, int capacity, string floor, string rType) {

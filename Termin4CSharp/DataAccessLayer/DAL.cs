@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -72,37 +73,39 @@ namespace Termin4CSharp.DataAccessLayer {
 
         //}
 
-        public Dictionary<string, RoomAndOpeningHoursHolder> GetRoomsAndOpeningHours() {
-            var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
-            StringBuilder sqlBuilder = new StringBuilder();
-            sqlBuilder.Append("select ");
-            sqlBuilder.Append(String.Join(", ", Utils.GetAttributeInfo(new Room(), Utils.MembersOptimizedFor.QUERIES).Keys));
-            sqlBuilder.Append("b.avail_start as 'opening', b.avail_end as 'closing' ");
-            sqlBuilder.Append("from " + DbFields.RoomTable + " r inner join " + DbFields.BuildingTable + " b on b.name = r.bname");
+        //public Dictionary<string, RoomAndOpeningHoursHolder> FindAllRoomsAndOpeningHours() {
+        //    var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
+        //    StringBuilder sqlBuilder = new StringBuilder();
+        //    sqlBuilder.Append("select ");
+        //    sqlBuilder.Append("r." + String.Join(", r.", Utils.GetAttributeInfo(new Room(), Utils.MembersOptimizedFor.QUERIES).Keys));
+        //    sqlBuilder.Append(", b.avail_start as 'opening', b.avail_end as 'closing' ");
+        //    sqlBuilder.Append("from " + DbFields.RoomTable + " r inner join " + DbFields.BuildingTable + " b on b.name = r.bname ");
+        //    Console.WriteLine(sqlBuilder.ToString());
 
-            SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
-            cmd.Connection = Connector.GetConnection();
-            SqlDataReader dr = null;
-            try {
-                RoomAndOpeningHoursHolder holder = null;
-                Room fetchedRoom = null;
-                DateTime openingHour = default(DateTime);
-                DateTime closingHour = default(DateTime);
-                dr = cmd.ExecuteReader();
-                while (dr.Read()) {
-                    fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
-                    openingHour = (DateTime)dr["opening"];
-                    closingHour = (DateTime)dr["closing"];
-                    holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
-                    resultList[fetchedRoom.Id] = holder;
-                }
-            } catch (SqlException sqle) {
-                this.HandleSqlException(new Room(), sqle);
-            } finally {
-                try { cmd.Connection.Close} catch (Exception) { }
-            }
-            return resultList;
-        }
+        //    SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
+
+        //    cmd.Connection = Connector.GetConnection();
+        //    SqlDataReader dr = null;
+        //    try {
+        //        RoomAndOpeningHoursHolder holder = null;
+        //        Room fetchedRoom = null;
+        //        DateTime openingHour = default(DateTime);
+        //        DateTime closingHour = default(DateTime);
+        //        dr = cmd.ExecuteReader();
+        //        while (dr.Read()) {
+        //            fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
+        //            openingHour = (DateTime)dr["opening"];
+        //            closingHour = (DateTime)dr["closing"];
+        //            holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
+        //            resultList[fetchedRoom.Id] = holder;
+        //        }
+        //    } catch (SqlException sqle) {
+        //        this.HandleSqlException(new Room(), sqle);
+        //    } finally {
+        //        try { cmd.Connection.Close(); } catch (Exception) { }
+        //    }
+        //    return resultList;
+        //}
 
 
         // Finds all bookings for one date. Keys are RoomID and List<Booking> is the bookings for that room on the 
@@ -114,11 +117,7 @@ namespace Termin4CSharp.DataAccessLayer {
             SqlCommand cmd = new SqlCommand();
 
             string sql = "select from booking";
-
-
-
-
-
+            
             SqlDataReader dr = null;
             var resultList = new List<Booking>();
             cmd.Connection = Connector.GetConnection();
@@ -142,31 +141,72 @@ namespace Termin4CSharp.DataAccessLayer {
             return roomBookings;
         }
 
+        public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate) {
+            DAL dal = new DAL(null);
+            Dictionary<string, List<Booking>> allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
 
-        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
+            List<Room> resultList = new List<Room>();
+
+            string roomId = null;
+            DateTime opening = default(DateTime), closing = default(DateTime);
+            Room loopedRoom = null;
+            RoomState[] roomStateOnHour = null;
+            foreach (var idAndHolder in rooms) {
+                roomId = idAndHolder.Key;
+                loopedRoom = idAndHolder.Value.Room;
+                opening = idAndHolder.Value.OpeningHour;
+                closing = idAndHolder.Value.ClosingHour;
+
+                roomStateOnHour = new RoomState[24];
+                int i = 0;
+                for (; i < opening.Hour; i++)
+                    roomStateOnHour[i] = RoomState.BUILDING_CLOSED;
+                for (; i < closing.Hour; i++)
+                    roomStateOnHour[i] = RoomState.AVAILABLE;
+                for (; i < 24; i++)
+                    roomStateOnHour[i] = RoomState.BUILDING_CLOSED;
+
+                if (allBookingsForRoomOnDate.ContainsKey(roomId) && allBookingsForRoomOnDate[roomId].Any()) {
+                    List<Booking> bookingsForLoopedRoom = allBookingsForRoomOnDate[roomId];
+                    foreach (Booking booking in bookingsForLoopedRoom)
+                        roomStateOnHour[booking.Start_time.Hour] = RoomState.BOOKED;
+                }
+                loopedRoom.RoomStateOnHour = roomStateOnHour;
+            }
+            
+            return resultList;
+        }
+
+
+        public List<Room> FindRoomsWithFiltersOnDate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, DateTime onDate, string freeText = null, int minCapacity = 0) {
 
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
-            var resultList = new List<Room>();
+            var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
             cmd.Connection = Connector.GetConnection();
             try {
-                IModel model = new Room();
+                RoomAndOpeningHoursHolder holder = null;
+                Room fetchedRoom = null;
+                DateTime openingHour = default(DateTime);
+                DateTime closingHour = default(DateTime);
                 dr = cmd.ExecuteReader();
-                bool[] avail = null;
                 while (dr.Read()) {
-                    Room parsedRoom = Utils.ParseDataReaderToIModel(model, dr) as Room;
-                    //avail = FindBookableTimesForRoom(parsedRoom);
-                    parsedRoom.Bookable = avail;
-                    resultList.Add(parsedRoom);
-                    // TODO koppla Room.Bookable så den visar bool[] när den är bokbar
-                    avail = null;
+                    fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
+                    openingHour = (DateTime)dr["opening"];
+                    closingHour = (DateTime)dr["closing"];
+                    holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
+                    resultList[fetchedRoom.Id] = holder;
                 }
             } catch (SqlException sqle) {
                 this.HandleSqlException(new Room(), sqle);
             } finally {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
-            return resultList;
+
+            List<Room> returnRooms = this.ConnectListOfRoomsWithTheirBookableTimes(resultList, onDate);
+
+
+            return returnRooms;
         }
 
         public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {

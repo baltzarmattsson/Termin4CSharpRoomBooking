@@ -18,5 +18,4 @@ namespace Termin4CSharp.DataAccessLayer {
     enum SqlExceptionCode {
         PK_RESTRAINT, FK_RESTRAINT
     }
-
 }

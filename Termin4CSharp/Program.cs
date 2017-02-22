@@ -22,9 +22,14 @@ namespace Termin4CSharp {
             //GUIMainController controller = new GUIMainController(mainGui);
             //AdminTabController adminController = new AdminTabController(mainGui);
             //Application.Run(mainGui);
+
+
             DAL dal = new DAL(null);
-            var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
-            Utils.ConnectRoomsWithBookableTimes(rooms, DateTime.Now);
+            //dal.GetRoomsAndOpeningHours();
+
+
+            //var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
+            //Utils.ConnectRoomsWithBookableTimes(rooms, DateTime.Now);
             Console.WriteLine();
             //DALCronus dal = new DALCronus();
             //var result = dal.GetEmployees();

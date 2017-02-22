@@ -24,7 +24,7 @@ namespace Termin4CSharp {
         public static Dictionary<string, object> GetAttributeInfo(Object paramObj, MembersOptimizedFor memOptFor = MembersOptimizedFor.QUERIES) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
-            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels|Bookable";
+            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels|RoomStateOnHour";
             if (memOptFor == MembersOptimizedFor.QUERIES)
                 excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b|\\bResources\\b";
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
@@ -304,11 +304,11 @@ namespace Termin4CSharp {
                 Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
-            if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
-                cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
-                cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
-                cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
-            }
+            //if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
+            //    cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
+            //    cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
+            //    cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
+            //}
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
@@ -317,8 +317,9 @@ namespace Termin4CSharp {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
-            string modelKeys = "ro." + string.Join(", ro.", modelAttributes.Keys);
-            sqlBuilder.Append(string.Format("select distinct {0} from {1} ro ", modelKeys, DbFields.RoomTable));
+            string columns = "ro." + string.Join(", ro.", modelAttributes.Keys);
+            columns += ", b.avail_start as 'opening', b.avail_end as 'closing'";
+            sqlBuilder.Append(string.Format("select distinct {0} from {1} ro ", columns, DbFields.RoomTable));
 
             var whereParams = new Dictionary<string, object>();
             bool whereAdded = false;
@@ -326,13 +327,21 @@ namespace Termin4CSharp {
 
             WhereCondition whereCondition = WhereCondition.EQUAL;
 
+
+            sqlBuilder.Append(" inner join Building b on b.name = ro.bname " +
+                              "left join Room_Resource rr " +
+                              "on rr.roomID = ro.id " +
+                              "left join Resource re " +
+                              "on rr.resID = re.id ");
+
             if (freeText != null) {
                 //sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
                 //    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
 
-                sqlBuilder.Append(" left join Room_Resource rr on rr.roomID = ro.id " +
-                 " left join Resource re on rr.resID = re.id " +
-                 " where ro.bname like @@freeText0 " +
+                //sqlBuilder.Append(" inner join Building b on b.name = ro.bname" +
+                // " left join Room_Resource rr on rr.roomID = ro.id " +
+                // " left join Resource re on rr.resID = re.id " +
+                 sqlBuilder.Append(" where ro.bname like @@freeText0 " +
                  " or ro.id like @@freeText1 " +
                  " or re.id like (select innerRes.id from Resource innerRes where type in (@@freeText3)) " +
                  " or ro.floor like @@freeText4 ");
@@ -349,10 +358,10 @@ namespace Termin4CSharp {
                 left join Resource re
                 on rr.resID = re.id */
 
-                sqlBuilder.Append("left join Room_Resource rr " + 
-                                  "on rr.roomID = ro.id " +
-                                  "left join Resource re " +
-                                  "on rr.resID = re.id ");
+                //sqlBuilder.Append("left join Room_Resource rr " + 
+                //                  "on rr.roomID = ro.id " +
+                //                  "left join Resource re " +
+                //                  "on rr.resID = re.id ");
 
                 // Adding building filters
                 if (buildingNames.Any()) {
@@ -462,17 +471,6 @@ namespace Termin4CSharp {
                 }
                 Console.WriteLine();
             }
-        }
-
-        public static void ConnectRoomsWithBookableTimes(List<Room> rooms, DateTime onDate) {
-            DAL dal = new DAL(null);
-            var allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
-
-            bool[] bookable = new bool[24];
-            //Initializes all values to true
-            for (int i = 0; i < 24; i++)
-                bookable[i] = true;
-            Console.WriteLine();
         }
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {

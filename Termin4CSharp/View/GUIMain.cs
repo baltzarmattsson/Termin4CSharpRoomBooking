@@ -87,12 +87,12 @@ namespace Termin4CSharp.View
 
         private void formatRow(object sender, FormatCellEventArgs e) {
             // 4 since at index 4 the Room-attributes stop, and the 24h columns begins
-            if (e.ColumnIndex > 4) {
-                Room r = (Room)e.Model;
-                int index = e.ColumnIndex - 5;
-                e.SubItem.Text = r.Bookable[index] ? ((index < 10 ? "0" : "") + index + ":00") : "Bokad";
-                e.SubItem.BackColor = r.Bookable[index] ? Color.LightGreen : Color.OrangeRed;
-            }
+            //if (e.ColumnIndex > 4) {
+            //    Room r = (Room)e.Model;
+            //    int index = e.ColumnIndex - 5;
+            //    e.SubItem.Text = r.Bookable[index] ? ((index < 10 ? "0" : "") + index + ":00") : "Bokad";
+            //    e.SubItem.BackColor = r.Bookable[index] ? Color.LightGreen : Color.OrangeRed;
+            //}
         }
 
         public void SetRooms(List<Room> rooms) {

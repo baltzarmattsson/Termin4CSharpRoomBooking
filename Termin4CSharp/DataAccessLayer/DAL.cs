@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Termin4CSharp.Model;
+using Termin4CSharp.Model.DbHelpers;
 using static System.Windows.Forms.CheckedListBox;
 
 namespace Termin4CSharp.DataAccessLayer {
@@ -56,40 +58,103 @@ namespace Termin4CSharp.DataAccessLayer {
             return this.PerformNonQuery(targetModel, cmd);
         }
 
-        //TODO Ta bort randominstansen
-        public Random randomInstance = new Random();
-        public bool[] FindBookableTimesForRoom(Room room, DateTime date = default(DateTime)) {
-            bool[] availableAtHourIndex = null;
-            availableAtHourIndex = new bool[24];
-            for (int i = 0; i < 24; i++)
-                availableAtHourIndex[i] = randomInstance.Next() % 2 == 0;
-            return availableAtHourIndex;
+
+        // Finds all bookings for one date. Keys are RoomID and List<Booking> is the bookings for that room on the 
+        // specified date given in the parameter
+        public Dictionary<string, List<Booking>> FindAllBookingsOnDate(DateTime dateToSearch) {
+            Dictionary<string, List<Booking>> roomBookings = new Dictionary<string, List<Booking>>();
+
+            SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, new Booking(), selectAll: true, bookingSearchOnDate: dateToSearch);
+            
+            SqlDataReader dr = null;
+            var resultList = new List<Booking>();
+            cmd.Connection = Connector.GetConnection();
+            try {
+                IModel model = new Booking();
+                dr = cmd.ExecuteReader();
+                string key = null;
+                while (dr.Read()) {
+                    Booking parsedBooking = Utils.ParseDataReaderToIModel(new Booking(), dr) as Booking;
+                    key = parsedBooking.RoomId;
+                    if (!roomBookings.ContainsKey(key))
+                        roomBookings[key] = new List<Booking>();
+                    roomBookings[key].Add(parsedBooking);
+                }
+            } catch (SqlException sqle) {
+                this.HandleSqlException(new Booking(), sqle);
+            } finally {
+                try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
+            }
+
+            return roomBookings;
         }
 
-        public List<Room> FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0) {
+        public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate) {
+            DAL dal = new DAL(null);
+            Dictionary<string, List<Booking>> allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
+
+            List<Room> resultList = new List<Room>();
+
+            string roomId = null;
+            DateTime opening = default(DateTime), closing = default(DateTime);
+            Room loopedRoom = null;
+            RoomState[] roomStateOnHour = null;
+            foreach (var idAndHolder in rooms) {
+                roomId = idAndHolder.Key;
+                loopedRoom = idAndHolder.Value.Room;
+                opening = idAndHolder.Value.OpeningHour;
+                closing = idAndHolder.Value.ClosingHour;
+
+                roomStateOnHour = new RoomState[24];
+                int i = 0;
+                for (; i < opening.Hour; i++)
+                    roomStateOnHour[i] = RoomState.BUILDING_CLOSED;
+                for (; i < closing.Hour; i++)
+                    roomStateOnHour[i] = RoomState.AVAILABLE;
+                for (; i < 24; i++)
+                    roomStateOnHour[i] = RoomState.BUILDING_CLOSED;
+
+                if (allBookingsForRoomOnDate.ContainsKey(roomId) && allBookingsForRoomOnDate[roomId].Any()) {
+                    List<Booking> bookingsForLoopedRoom = allBookingsForRoomOnDate[roomId];
+                    foreach (Booking booking in bookingsForLoopedRoom)
+                        roomStateOnHour[booking.Start_time.Hour] = RoomState.BOOKED;
+                }
+                loopedRoom.RoomStateOnHour = roomStateOnHour;
+                resultList.Add(loopedRoom);
+            }
+            
+            return resultList;
+        }
+
+
+        public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0) {
 
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
-            var resultList = new List<Room>();
+            var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
             cmd.Connection = Connector.GetConnection();
             try {
-                IModel model = new Room();
+                RoomAndOpeningHoursHolder holder = null;
+                Room fetchedRoom = null;
+                DateTime openingHour = default(DateTime);
+                DateTime closingHour = default(DateTime);
                 dr = cmd.ExecuteReader();
-                bool[] avail = null;
                 while (dr.Read()) {
-                    Room parsedRoom = Utils.ParseDataReaderToIModel(model, dr) as Room;
-                    avail = FindBookableTimesForRoom(parsedRoom);
-                    parsedRoom.Bookable = avail;
-                    resultList.Add(parsedRoom);
-                    // TODO koppla Room.Bookable så den visar bool[] när den är bokbar
-                    avail = null;
+                    fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
+                    openingHour = (DateTime)dr["opening"];
+                    closingHour = (DateTime)dr["closing"];
+                    holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
+                    resultList[fetchedRoom.Id] = holder;
                 }
             } catch (SqlException sqle) {
                 this.HandleSqlException(new Room(), sqle);
             } finally {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
-            return resultList;
+
+            List<Room> returnRooms = this.ConnectListOfRoomsWithTheirBookableTimes(resultList, onDate);
+            
+            return returnRooms;
         }
 
         public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {

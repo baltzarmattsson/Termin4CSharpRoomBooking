@@ -84,7 +84,7 @@ namespace Termin4CSharp.Controller {
             if (this.IdentifyingValuesAreNotEmpty()) {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
-                model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
+                model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.ADD);
                 if (model != null && model.GetIdentifyingAttributes().First().Value != null) {
                     this.Save(model, oldIdentifyingAttributes);
                     if (this.ViewHasListOfIModels) {
@@ -118,7 +118,8 @@ namespace Termin4CSharp.Controller {
                             DAL dal = new DAL(this);
                             int added = 0, updatedOrRemoved = 0;
 
-                            if (doOrdinaryAddAndDelete && toBeAdded.Any() || toDeleteOrUpdateToNull.Any()) {
+                            if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any())) {
+                                // TODO skapa metod som lägger till / tar bort multiple IModels så de slipper for-eachas
                                 foreach (IModel add in toBeAdded)
                                     added += dal.Add(add);
                                 foreach (IModel remove in toDeleteOrUpdateToNull)
@@ -151,7 +152,7 @@ namespace Termin4CSharp.Controller {
         public void HandleDeleteButtonClick() {
             IModel model = null;
             var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
-            model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues);
+            model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.REMOVE);
             if (model != null) {
                 this.Delete(model);
                 this.isExistingObjectInDatabase = false;         

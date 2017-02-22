@@ -47,11 +47,11 @@ namespace Termin4CSharp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql5024.smarterasp.net;Persist Security Info=True;User ID=DB_A15DA9_c" +
-            "ranus_admin;Password=cranus123")]
-        public string CRANUS {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql5030.smarterasp.net;Initial Catalog=\"DB_A15DA9_termin4\";Persist Se" +
+            "curity Info=True;User ID=DB_A15DA9_termin4_admin;Password=Termin41337")]
+        public string Setting {
             get {
-                return ((string)(this["CRANUS"]));
+                return ((string)(this["Setting"]));
             }
         }
     }

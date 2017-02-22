@@ -24,7 +24,7 @@ namespace Termin4CSharp {
         public static Dictionary<string, object> GetAttributeInfo(Object paramObj, MembersOptimizedFor memOptFor = MembersOptimizedFor.QUERIES) {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
             Type t = paramObj.GetType();
-            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels|Bookable";
+            string excludePattern = "([g|s]et|ToString|Equals|GetHashCode|GetType|.ctor|GetIdentifyingAttribute|GetReferencedModels|RoomStateOnHour";
             if (memOptFor == MembersOptimizedFor.QUERIES)
                 excludePattern += "|\\bRooms\\b|\\bBuilding\\b|\\bBookings\\b|\\bRoom\\b|\\bPerson\\b|\\bRoomType\\b|\\bRole\\b|\\bResources\\b";
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
@@ -108,9 +108,9 @@ namespace Termin4CSharp {
             return castedInstance;
         }
 
-        public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues) {
+        public static IModel ParseWinFormsToIModel(IModel model, Dictionary<string, object> controlValues, QueryType queryType) {
             var attributeInfo = Utils.GetAttributeInfo(model, MembersOptimizedFor.QUERIES);
-            if (Utils.IdIsAutoIncrementInDb(model))
+            if (queryType != QueryType.REMOVE && Utils.IdIsAutoIncrementInDb(model))
                 attributeInfo.Remove(model.GetIdentifyingAttributes().First().Key);
 
             object instance = Utils.GetInstanceFromIModel(model);
@@ -226,7 +226,7 @@ namespace Termin4CSharp {
             return cmd;
         }
         
-        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false) {
+        public static SqlCommand IModelToQuery(QueryType queryType, IModel model, Dictionary<string, object> optWhereParams = null, string optTableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false, DateTime bookingSearchOnDate = default(DateTime)) {
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(model);
 
             if (tableName == null)
@@ -304,7 +304,11 @@ namespace Termin4CSharp {
                 Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
-
+            if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
+                cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
+                cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
+                cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
+            }
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
@@ -313,8 +317,9 @@ namespace Termin4CSharp {
 
             StringBuilder sqlBuilder = new StringBuilder();
             var modelAttributes = Utils.GetAttributeInfo(new Room());
-            string modelKeys = "ro." + string.Join(", ro.", modelAttributes.Keys);
-            sqlBuilder.Append(string.Format("select distinct {0} from {1} ro ", modelKeys, DbFields.RoomTable));
+            string columns = "ro." + string.Join(", ro.", modelAttributes.Keys);
+            columns += ", b.avail_start as 'opening', b.avail_end as 'closing'";
+            sqlBuilder.Append(string.Format("select distinct {0} from {1} ro ", columns, DbFields.RoomTable));
 
             var whereParams = new Dictionary<string, object>();
             bool whereAdded = false;
@@ -322,13 +327,21 @@ namespace Termin4CSharp {
 
             WhereCondition whereCondition = WhereCondition.EQUAL;
 
+
+            sqlBuilder.Append(" inner join Building b on b.name = ro.bname " +
+                              "left join Room_Resource rr " +
+                              "on rr.roomID = ro.id " +
+                              "left join Resource re " +
+                              "on rr.resID = re.id ");
+
             if (freeText != null) {
                 //sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
                 //    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
 
-                sqlBuilder.Append(" left join Room_Resource rr on rr.roomID = ro.id " +
-                 " left join Resource re on rr.resID = re.id " +
-                 " where ro.bname like @@freeText0 " +
+                //sqlBuilder.Append(" inner join Building b on b.name = ro.bname" +
+                // " left join Room_Resource rr on rr.roomID = ro.id " +
+                // " left join Resource re on rr.resID = re.id " +
+                 sqlBuilder.Append(" where ro.bname like @@freeText0 " +
                  " or ro.id like @@freeText1 " +
                  " or re.id like (select innerRes.id from Resource innerRes where type in (@@freeText3)) " +
                  " or ro.floor like @@freeText4 ");
@@ -336,22 +349,9 @@ namespace Termin4CSharp {
                 for (int i = 0; i < 5; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
-            } else {
-
-                /*
-                select * from Room ro
-                left join Room_Resource rr
-                on rr.roomID = ro.id
-                left join Resource re
-                on rr.resID = re.id */
-
-                sqlBuilder.Append("left join Room_Resource rr " + 
-                                  "on rr.roomID = ro.id " +
-                                  "left join Resource re " +
-                                  "on rr.resID = re.id ");
-
+            } else if (buildingNames != null || roomIDs != null || resourceNames != null) {
                 // Adding building filters
-                if (buildingNames.Any()) {
+                if (buildingNames != null && buildingNames.Any()) {
                     sqlBuilder.Append("where ro.bname in (");
                     string key = "";
                     foreach (string buildName in buildingNames) {
@@ -364,7 +364,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                 }
                 // Adding roomid filters
-                if (roomIDs.Any()) {
+                if (roomIDs != null && roomIDs.Any()) {
                     if (whereAdded) {
                         sqlBuilder.Append(" and ");
                     } else {
@@ -382,7 +382,7 @@ namespace Termin4CSharp {
                     sqlBuilder.Append(")");
                 }
                 // Adding resource filters
-                if (resourceNames.Any()) {
+                if (resourceNames != null && resourceNames.Any()) {
                     if (whereAdded)
                         sqlBuilder.Append(" and ");
                     else {
@@ -415,46 +415,49 @@ namespace Termin4CSharp {
             return cmd; 
         }
 
-        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false, WhereCondition whereCondition = WhereCondition.EQUAL) {
-            foreach (KeyValuePair<string, object> attKV in queryParams) {
+        private static void FillSqlCmd(SqlCommand cmd, Dictionary<string, object> queryParams, bool isWhereParams = false, WhereCondition whereCondition = WhereCondition.EQUAL, DateTime bookingSearchOnDate = default(DateTime)) {
 
-                string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
-                object val = attKV.Value;
+            if (queryParams != null) {
+                foreach (KeyValuePair<string, object> attKV in queryParams) {
 
-                if (val is IModel)
-                    val = ((IModel)val).GetIdentifyingAttributes().First().Value;
-                
-                /*      NULL        **/
-                if (val == null)
-                    cmd.Parameters.AddWithValue(key, DBNull.Value);
-                /**     TEXT        **/
-                else if (val is string) {
-                    if (whereCondition == WhereCondition.LIKE)
-                        val = "%" + val + "%";
-                    cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                    string key = (isWhereParams ? "@@" : "@") + attKV.Key; //One @ for params, two @@ for whereConditions
+                    object val = attKV.Value;
+
+                    if (val is IModel)
+                        val = ((IModel)val).GetIdentifyingAttributes().First().Value;
+
+                    /*      NULL        **/
+                    if (val == null)
+                        cmd.Parameters.AddWithValue(key, DBNull.Value);
+                    /**     TEXT        **/
+                    else if (val is string) {
+                        if (whereCondition == WhereCondition.LIKE)
+                            val = "%" + val + "%";
+                        cmd.Parameters.Add(key, SqlDbType.VarChar).Value = val as string;
+                    }
+                    /**     NUMBERS     **/
+                    else if (val is Int32)
+                        cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
+                    else if (val is Int64)
+                        cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
+                    else if (val is double)
+                        cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
+                    else if (val is decimal)
+                        cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
+                    /**     DATETIME    **/
+                    else if (val is DateTime)
+                        cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
+                    /**     BOOL        **/
+                    else if (val is bool)
+                        cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
+
+                    else
+                        throw new Exception("Type not implemented: " + val.GetType());
+
+                    Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
                 }
-                /**     NUMBERS     **/
-                else if (val is Int32)
-                    cmd.Parameters.Add(key, SqlDbType.Int).Value = (Int32)val;
-                else if (val is Int64)
-                    cmd.Parameters.Add(key, SqlDbType.BigInt).Value = (Int64)val;
-                else if (val is double)
-                    cmd.Parameters.Add(key, SqlDbType.Float).Value = (double)val;
-                else if (val is decimal)
-                    cmd.Parameters.Add(key, SqlDbType.Decimal).Value = (decimal)val;
-                /**     DATETIME    **/
-                else if (val is DateTime)
-                    cmd.Parameters.Add(key, SqlDbType.DateTime).Value = (DateTime)val;
-                /**     BOOL        **/
-                else if (val is bool)
-                    cmd.Parameters.Add(key, SqlDbType.Bit).Value = (bool)val;
-
-                else
-                    throw new Exception("Type not implemented: " + val.GetType());
-
-                Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
+                Console.WriteLine();
             }
-            Console.WriteLine();
         }
 
         public static string ConvertAttributeNameToDisplayName(IModel model, string key) {
@@ -465,6 +468,9 @@ namespace Termin4CSharp {
 
             if (model is Person) {
                 switch (key.ToLower()) {
+                    case "person":
+                        retName = "person";
+                        break;
                     case "modeleqv":
                         retName = "En person";
                         break;
@@ -482,6 +488,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Room) {
                 switch (key.ToLower()) {
+                    case "room":
+                        retName = "rum";
+                        break;
                     case "modeleqv":
                         retName = "Ett rum";
                         break;
@@ -500,6 +509,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Building) { 
                 switch (key.ToLower()) {
+                    case "building":
+                        retName = "byggnad";
+                        break;
                     case "modeleqv":
                         retName = "En byggnad";
                         break;
@@ -518,6 +530,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Booking) {
                 switch (key.ToLower()) {
+                    case "booking":
+                        retName = "bokning";
+                        break;
                     case "modeleqv":
                         retName = "En bokning";
                         break;
@@ -552,6 +567,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Resource) {
                 switch (key.ToLower()) {
+                    case "resource":
+                        retName = "resurs";
+                        break;
                     case "modeleqv":
                         retName = "En resurs";
                         break;
@@ -579,6 +597,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Role) {
                 switch (key.ToLower()) {
+                    case "role":
+                        retName = "roll";
+                        break;
                     case "modeleqv":
                         retName = "en roll";
                         break;
@@ -588,8 +609,11 @@ namespace Termin4CSharp {
                 }
             } else if (model is Login) {
                 switch (key.ToLower()) {
+                    case "login":
+                        retName = "inloggning";
+                        break;
                     case "modeleqv":
-                        retName = "ett login";
+                        retName = "ett inlogg";
                         break;
                     case "password":
                         retName = "Lösenord";
@@ -600,6 +624,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is RoomType) {
                 switch (key.ToLower()) {
+                    case "roomtype":
+                        retName = "rumtyp";
+                        break;
                     case "modeleqv":
                         retName = "En rumstyp";
                         break;

@@ -15,7 +15,7 @@ namespace Termin4CSharp.Model
         public Building Building { get; set; }
         public RoomType RoomType { get; set; }
         public List<Resource> Resources { get; set; }
-        public bool[] Bookable { get; set; }
+        public RoomState[] RoomStateOnHour { get; set; }
         public Room() { }
 
         public Room(string building, string id, int capacity, string floor, string rType) {
@@ -46,7 +46,8 @@ namespace Termin4CSharp.Model
             var other = obj as Room;
             if (other == null)
                 return false;
-            return /*this.BName.Equals(other.BName) && */ this.Id.Equals(other.Id) && this.Capacity == other.Capacity && this.Floor.Equals(other.Floor) && this.RType.Equals(other.RType);// && this.Building == other.Building;
+            return /*this.BName.Equals(other.BName) && */ this.Id.Equals(other.Id) && this.Capacity == other.Capacity;
+            ////*** && this.Floor.Equals(other.Floor) && this.RType.Equals(other.RType); && this.Building == other.Building;
         }
     }
 }

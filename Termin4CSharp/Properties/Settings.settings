@@ -18,5 +18,13 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=EBBA-DATOR;Initial Catalog="Demo Database NAV (5-0)";User ID=a;Password=a</Value>
     </Setting>
+    <Setting Name="Setting" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=sql5030.smarterasp.net;Initial Catalog="DB_A15DA9_termin4";Persist Security Info=True;User ID=DB_A15DA9_termin4_admin;Password=Termin41337&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=sql5030.smarterasp.net;Initial Catalog="DB_A15DA9_termin4";Persist Security Info=True;User ID=DB_A15DA9_termin4_admin;Password=Termin41337</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

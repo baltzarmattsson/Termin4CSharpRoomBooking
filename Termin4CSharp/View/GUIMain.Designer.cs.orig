@@ -32,6 +32,13 @@ namespace Termin4CSharp.View {
         /// </summary>
         private void InitializeComponent()
         {
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.HeaderERP = new System.Windows.Forms.Label();
+            this.ERPButton = new System.Windows.Forms.Button();
+            this.ComboBoxERP = new System.Windows.Forms.ComboBox();
+            this.ScrollBarERP = new System.Windows.Forms.VScrollBar();
+            this.ListViewERP = new System.Windows.Forms.ListView();
+            this.label13 = new System.Windows.Forms.Label();
             this.OK = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.mainLabel1PK = new System.Windows.Forms.TabControl();
@@ -90,7 +97,6 @@ namespace Termin4CSharp.View {
             this.toDatePickerRoomBookingTab = new System.Windows.Forms.DateTimePicker();
             this.fromDatePickerRoomBookingTab = new System.Windows.Forms.DateTimePicker();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
-<<<<<<< HEAD
             this.adminTab = new System.Windows.Forms.TabPage();
             this.createLabelAdminTab = new System.Windows.Forms.Label();
             this.editLabelAdminTab = new System.Windows.Forms.Label();
@@ -101,26 +107,15 @@ namespace Termin4CSharp.View {
             this.editTypeBox = new System.Windows.Forms.ComboBox();
             this.mainLabel2WS = new System.Windows.Forms.TabPage();
             this.mainLabel3ERP = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.vScrollBar5 = new System.Windows.Forms.VScrollBar();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-=======
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
-            this.HeaderERP = new System.Windows.Forms.Label();
-            this.ERPButton = new System.Windows.Forms.Button();
-            this.ComboBoxERP = new System.Windows.Forms.ComboBox();
-            this.ScrollBarERP = new System.Windows.Forms.VScrollBar();
-            this.ListViewERP = new System.Windows.Forms.ListView();
->>>>>>> ebba
+            this.responseLabelLoginTab = new System.Windows.Forms.Label();
+            this.tabPage3.SuspendLayout();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.mainLabel1PK.SuspendLayout();
@@ -132,30 +127,134 @@ namespace Termin4CSharp.View {
             this.mainLabel3ERP.SuspendLayout();
             this.SuspendLayout();
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.HeaderERP);
+            this.tabPage3.Controls.Add(this.ERPButton);
+            this.tabPage3.Controls.Add(this.ComboBoxERP);
+            this.tabPage3.Controls.Add(this.ScrollBarERP);
+            this.tabPage3.Controls.Add(this.ListViewERP);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(931, 500);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "ERP";
+            this.tabPage3.UseVisualStyleBackColor = true;
+<<<<<<< HEAD
+            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
+=======
+>>>>>>> baltzar
+            // 
+            // HeaderERP
+            // 
+            this.HeaderERP.AutoSize = true;
+            this.HeaderERP.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HeaderERP.Location = new System.Drawing.Point(32, 27);
+            this.HeaderERP.Name = "HeaderERP";
+            this.HeaderERP.Size = new System.Drawing.Size(439, 50);
+            this.HeaderERP.TabIndex = 25;
+            this.HeaderERP.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            // 
+            // ERPButton
+            // 
+            this.ERPButton.Location = new System.Drawing.Point(159, 122);
+            this.ERPButton.Name = "ERPButton";
+            this.ERPButton.Size = new System.Drawing.Size(75, 23);
+            this.ERPButton.TabIndex = 24;
+            this.ERPButton.Text = "Visa";
+            this.ERPButton.UseVisualStyleBackColor = true;
+            // 
+            // ComboBoxERP
+            // 
+            this.ComboBoxERP.FormattingEnabled = true;
+            this.ComboBoxERP.Items.AddRange(new object[] {
+            "Personal",
+            "Personalanhörig",
+            "Personalfrånvaro 2004",
+            "Personal med flest antal sjukdagar",
+            "Avdelningsinformation",
+            "Personal med högst lön",
+            "METADATA - Nycklar",
+            "METADATA - Indexes",
+            "METADATA - Constraints ",
+            "METADATA - Tabeller",
+            "METADATA - Tabeller2",
+            "METADATA - Kolumner",
+            "METADATA - Kolumner2"});
+            this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
+            this.ComboBoxERP.Name = "ComboBoxERP";
+            this.ComboBoxERP.Size = new System.Drawing.Size(121, 21);
+            this.ComboBoxERP.TabIndex = 23;
+            // 
+            // ScrollBarERP
+            // 
+            this.ScrollBarERP.Location = new System.Drawing.Point(551, 163);
+            this.ScrollBarERP.Name = "ScrollBarERP";
+            this.ScrollBarERP.Size = new System.Drawing.Size(20, 307);
+            this.ScrollBarERP.TabIndex = 22;
+            // 
+            // ListViewERP
+            // 
+            this.ListViewERP.Location = new System.Drawing.Point(32, 163);
+            this.ListViewERP.Name = "ListViewERP";
+            this.ListViewERP.Size = new System.Drawing.Size(539, 307);
+            this.ListViewERP.TabIndex = 21;
+            this.ListViewERP.UseCompatibleStateImageBehavior = false;
+            this.ListViewERP.View = System.Windows.Forms.View.Details;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+<<<<<<< HEAD
+            this.label13.Location = new System.Drawing.Point(29, 52);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(78, 20);
+=======
+            this.label13.Location = new System.Drawing.Point(54, 96);
+            this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(136, 32);
+>>>>>>> baltzar
+            this.label13.TabIndex = 26;
+            this.label13.Text = "CRONUS\r\n";
+            // 
             // OK
             // 
             this.OK.AccessibleName = "";
             this.OK.Controls.Add(this.tabPage1);
             this.OK.Controls.Add(this.mainLabel2WS);
             this.OK.Controls.Add(this.mainLabel3ERP);
+<<<<<<< HEAD
             this.OK.Location = new System.Drawing.Point(1, 0);
+=======
+            this.OK.Location = new System.Drawing.Point(2, 0);
+            this.OK.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.OK.Name = "OK";
             this.OK.SelectedIndex = 0;
-            this.OK.Size = new System.Drawing.Size(939, 526);
+            this.OK.Size = new System.Drawing.Size(1311, 711);
             this.OK.TabIndex = 0;
-            this.OK.SelectedIndexChanged += new System.EventHandler(this.OK_SelectedIndexChanged);
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.mainLabel1PK);
+<<<<<<< HEAD
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(931, 500);
+            this.tabPage1.Size = new System.Drawing.Size(1303, 685);
+=======
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(6);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(6);
+            this.tabPage1.Size = new System.Drawing.Size(2395, 1275);
+>>>>>>> baltzar
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programkonstruktion";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // mainLabel1PK
             // 
@@ -163,14 +262,18 @@ namespace Termin4CSharp.View {
             this.mainLabel1PK.Controls.Add(this.roomBookTab);
             this.mainLabel1PK.Controls.Add(this.adminTab);
             this.mainLabel1PK.Location = new System.Drawing.Point(0, 0);
+<<<<<<< HEAD
+=======
+            this.mainLabel1PK.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.mainLabel1PK.Name = "mainLabel1PK";
             this.mainLabel1PK.SelectedIndex = 0;
-            this.mainLabel1PK.Size = new System.Drawing.Size(935, 500);
+            this.mainLabel1PK.Size = new System.Drawing.Size(1306, 691);
             this.mainLabel1PK.TabIndex = 3;
-            this.mainLabel1PK.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // loginTab
             // 
+            this.loginTab.Controls.Add(this.responseLabelLoginTab);
             this.loginTab.Controls.Add(this.mainLabelLoginTab);
             this.loginTab.Controls.Add(this.infoTextLoginTab);
             this.loginTab.Controls.Add(this.loginButtonLoginTab);
@@ -179,14 +282,21 @@ namespace Termin4CSharp.View {
             this.loginTab.Controls.Add(this.usernameTextfieldLogin);
             this.loginTab.Controls.Add(this.passwordLabelLoginTab);
             this.loginTab.Controls.Add(this.usernameLabelLoginTab);
+<<<<<<< HEAD
             this.loginTab.Location = new System.Drawing.Point(4, 22);
             this.loginTab.Name = "loginTab";
             this.loginTab.Padding = new System.Windows.Forms.Padding(3);
-            this.loginTab.Size = new System.Drawing.Size(927, 474);
+            this.loginTab.Size = new System.Drawing.Size(1298, 665);
+=======
+            this.loginTab.Location = new System.Drawing.Point(4, 33);
+            this.loginTab.Margin = new System.Windows.Forms.Padding(6);
+            this.loginTab.Name = "loginTab";
+            this.loginTab.Padding = new System.Windows.Forms.Padding(6);
+            this.loginTab.Size = new System.Drawing.Size(2387, 1238);
+>>>>>>> baltzar
             this.loginTab.TabIndex = 0;
             this.loginTab.Text = "Logga in ";
             this.loginTab.UseVisualStyleBackColor = true;
-            this.loginTab.Click += new System.EventHandler(this.tabPage4_Click);
             // 
             // mainLabelLoginTab
             // 
@@ -210,7 +320,12 @@ namespace Termin4CSharp.View {
             // 
             // loginButtonLoginTab
             // 
+<<<<<<< HEAD
             this.loginButtonLoginTab.Location = new System.Drawing.Point(54, 272);
+=======
+            this.loginButtonLoginTab.Location = new System.Drawing.Point(99, 541);
+            this.loginButtonLoginTab.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.loginButtonLoginTab.Name = "loginButtonLoginTab";
             this.loginButtonLoginTab.Size = new System.Drawing.Size(75, 23);
             this.loginButtonLoginTab.TabIndex = 5;
@@ -229,20 +344,28 @@ namespace Termin4CSharp.View {
             // 
             // passwordTextfieldLogin
             // 
+<<<<<<< HEAD
             this.passwordTextfieldLogin.Location = new System.Drawing.Point(54, 235);
+=======
+            this.passwordTextfieldLogin.Location = new System.Drawing.Point(99, 434);
+            this.passwordTextfieldLogin.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.passwordTextfieldLogin.Name = "passwordTextfieldLogin";
             this.passwordTextfieldLogin.PasswordChar = '*';
             this.passwordTextfieldLogin.Size = new System.Drawing.Size(318, 20);
             this.passwordTextfieldLogin.TabIndex = 3;
-            this.passwordTextfieldLogin.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // usernameTextfieldLogin
             // 
+<<<<<<< HEAD
             this.usernameTextfieldLogin.Location = new System.Drawing.Point(54, 186);
+=======
+            this.usernameTextfieldLogin.Location = new System.Drawing.Point(99, 343);
+            this.usernameTextfieldLogin.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.usernameTextfieldLogin.Name = "usernameTextfieldLogin";
             this.usernameTextfieldLogin.Size = new System.Drawing.Size(318, 20);
             this.usernameTextfieldLogin.TabIndex = 1;
-            this.usernameTextfieldLogin.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // passwordLabelLoginTab
             // 
@@ -252,7 +375,6 @@ namespace Termin4CSharp.View {
             this.passwordLabelLoginTab.Size = new System.Drawing.Size(54, 13);
             this.passwordLabelLoginTab.TabIndex = 2;
             this.passwordLabelLoginTab.Text = "Lösenord:";
-            this.passwordLabelLoginTab.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // usernameLabelLoginTab
             // 
@@ -262,7 +384,6 @@ namespace Termin4CSharp.View {
             this.usernameLabelLoginTab.Size = new System.Drawing.Size(82, 13);
             this.usernameLabelLoginTab.TabIndex = 0;
             this.usernameLabelLoginTab.Text = "Användarnamn:";
-            this.usernameLabelLoginTab.Click += new System.EventHandler(this.label1_Click);
             // 
             // roomBookTab
             // 
@@ -282,10 +403,18 @@ namespace Termin4CSharp.View {
             this.roomBookTab.Controls.Add(this.toDatePickerRoomBookingTab);
             this.roomBookTab.Controls.Add(this.fromDatePickerRoomBookingTab);
             this.roomBookTab.Controls.Add(this.comboBox4);
+<<<<<<< HEAD
             this.roomBookTab.Location = new System.Drawing.Point(4, 22);
             this.roomBookTab.Name = "roomBookTab";
             this.roomBookTab.Padding = new System.Windows.Forms.Padding(3);
-            this.roomBookTab.Size = new System.Drawing.Size(927, 474);
+            this.roomBookTab.Size = new System.Drawing.Size(1298, 665);
+=======
+            this.roomBookTab.Location = new System.Drawing.Point(4, 33);
+            this.roomBookTab.Margin = new System.Windows.Forms.Padding(6);
+            this.roomBookTab.Name = "roomBookTab";
+            this.roomBookTab.Padding = new System.Windows.Forms.Padding(6);
+            this.roomBookTab.Size = new System.Drawing.Size(2387, 1238);
+>>>>>>> baltzar
             this.roomBookTab.TabIndex = 1;
             this.roomBookTab.Text = "Boka rum";
             this.roomBookTab.UseVisualStyleBackColor = true;
@@ -293,7 +422,12 @@ namespace Termin4CSharp.View {
             // 
             // clearFiltersButtonRoomBookingTab
             // 
+<<<<<<< HEAD
             this.clearFiltersButtonRoomBookingTab.Location = new System.Drawing.Point(6, 376);
+=======
+            this.clearFiltersButtonRoomBookingTab.Location = new System.Drawing.Point(11, 694);
+            this.clearFiltersButtonRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.clearFiltersButtonRoomBookingTab.Name = "clearFiltersButtonRoomBookingTab";
             this.clearFiltersButtonRoomBookingTab.Size = new System.Drawing.Size(120, 23);
             this.clearFiltersButtonRoomBookingTab.TabIndex = 21;
@@ -364,18 +498,27 @@ namespace Termin4CSharp.View {
             this.olvColumn23,
             this.olvColumn24});
             this.roomHolder.Cursor = System.Windows.Forms.Cursors.Default;
+<<<<<<< HEAD
             this.roomHolder.Location = new System.Drawing.Point(132, 82);
             this.roomHolder.Margin = new System.Windows.Forms.Padding(2);
+=======
+            this.roomHolder.Location = new System.Drawing.Point(242, 151);
+            this.roomHolder.Margin = new System.Windows.Forms.Padding(4);
+>>>>>>> baltzar
             this.roomHolder.Name = "roomHolder";
             this.roomHolder.SelectedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.roomHolder.ShowGroups = false;
-            this.roomHolder.Size = new System.Drawing.Size(792, 388);
+            this.roomHolder.Size = new System.Drawing.Size(1158, 552);
             this.roomHolder.TabIndex = 22;
             this.roomHolder.UseCellFormatEvents = true;
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
+<<<<<<< HEAD
+=======
             this.roomHolder.CellClick += RoomHolder_CellClick;
+            //////////////this.room Holder.Cell Click += RoomHol der_Ce llClick;
+>>>>>>> baltzar
             // 
             // idColumn
             // 
@@ -520,7 +663,12 @@ namespace Termin4CSharp.View {
             // 
             // freeTextFilterTextbox
             // 
+<<<<<<< HEAD
             this.freeTextFilterTextbox.Location = new System.Drawing.Point(9, 82);
+=======
+            this.freeTextFilterTextbox.Location = new System.Drawing.Point(17, 151);
+            this.freeTextFilterTextbox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.freeTextFilterTextbox.Name = "freeTextFilterTextbox";
             this.freeTextFilterTextbox.Size = new System.Drawing.Size(117, 20);
             this.freeTextFilterTextbox.TabIndex = 8;
@@ -534,11 +682,15 @@ namespace Termin4CSharp.View {
             this.label11.Size = new System.Drawing.Size(68, 13);
             this.label11.TabIndex = 19;
             this.label11.Text = "Antal platser:";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // capacityTrackbarRoomBookingTab
             // 
+<<<<<<< HEAD
             this.capacityTrackbarRoomBookingTab.Location = new System.Drawing.Point(6, 423);
+=======
+            this.capacityTrackbarRoomBookingTab.Location = new System.Drawing.Point(11, 781);
+            this.capacityTrackbarRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.capacityTrackbarRoomBookingTab.Name = "capacityTrackbarRoomBookingTab";
             this.capacityTrackbarRoomBookingTab.Size = new System.Drawing.Size(120, 45);
             this.capacityTrackbarRoomBookingTab.TabIndex = 18;
@@ -560,10 +712,15 @@ namespace Termin4CSharp.View {
             this.resourceFilterBox.Items.AddRange(new object[] {
             "Rullstolsanpassat",
             "Projektor"});
+<<<<<<< HEAD
             this.resourceFilterBox.Location = new System.Drawing.Point(6, 306);
+=======
+            this.resourceFilterBox.Location = new System.Drawing.Point(11, 565);
+            this.resourceFilterBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.resourceFilterBox.Name = "resourceFilterBox";
             this.resourceFilterBox.ScrollAlwaysVisible = true;
-            this.resourceFilterBox.Size = new System.Drawing.Size(120, 49);
+            this.resourceFilterBox.Size = new System.Drawing.Size(120, 34);
             this.resourceFilterBox.TabIndex = 15;
             this.resourceFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.resourceFilterBox_ItemCheck);
             // 
@@ -584,10 +741,15 @@ namespace Termin4CSharp.View {
             "101",
             "102",
             "103"});
+<<<<<<< HEAD
             this.roomFilterBox.Location = new System.Drawing.Point(6, 222);
+=======
+            this.roomFilterBox.Location = new System.Drawing.Point(11, 410);
+            this.roomFilterBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.roomFilterBox.Name = "roomFilterBox";
             this.roomFilterBox.ScrollAlwaysVisible = true;
-            this.roomFilterBox.Size = new System.Drawing.Size(120, 49);
+            this.roomFilterBox.Size = new System.Drawing.Size(120, 34);
             this.roomFilterBox.TabIndex = 11;
             this.roomFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.roomFilterBox_ItemCheck);
             // 
@@ -608,10 +770,15 @@ namespace Termin4CSharp.View {
             "EC2",
             "EC3",
             "ALFA"});
+<<<<<<< HEAD
             this.buildingFilterBox.Location = new System.Drawing.Point(6, 136);
+=======
+            this.buildingFilterBox.Location = new System.Drawing.Point(11, 251);
+            this.buildingFilterBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.buildingFilterBox.Name = "buildingFilterBox";
             this.buildingFilterBox.ScrollAlwaysVisible = true;
-            this.buildingFilterBox.Size = new System.Drawing.Size(120, 49);
+            this.buildingFilterBox.Size = new System.Drawing.Size(120, 34);
             this.buildingFilterBox.TabIndex = 9;
             this.buildingFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.buildingFilterBox_ItemCheck);
             // 
@@ -635,18 +802,27 @@ namespace Termin4CSharp.View {
             // 
             // toDatePickerRoomBookingTab
             // 
+<<<<<<< HEAD
             this.toDatePickerRoomBookingTab.Location = new System.Drawing.Point(69, 34);
+=======
+            this.toDatePickerRoomBookingTab.Location = new System.Drawing.Point(127, 63);
+            this.toDatePickerRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.toDatePickerRoomBookingTab.Name = "toDatePickerRoomBookingTab";
             this.toDatePickerRoomBookingTab.Size = new System.Drawing.Size(200, 20);
             this.toDatePickerRoomBookingTab.TabIndex = 5;
             // 
             // fromDatePickerRoomBookingTab
             // 
+<<<<<<< HEAD
             this.fromDatePickerRoomBookingTab.Location = new System.Drawing.Point(69, 8);
+=======
+            this.fromDatePickerRoomBookingTab.Location = new System.Drawing.Point(127, 15);
+            this.fromDatePickerRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.fromDatePickerRoomBookingTab.Name = "fromDatePickerRoomBookingTab";
             this.fromDatePickerRoomBookingTab.Size = new System.Drawing.Size(200, 20);
             this.fromDatePickerRoomBookingTab.TabIndex = 4;
-            this.fromDatePickerRoomBookingTab.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // comboBox4
             // 
@@ -654,14 +830,17 @@ namespace Termin4CSharp.View {
             this.comboBox4.Items.AddRange(new object[] {
             "Min profil",
             "Logga ut"});
+<<<<<<< HEAD
             this.comboBox4.Location = new System.Drawing.Point(793, 24);
+=======
+            this.comboBox4.Location = new System.Drawing.Point(1454, 44);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(100, 21);
             this.comboBox4.TabIndex = 3;
             this.comboBox4.Text = "Användarnamn";
-            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
-<<<<<<< HEAD
             // adminTab
             // 
             this.adminTab.Controls.Add(this.createLabelAdminTab);
@@ -671,10 +850,18 @@ namespace Termin4CSharp.View {
             this.adminTab.Controls.Add(this.createTypeBox);
             this.adminTab.Controls.Add(this.editArticleBox);
             this.adminTab.Controls.Add(this.editTypeBox);
+<<<<<<< HEAD
             this.adminTab.Location = new System.Drawing.Point(4, 22);
             this.adminTab.Name = "adminTab";
             this.adminTab.Padding = new System.Windows.Forms.Padding(3);
-            this.adminTab.Size = new System.Drawing.Size(927, 474);
+            this.adminTab.Size = new System.Drawing.Size(1298, 665);
+=======
+            this.adminTab.Location = new System.Drawing.Point(4, 33);
+            this.adminTab.Margin = new System.Windows.Forms.Padding(6);
+            this.adminTab.Name = "adminTab";
+            this.adminTab.Padding = new System.Windows.Forms.Padding(6);
+            this.adminTab.Size = new System.Drawing.Size(2387, 1238);
+>>>>>>> baltzar
             this.adminTab.TabIndex = 3;
             this.adminTab.Text = "Admin";
             this.adminTab.UseVisualStyleBackColor = true;
@@ -682,28 +869,33 @@ namespace Termin4CSharp.View {
             // createLabelAdminTab
             // 
             this.createLabelAdminTab.AutoSize = true;
-            this.createLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.createLabelAdminTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createLabelAdminTab.Location = new System.Drawing.Point(97, 153);
             this.createLabelAdminTab.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.createLabelAdminTab.Name = "createLabelAdminTab";
-            this.createLabelAdminTab.Size = new System.Drawing.Size(62, 22);
+            this.createLabelAdminTab.Size = new System.Drawing.Size(62, 24);
             this.createLabelAdminTab.TabIndex = 8;
             this.createLabelAdminTab.Text = "Skapa";
             // 
             // editLabelAdminTab
             // 
             this.editLabelAdminTab.AutoSize = true;
-            this.editLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editLabelAdminTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editLabelAdminTab.Location = new System.Drawing.Point(97, 63);
             this.editLabelAdminTab.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.editLabelAdminTab.Name = "editLabelAdminTab";
-            this.editLabelAdminTab.Size = new System.Drawing.Size(67, 22);
+            this.editLabelAdminTab.Size = new System.Drawing.Size(69, 24);
             this.editLabelAdminTab.TabIndex = 7;
             this.editLabelAdminTab.Text = "Editera";
             // 
             // editObjectButton
             // 
+<<<<<<< HEAD
             this.editObjectButton.Location = new System.Drawing.Point(97, 116);
+=======
+            this.editObjectButton.Location = new System.Drawing.Point(178, 214);
+            this.editObjectButton.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.editObjectButton.Name = "editObjectButton";
             this.editObjectButton.Size = new System.Drawing.Size(121, 23);
             this.editObjectButton.TabIndex = 6;
@@ -713,7 +905,12 @@ namespace Termin4CSharp.View {
             // 
             // createObjectButton
             // 
+<<<<<<< HEAD
             this.createObjectButton.Location = new System.Drawing.Point(97, 205);
+=======
+            this.createObjectButton.Location = new System.Drawing.Point(178, 378);
+            this.createObjectButton.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.createObjectButton.Name = "createObjectButton";
             this.createObjectButton.Size = new System.Drawing.Size(121, 23);
             this.createObjectButton.TabIndex = 5;
@@ -725,7 +922,12 @@ namespace Termin4CSharp.View {
             // 
             this.createTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.createTypeBox.FormattingEnabled = true;
+<<<<<<< HEAD
             this.createTypeBox.Location = new System.Drawing.Point(97, 178);
+=======
+            this.createTypeBox.Location = new System.Drawing.Point(178, 329);
+            this.createTypeBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.createTypeBox.Name = "createTypeBox";
             this.createTypeBox.Size = new System.Drawing.Size(121, 21);
             this.createTypeBox.TabIndex = 4;
@@ -734,7 +936,12 @@ namespace Termin4CSharp.View {
             // 
             this.editArticleBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.editArticleBox.FormattingEnabled = true;
+<<<<<<< HEAD
             this.editArticleBox.Location = new System.Drawing.Point(225, 88);
+=======
+            this.editArticleBox.Location = new System.Drawing.Point(413, 162);
+            this.editArticleBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.editArticleBox.Name = "editArticleBox";
             this.editArticleBox.Size = new System.Drawing.Size(425, 21);
             this.editArticleBox.TabIndex = 2;
@@ -749,7 +956,12 @@ namespace Termin4CSharp.View {
             "Person",
             "Resurs",
             "Person"});
+<<<<<<< HEAD
             this.editTypeBox.Location = new System.Drawing.Point(97, 88);
+=======
+            this.editTypeBox.Location = new System.Drawing.Point(178, 162);
+            this.editTypeBox.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.editTypeBox.Name = "editTypeBox";
             this.editTypeBox.Size = new System.Drawing.Size(121, 21);
             this.editTypeBox.TabIndex = 1;
@@ -757,41 +969,43 @@ namespace Termin4CSharp.View {
             // 
             // mainLabel2WS
             // 
+<<<<<<< HEAD
             this.mainLabel2WS.Location = new System.Drawing.Point(4, 22);
             this.mainLabel2WS.Name = "mainLabel2WS";
             this.mainLabel2WS.Padding = new System.Windows.Forms.Padding(3);
-            this.mainLabel2WS.Size = new System.Drawing.Size(931, 500);
+            this.mainLabel2WS.Size = new System.Drawing.Size(1303, 685);
+=======
+            this.mainLabel2WS.Location = new System.Drawing.Point(4, 33);
+            this.mainLabel2WS.Margin = new System.Windows.Forms.Padding(6);
+            this.mainLabel2WS.Name = "mainLabel2WS";
+            this.mainLabel2WS.Padding = new System.Windows.Forms.Padding(6);
+            this.mainLabel2WS.Size = new System.Drawing.Size(2395, 1275);
+>>>>>>> baltzar
             this.mainLabel2WS.TabIndex = 1;
             this.mainLabel2WS.Text = "Webbservice";
             this.mainLabel2WS.UseVisualStyleBackColor = true;
-            this.mainLabel2WS.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // mainLabel3ERP
             // 
             this.mainLabel3ERP.Controls.Add(this.label13);
             this.mainLabel3ERP.Controls.Add(this.label12);
-            this.mainLabel3ERP.Controls.Add(this.button2);
             this.mainLabel3ERP.Controls.Add(this.comboBox1);
-            this.mainLabel3ERP.Controls.Add(this.vScrollBar5);
             this.mainLabel3ERP.Controls.Add(this.listView2);
+<<<<<<< HEAD
             this.mainLabel3ERP.Location = new System.Drawing.Point(4, 22);
             this.mainLabel3ERP.Name = "mainLabel3ERP";
             this.mainLabel3ERP.Padding = new System.Windows.Forms.Padding(3);
-            this.mainLabel3ERP.Size = new System.Drawing.Size(931, 500);
+            this.mainLabel3ERP.Size = new System.Drawing.Size(1303, 685);
+=======
+            this.mainLabel3ERP.Location = new System.Drawing.Point(4, 33);
+            this.mainLabel3ERP.Margin = new System.Windows.Forms.Padding(6);
+            this.mainLabel3ERP.Name = "mainLabel3ERP";
+            this.mainLabel3ERP.Padding = new System.Windows.Forms.Padding(6);
+            this.mainLabel3ERP.Size = new System.Drawing.Size(2395, 1275);
+>>>>>>> baltzar
             this.mainLabel3ERP.TabIndex = 2;
             this.mainLabel3ERP.Text = "ERP";
             this.mainLabel3ERP.UseVisualStyleBackColor = true;
-            this.mainLabel3ERP.Click += new System.EventHandler(this.tabPage3_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(31, 61);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(78, 20);
-            this.label13.TabIndex = 26;
-            this.label13.Text = "CRONUS\r\n";
             // 
             // label12
             // 
@@ -802,69 +1016,22 @@ namespace Termin4CSharp.View {
             this.label12.Size = new System.Drawing.Size(439, 50);
             this.label12.TabIndex = 25;
             this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            // 
+<<<<<<< HEAD
 =======
-            // tabPage2
+            // searchERPButton
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(931, 500);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Webbservice";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            this.searchERPButton.Location = new System.Drawing.Point(123, 259);
+            this.searchERPButton.Margin = new System.Windows.Forms.Padding(6);
+            this.searchERPButton.Name = "searchERPButton";
+            this.searchERPButton.Size = new System.Drawing.Size(138, 42);
+            this.searchERPButton.TabIndex = 27;
+            this.searchERPButton.Text = "Visa";
             // 
-            // tabPage3
+>>>>>>> baltzar
+            // comboBox1
             // 
-            this.tabPage3.Controls.Add(this.label13);
-            this.tabPage3.Controls.Add(this.HeaderERP);
-            this.tabPage3.Controls.Add(this.ERPButton);
-            this.tabPage3.Controls.Add(this.ComboBoxERP);
-            this.tabPage3.Controls.Add(this.ScrollBarERP);
-            this.tabPage3.Controls.Add(this.ListViewERP);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(931, 500);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "ERP";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
->>>>>>> ebba
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(31, 61);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(78, 20);
-            this.label13.TabIndex = 26;
-            this.label13.Text = "CRONUS\r\n";
-            // 
-            // HeaderERP
-            // 
-            this.HeaderERP.AutoSize = true;
-            this.HeaderERP.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HeaderERP.Location = new System.Drawing.Point(29, 24);
-            this.HeaderERP.Name = "HeaderERP";
-            this.HeaderERP.Size = new System.Drawing.Size(439, 50);
-            this.HeaderERP.TabIndex = 25;
-            this.HeaderERP.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
-            // 
-            // ERPButton
-            // 
-            this.ERPButton.Location = new System.Drawing.Point(159, 122);
-            this.ERPButton.Name = "ERPButton";
-            this.ERPButton.Size = new System.Drawing.Size(75, 23);
-            this.ERPButton.TabIndex = 24;
-            this.ERPButton.Text = "Visa";
-            this.ERPButton.UseVisualStyleBackColor = true;
-            // 
-            // ComboBoxERP
-            // 
-            this.ComboBoxERP.FormattingEnabled = true;
-            this.ComboBoxERP.Items.AddRange(new object[] {
+            this.comboBox1.Items.AddRange(new object[] {
             "Personal",
             "Personalanhörig",
             "Personalfrånvaro 2004",
@@ -878,27 +1045,29 @@ namespace Termin4CSharp.View {
             "METADATA - Tabeller2",
             "METADATA - Kolumner",
             "METADATA - Kolumner2"});
-            this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
-            this.ComboBoxERP.Name = "ComboBoxERP";
-            this.ComboBoxERP.Size = new System.Drawing.Size(121, 21);
-            this.ComboBoxERP.TabIndex = 23;
+<<<<<<< HEAD
+            this.comboBox1.Location = new System.Drawing.Point(67, 143);
+=======
+            this.comboBox1.Location = new System.Drawing.Point(123, 215);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(297, 21);
+            this.comboBox1.TabIndex = 28;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ERPcomboBox_SelectedIndexChanged);
             // 
-            // ScrollBarERP
-            // 
-            this.ScrollBarERP.Location = new System.Drawing.Point(551, 163);
-            this.ScrollBarERP.Name = "ScrollBarERP";
-            this.ScrollBarERP.Size = new System.Drawing.Size(20, 307);
-            this.ScrollBarERP.TabIndex = 22;
-            // 
-            // ListViewERP
+            // listView2
             // 
 <<<<<<< HEAD
-            this.listView2.Location = new System.Drawing.Point(32, 163);
+            this.listView2.Location = new System.Drawing.Point(67, 170);
+=======
+            this.listView2.Location = new System.Drawing.Point(123, 313);
+            this.listView2.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(539, 307);
-            this.listView2.TabIndex = 21;
+            this.listView2.Size = new System.Drawing.Size(642, 193);
+            this.listView2.TabIndex = 30;
             this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -919,25 +1088,30 @@ namespace Termin4CSharp.View {
             // 
             this.columnHeader4.Text = "Minst antal platser: ";
             this.columnHeader4.Width = 129;
-=======
-            this.ListViewERP.Location = new System.Drawing.Point(32, 163);
-            this.ListViewERP.Name = "ListViewERP";
-            this.ListViewERP.Size = new System.Drawing.Size(539, 307);
-            this.ListViewERP.TabIndex = 21;
-            this.ListViewERP.UseCompatibleStateImageBehavior = false;
-            this.ListViewERP.View = System.Windows.Forms.View.Details;
->>>>>>> ebba
+            // 
+            // responseLabelLoginTab
+            // 
+            this.responseLabelLoginTab.AutoSize = true;
+            this.responseLabelLoginTab.Location = new System.Drawing.Point(97, 499);
+            this.responseLabelLoginTab.Name = "responseLabelLoginTab";
+            this.responseLabelLoginTab.Size = new System.Drawing.Size(0, 25);
+            this.responseLabelLoginTab.TabIndex = 8;
             // 
             // GUIMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(940, 524);
+            this.ClientSize = new System.Drawing.Size(747, 406);
             this.Controls.Add(this.OK);
+<<<<<<< HEAD
+=======
+            this.Margin = new System.Windows.Forms.Padding(6);
+>>>>>>> baltzar
             this.Name = "GUIMain";
             this.Text = "Lunds universitet";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.OK.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.mainLabel1PK.ResumeLayout(false);
@@ -955,22 +1129,22 @@ namespace Termin4CSharp.View {
 
         }
 
+        private void RoomHolder_CellClick1(object sender, CellClickEventArgs e) {
+            throw new System.NotImplementedException();
+        }
+
         private void RoomHolder_CellClick(object sender, CellClickEventArgs e) {
             this.Controller.HandleCellDoubleClick(sender, e);
         }
-
 
         #endregion
 
         private System.Windows.Forms.TabControl OK;
         private System.Windows.Forms.TabPage tabPage1;
-<<<<<<< HEAD
         private System.Windows.Forms.TabPage mainLabel2WS;
         private System.Windows.Forms.TabPage mainLabel3ERP;
         private ComboBox comboBox1;
-        private VScrollBar vScrollBar5;
         private ListView listView2;
-        private Button button2;
         private TabControl mainLabel1PK;
         private TabPage loginTab;
         private Label mainLabelLoginTab;
@@ -982,47 +1156,11 @@ namespace Termin4CSharp.View {
         private Label passwordLabelLoginTab;
         private Label usernameLabelLoginTab;
         private TabPage roomBookTab;
-        //private ListView roomView;
         private ObjectListView roomHolder;
-=======
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.VScrollBar vScrollBar3;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckedListBox checkedListBox3;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.VScrollBar vScrollBar2;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.CheckedListBox checkedListBox2;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.VScrollBar vScrollBar4;
-        private System.Windows.Forms.ListView listView1;
->>>>>>> ebba
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
         private ColumnHeader columnHeader4;
-<<<<<<< HEAD
         private TextBox freeTextFilterTextbox;
         private Label label11;
         private TrackBar capacityTrackbarRoomBookingTab;
@@ -1043,11 +1181,11 @@ namespace Termin4CSharp.View {
         //private Label label13;
         private ComboBox editArticleBox;
         private ComboBox editTypeBox;
-        //private Label label12;
+        private Label label12;
         private Button editObjectButton;
         private Button clearFiltersButtonRoomBookingTab;
         private Label label13;
-        private Label label12;
+        private Label HeaderERP;
         private Label editLabelAdminTab;
         private Label createLabelAdminTab;
         private OLVColumn idColumn;
@@ -1079,13 +1217,11 @@ namespace Termin4CSharp.View {
         private OLVColumn olvColumn22;
         private OLVColumn olvColumn23;
         private OLVColumn olvColumn24;
-=======
+        private Button ERPButton;
         private ComboBox ComboBoxERP;
         private VScrollBar ScrollBarERP;
         private ListView ListViewERP;
-        private Button ERPButton;
-        private Label label13;
-        private Label HeaderERP;
->>>>>>> ebba
+        private TabPage tabPage3;
+        private Label responseLabelLoginTab;
     }
 }

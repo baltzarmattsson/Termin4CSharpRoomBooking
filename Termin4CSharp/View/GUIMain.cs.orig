@@ -40,8 +40,37 @@ namespace Termin4CSharp.View
             this.capacityTrackbarRoomBookingTab.Maximum = highestCapacity;
         }
 
+<<<<<<< HEAD
+        private void tabPage3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         internal CheckedListBox.CheckedItemCollection GetRoomFilters()
         {
+=======
+        internal CheckedListBox.CheckedItemCollection GetRoomFilters() {
+>>>>>>> baltzar
             return this.roomFilterBox.CheckedItems;
         }
 
@@ -50,13 +79,55 @@ namespace Termin4CSharp.View
             return this.resourceFilterBox.CheckedItems;
         }
 
+<<<<<<< HEAD
+        internal string GetTextFilter()
+        {
+            return this.textFilter;
+        }
+
         internal CheckedListBox.CheckedItemCollection GetBuildingFilters()
         {
             return this.buildingFilterBox.CheckedItems;
         }
 
-        public void ClearFilterSelections() {
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        { }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        internal void ClearFilterSelections()
+        {
+=======
+        internal CheckedListBox.CheckedItemCollection GetBuildingFilters() {
+            return this.buildingFilterBox.CheckedItems;
+        }
+
+        public void ClearFilterSelections() {
+>>>>>>> baltzar
             CheckedListBox[] filterBoxes = { this.buildingFilterBox, this.resourceFilterBox, this.roomFilterBox };
             foreach (var fbox in filterBoxes)
             {
@@ -73,8 +144,16 @@ namespace Termin4CSharp.View
             this.responseLabelLoginTab.Text = text;
         }
 
+<<<<<<< HEAD
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
         private void buildingFilterBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+=======
+        private void buildingFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
+>>>>>>> baltzar
             Controller.HandleFilterChange(FilterBox.BUILDING, sender as CheckedListBox, e);
         }
         private void roomFilterBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -141,8 +220,13 @@ namespace Termin4CSharp.View
                     break;
 
         }
+<<<<<<< HEAD
+
         public void SetBuildingFilters(List<Building> buildings)
         {
+=======
+        public void SetBuildingFilters(List<Building> buildings) {
+>>>>>>> baltzar
             this.buildingFilterBox.Items.Clear();
             foreach (var building in buildings)
                 this.buildingFilterBox.Items.Add(building.Name);
@@ -206,11 +290,16 @@ namespace Termin4CSharp.View
             return this.capacityTrackbarRoomBookingTab.Value;
         }
 
+<<<<<<< HEAD
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Controller.LoginUser(this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
+            //this.Controller.LoginUser()
         }
 
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void ERPcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -232,5 +321,11 @@ namespace Termin4CSharp.View
             listView2.Items.AddRange(items.ToArray());
 
         }
+=======
+        private void button1_Click(object sender, EventArgs e) {
+            this.Controller.LoginUser(this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
+        }
+
+>>>>>>> baltzar
     }
 }

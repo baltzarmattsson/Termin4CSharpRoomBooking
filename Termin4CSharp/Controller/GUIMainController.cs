@@ -127,7 +127,8 @@ namespace Termin4CSharp.Controller {
 
 
             //DAL dal = new DAL(this);
-            //List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            ////List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            //List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate()
             //this.ClearFilterSelections();
             //this.GUIMain.SetRooms(filteredRooms);
         }

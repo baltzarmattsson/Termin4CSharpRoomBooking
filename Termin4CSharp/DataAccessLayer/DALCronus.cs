@@ -166,16 +166,16 @@ namespace Termin4CSharp.DataAccessLayer {
             return null;
         }
         //insert(add?), update, delete from Employee
-        public void AddEmployee(string id, string firstName) { 
-            "CRONUS Sverige AB$Employee".Add(id, firstName); 
-        }
-        public void UpdateEmployee(string id, string firstName){
-            "CRONUS Sverige AB$Employee".Update(id, firstName);
-        }
-        public void deleteEmployee(string id)
-            "CRONUS Sverige AB$Employee".Delete(id); {
+        //public void AddEmployee(string id, string firstName) { 
+        //    "CRONUS Sverige AB$Employee".Add(id, firstName); 
+        //}
+        //public void UpdateEmployee(string id, string firstName){
+        //    "CRONUS Sverige AB$Employee".Update(id, firstName);
+        //}
+        //public void deleteEmployee(string id)
+        //    "CRONUS Sverige AB$Employee".Delete(id); {
 
-        }
+        //}
     }
 }
 

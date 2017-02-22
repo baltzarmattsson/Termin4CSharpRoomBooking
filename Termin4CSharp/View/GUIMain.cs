@@ -62,6 +62,10 @@ namespace Termin4CSharp.View
             }
         }
 
+        internal void SetLoginResponseLabelText(string text) {
+            this.responseLabelLoginTab.Text = text;
+        }
+
         private void buildingFilterBox_ItemCheck(object sender, ItemCheckEventArgs e) {
             Controller.HandleFilterChange(FilterBox.BUILDING, sender as CheckedListBox, e);
         }
@@ -156,7 +160,7 @@ namespace Termin4CSharp.View
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            //this.Controller.LoginUser()
+            this.Controller.LoginUser(this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
         }
 
     }

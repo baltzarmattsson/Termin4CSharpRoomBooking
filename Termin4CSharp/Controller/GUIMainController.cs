@@ -30,7 +30,7 @@ namespace Termin4CSharp.Controller {
             roomFilters = new List<string>();
             resourceFilters = new List<string>();
 
-            this.LoginUser("2", "hej123");
+            this.LoginUser("1", "1");
         }
         public void LoginUser(string username, string password) {
             if (this.LoggedInUser != null)
@@ -45,11 +45,11 @@ namespace Termin4CSharp.Controller {
                 tempHolder.Id = username;
                 this.LoggedInUser = dal.Get(tempHolder).First() as Person;
 
+                this.GUIMain.SetLoginResponseLabelText("Logged in as " + this.LoggedInUser.Name + " " + this.LoggedInUser.Id);
                 if (String.IsNullOrEmpty(LoggedInUser.RoleName) == false) {
                     // Getting the role of the user
                     Role tempRoleObject = new Role(LoggedInUser.RoleName);
                     this.LoggedInUser.Role = dal.Get(tempRoleObject).First() as Role;
-                    
                 }
             }
         }

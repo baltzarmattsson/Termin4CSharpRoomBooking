@@ -65,9 +65,10 @@ namespace Termin4CSharp.View {
             Label mainTitleLabel = new Label();
             mainTitleLabel.Size = new System.Drawing.Size(1500, 50);
             mainTitleLabel.Font = new System.Drawing.Font("Helvetica", 20);
-            
+
             // Sätt Redigering/uppdatering/skapa ny dynamiskt vvvv
-            mainTitleLabel.Text = string.Format("Redigering: {0} ", model.GetType().Name);
+            string createOrEditLabelText = IsExistingItemInDatabase ? "Editering av" : "Skapa ny";
+            mainTitleLabel.Text = string.Format("{0} {1} ", createOrEditLabelText, Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name));
             this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
             this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
             
@@ -89,7 +90,6 @@ namespace Termin4CSharp.View {
                 }
                 
                 Control control = null;
-                //bool isListOfIModels = false;
                 
                 // If IModel or List<IModel>, it's a referenced IModel/List<IModel>. For example, a Building that contains List<Room>, or Person that has a Role
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
@@ -113,7 +113,8 @@ namespace Termin4CSharp.View {
                             }
                         }
                         control = comboBox;
-                        //this.oldIdentifyingAttribute[control.Name] = comboBox.SelectedItem;
+                        if (model is Login && kv.Key.Equals("Person"))
+                            control.Enabled = false;
                     } else if (value.GetType().IsGenericType) {
                         Controller.ViewHasListOfIModels = true;
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.LIST_OF_IMODELS, value);
@@ -135,12 +136,17 @@ namespace Termin4CSharp.View {
                         datePicker.Width = 500;
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-                        if (model is Building || (model is Booking && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
+                        if (model is Building || (model is Booking)) {// && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
                             datePicker.Format = DateTimePickerFormat.Custom;
-                            datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
+                            if (kv.Key.Equals("Timestamp"))
+                                datePicker.CustomFormat = "yyyy-MM-dd \t HH:mm:ss";
+                            else
+                                datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
                             datePicker.ShowUpDown = true;
                         }
                         control = datePicker;
+                        if (model is Booking && kv.Key.Equals("Timestamp"))
+                            control.Enabled = false;
                     // Numbers
                     } else if (value is Int16 || value is Int32 || value is Int64 || value is double) {
                         NumberTextBox numTextBox = new NumberTextBox();

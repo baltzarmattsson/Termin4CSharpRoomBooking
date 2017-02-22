@@ -465,6 +465,9 @@ namespace Termin4CSharp {
 
             if (model is Person) {
                 switch (key.ToLower()) {
+                    case "person":
+                        retName = "person";
+                        break;
                     case "modeleqv":
                         retName = "en person";
                         break;
@@ -482,6 +485,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Room) {
                 switch (key.ToLower()) {
+                    case "room":
+                        retName = "rum";
+                        break;
                     case "modeleqv":
                         retName = "ett rum";
                         break;
@@ -500,6 +506,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Building) { 
                 switch (key.ToLower()) {
+                    case "building":
+                        retName = "byggnad";
+                        break;
                     case "modeleqv":
                         retName = "en byggnad";
                         break;
@@ -518,6 +527,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Booking) {
                 switch (key.ToLower()) {
+                    case "booking":
+                        retName = "bokning";
+                        break;
                     case "modeleqv":
                         retName = "en bokning";
                         break;
@@ -550,6 +562,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Resource) {
                 switch (key.ToLower()) {
+                    case "resource":
+                        retName = "resurs";
+                        break;
                     case "modeleqv":
                         retName = "en resurs";
                         break;
@@ -577,6 +592,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is Role) {
                 switch (key.ToLower()) {
+                    case "role":
+                        retName = "roll";
+                        break;
                     case "modeleqv":
                         retName = "en roll";
                         break;
@@ -586,8 +604,11 @@ namespace Termin4CSharp {
                 }
             } else if (model is Login) {
                 switch (key.ToLower()) {
+                    case "login":
+                        retName = "inloggning";
+                        break;
                     case "modeleqv":
-                        retName = "ett login";
+                        retName = "ett inlogg";
                         break;
                     case "password":
                         retName = "Lösenord";
@@ -598,6 +619,9 @@ namespace Termin4CSharp {
                 }
             } else if (model is RoomType) {
                 switch (key.ToLower()) {
+                    case "roomtype":
+                        retName = "rumtyp";
+                        break;
                     case "modeleqv":
                         retName = "en rumtyp";
                         break;

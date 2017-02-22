@@ -114,10 +114,10 @@ namespace Termin4CSharp.Controller {
 
             // TODO skapa en thread som väntar 0.5s tills man söker och stackar inte sökningar på varandra
 
-
+            DateTime tempDate = DateTime.Now;
 
             DAL dal = new DAL(this);
-            List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
+            List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(tempDate, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
         }
 

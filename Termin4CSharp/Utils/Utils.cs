@@ -304,11 +304,11 @@ namespace Termin4CSharp {
                 Utils.FillSqlCmd(cmd, modelAttributes);
             if (optWhereParams != null && optWhereParams.Count > 0)
                 Utils.FillSqlCmd(cmd, optWhereParams, true);
-            //if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
-            //    cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
-            //    cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
-            //    cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
-            //}
+            if (bookingSearchOnDate != default(DateTime) && !cmd.CommandText.Contains("where")) {
+                cmd.CommandText += " where start_time >= @@@start and end_time <= @@@end";
+                cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
+                cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
+            }
             Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }

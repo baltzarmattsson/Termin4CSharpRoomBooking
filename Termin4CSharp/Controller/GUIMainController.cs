@@ -113,10 +113,15 @@ namespace Termin4CSharp.Controller {
             }
 
             // TODO skapa en thread som väntar 0.5s tills man söker och stackar inte sökningar på varandra
+
+
+
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithFilters(buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
         }
+
+        private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
 
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e) {
 
@@ -145,7 +150,7 @@ namespace Termin4CSharp.Controller {
             //    e.SubItem.BackColor = Color.Yellow;
             if (e.ColumnIndex > 4) {
                 if (e.ClickCount == 2) {
-e.SubItem.BackColor = System.Drawing.Color.Yellow;
+                    e.SubItem.BackColor = System.Drawing.Color.Yellow;
                     string itemText = e.SubItem.Text;
                     if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}")) {
                         Room targetRoom = (Room)e.Model;
@@ -162,7 +167,7 @@ e.SubItem.BackColor = System.Drawing.Color.Yellow;
                 } else {
                     e.SubItem.BackColor = System.Drawing.Color.Yellow;
                 }
-            } 
+            }
         }
     }
 }

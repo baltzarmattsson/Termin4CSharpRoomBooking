@@ -164,6 +164,8 @@ namespace Termin4CSharp.View
                             datePicker.Format = DateTimePickerFormat.Custom;
                             if (kv.Key.Equals("Timestamp"))
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:mm:ss";
+                            else if (kv.Key.Equals("Avail_start") || kv.Key.Equals("Avail_end"))
+                                datePicker.CustomFormat = "HH:00";
                             else
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
                             datePicker.ShowUpDown = true;

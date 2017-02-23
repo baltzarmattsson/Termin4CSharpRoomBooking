@@ -44,6 +44,7 @@ namespace Termin4CSharp.View
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.mainLabel1PK = new System.Windows.Forms.TabControl();
             this.loginTab = new System.Windows.Forms.TabPage();
+            this.responseLabelLoginTab = new System.Windows.Forms.Label();
             this.mainLabelLoginTab = new System.Windows.Forms.Label();
             this.infoTextLoginTab = new System.Windows.Forms.Label();
             this.loginButtonLoginTab = new System.Windows.Forms.Button();
@@ -116,7 +117,6 @@ namespace Termin4CSharp.View
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.responseLabelLoginTab = new System.Windows.Forms.Label();
             this.tabPage3.SuspendLayout();
             this.OK.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -182,7 +182,7 @@ namespace Termin4CSharp.View
             "METADATA - Kolumner2"});
             this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
             this.ComboBoxERP.Name = "ComboBoxERP";
-            this.ComboBoxERP.Size = new System.Drawing.Size(121, 32);
+            this.ComboBoxERP.Size = new System.Drawing.Size(121, 33);
             this.ComboBoxERP.TabIndex = 23;
             // 
             // ScrollBarERP
@@ -268,6 +268,14 @@ namespace Termin4CSharp.View
             this.loginTab.TabIndex = 0;
             this.loginTab.Text = "Logga in ";
             this.loginTab.UseVisualStyleBackColor = true;
+            // 
+            // responseLabelLoginTab
+            // 
+            this.responseLabelLoginTab.AutoSize = true;
+            this.responseLabelLoginTab.Location = new System.Drawing.Point(97, 499);
+            this.responseLabelLoginTab.Name = "responseLabelLoginTab";
+            this.responseLabelLoginTab.Size = new System.Drawing.Size(0, 25);
+            this.responseLabelLoginTab.TabIndex = 8;
             // 
             // mainLabelLoginTab
             // 
@@ -462,8 +470,6 @@ namespace Termin4CSharp.View
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
-            this.roomHolder.CellClick += RoomHolder_CellClick;
-            //////////////this.room Holder.Cell Click += RoomHol der_Ce llClick;
             // 
             // idColumn
             // 
@@ -927,6 +933,7 @@ namespace Termin4CSharp.View
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(541, 32);
             this.comboBox1.TabIndex = 28;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // listView2
             // 
@@ -956,14 +963,6 @@ namespace Termin4CSharp.View
             // 
             this.columnHeader4.Text = "Minst antal platser: ";
             this.columnHeader4.Width = 129;
-            // 
-            // responseLabelLoginTab
-            // 
-            this.responseLabelLoginTab.AutoSize = true;
-            this.responseLabelLoginTab.Location = new System.Drawing.Point(97, 499);
-            this.responseLabelLoginTab.Name = "responseLabelLoginTab";
-            this.responseLabelLoginTab.Size = new System.Drawing.Size(0, 25);
-            this.responseLabelLoginTab.TabIndex = 8;
             // 
             // GUIMain
             // 

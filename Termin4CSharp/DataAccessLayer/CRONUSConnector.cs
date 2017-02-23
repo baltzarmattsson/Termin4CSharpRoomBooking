@@ -17,15 +17,14 @@ namespace Termin4CSharp.DataAccessLayer
         //"Data Source=EBBA-DATOR;Initial Catalog=\"Demo Database NAV(5-0)\";User ID=a;Password=a"; 
 
         //private static string URL2 = "Data Source=EBBA-DATOR;Initial Catalog=\"Demo Database NAV(5-0)\";User ID=a;Password=a";
-        private static string URL2 = "Data Source=sql5024.smarterasp.net;Persist Security Info=True;User ID = DB_A15DA9_cranus_admin; Password=cranus123";
+        //private static string URL2 = "Data Source=sql5024.smarterasp.net;Persist Security Info=True;User ID = DB_A15DA9_cranus_admin; Password=cranus123";
+        private static string URLBaltzar = "Data Source=DESKTOP-STUECFJ;Initial Catalog=\"Demo Database NAV (5-0)\";Persist Security Info=True;User ID=admin;Password=admin";
         public static SqlConnection GetConnection()
         {
             try
             {
-                SqlConnection conn = new SqlConnection(URL2);
+                SqlConnection conn = new SqlConnection(URLBaltzar);
                 conn.Open();
-                Console.WriteLine("Connection open!");
-                //*conn.Close(); 
                 return conn;
 
             }
@@ -33,7 +32,6 @@ namespace Termin4CSharp.DataAccessLayer
             {
                 throw e;
             }
-            return null;
         }
     }
 }

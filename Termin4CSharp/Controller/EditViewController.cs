@@ -241,9 +241,7 @@ namespace Termin4CSharp.Controller
                     // Since they're connected in an associationtable
                     var whereParams = new Dictionary<string, object>();
                     whereParams["roomID"] = ((Room)target).Id;
-
-                    //var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>();
-                    //var allObjectsCasted = allObjects.Cast<Resource>().ToList();
+                    
                     var allObjectsCasted = allObjects.Cast<Resource>().ToDictionary(x => x.Id, x => x);
                     var objectsFromAssociationTable = dal.Get(new Room_Resource(), whereParams).Cast<Room_Resource>().ToDictionary(x => x.ResId, x => x);
 
@@ -256,6 +254,16 @@ namespace Termin4CSharp.Controller
             }
 
             return fetchedIModelsFromDatabase;
+        }
+
+        public List<Booking> GetBookingsForPerson(Person model)
+        {
+            DAL dal = new DAL(this);
+            var whereParams = new Dictionary<string, object>();
+            whereParams["personid"] = model.GetIdentifyingAttributes().First().Value;
+            List<Booking> results = dal.Get(new Booking(), whereParams).Cast<Booking>().ToList();
+
+            return results;
         }
 
         public void HandleListOfIModelsBoxCheck(object sender, EventArgs e)

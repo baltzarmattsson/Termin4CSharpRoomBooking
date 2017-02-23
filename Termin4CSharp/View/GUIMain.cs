@@ -119,7 +119,7 @@ namespace Termin4CSharp.View
                             break;
                         case RoomState.BOOKED:
                             text = "Bokad";
-                            backColor = Color.Orange;
+                            backColor = Color.IndianRed;
                             break;
                         case RoomState.BUILDING_CLOSED:
                             text = "Stängt";
@@ -223,18 +223,23 @@ namespace Termin4CSharp.View
             this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
 
         }
-        public void SetERPData(List<string> data)
+        public void SetERPData(Dictionary<int, string[]> data)
         {
-            ListViewItem item = null;
-            List<ListViewItem> items = new List<ListViewItem>();
-            foreach (string dataItem in data)
-            {
-                item = new ListViewItem(dataItem);
-                items.Add(item);
 
-            }
-            listView2.Items.AddRange(items.ToArray());
+            listView2.Columns.Clear();
+            listView2.View = System.Windows.Forms.View.Details;
+            
+            // Index 0 in data is column headers
+            foreach (string columnName in data[0])
+                listView2.Columns.Add(columnName, 80);
 
+            for (int i = 1; i < data.Count; i++)
+                listView2.Items.Add(new ListViewItem(data[i]));
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
         }
     }
 }

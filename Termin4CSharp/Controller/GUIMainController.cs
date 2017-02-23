@@ -188,12 +188,41 @@ namespace Termin4CSharp.Controller
         {
             string selectedItem = ((ComboBox)sender).SelectedItem as string;
             {
+                DALCronus dal = new DALCronus();
+                Dictionary<int, string[]> erpData = null;
 
-                if (selectedItem.Equals("Personalanhörig"))
+                switch (selectedItem)
                 {
-                    DALCronus dal = new DALCronus();
-                    this.GUIMain.SetERPData(dal.GetRelatives());
+                    case "Personalanhörig":
+                        erpData = dal.GetRelatives();
+                        break;
+                    case "Personal":
+                        erpData = dal.GetEmployees();
+                        break;
+                    case "Personalfrånvaro 2004":
+                        erpData = dal.GetEmployeeAbsence();
+                        break;
                 }
+                if (erpData != null)
+                    this.GUIMain.SetERPData(erpData);
+
+
+
+                /**
+                 *             "Personal",
+            "Personalanhörig",
+            "Personalfrånvaro 2004",
+            "Personal med flest antal sjukdagar",
+            "Avdelningsinformation",
+            "Personal med högst lön",
+            "METADATA - Nycklar",
+            "METADATA - Indexes",
+            "METADATA - Constraints ",
+            "METADATA - Tabeller",
+            "METADATA - Tabeller2",
+            "METADATA - Kolumner",
+            "METADATA - Kolumner2" 
+                         */
             }
         }
     }

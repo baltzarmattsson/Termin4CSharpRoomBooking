@@ -606,6 +606,9 @@ namespace Termin4CSharp
                     case "modeleqv":
                         retName = "En bokning";
                         break;
+                    case "timestamp":
+                        retName = "Skapad";
+                        break;
                     case "id":
                         retName = "ID";
                         break;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,17 +27,25 @@ namespace Termin4CSharp
             AdminTabController adminController = new AdminTabController(mainGui);
             Application.Run(mainGui);
 
+            //DALCronus dalc = new DALCronus();
+            //dalc.GetRelatives();
 
-            //DAL dal = new DAL(null);
-            //dal.GetRoomsAndOpeningHours();
+            //SqlConnection connection = new SqlConnection("Data Source=DESKTOP-STUECFJ;Initial Catalog=\"Demo Database NAV (5-0)\";Persist Security Info=True;User ID=admin;Password=admin");
+            //SqlCommand cmd = new SqlCommand("select * from Company", connection);
+            //cmd.Connection.Open();
+            //var dr = cmd.ExecuteReader();
+            //foreach (var FUCK in dr)
+            //    Console.WriteLine();
 
 
-            //var rooms = dal.Get(new Room(), selectAll: true).Cast<Room>().ToList();
-            //Utils.ConnectRoomsWithBookableTimes(rooms, DateTime.Now);
-            //Console.WriteLine();
-            //DALCronus dal = new DALCronus();
-            //var result = dal.GetEmployees();
-            //var result2 = dal.GetEmployeeAbscence();
+
+
+
+
+
+
+
+
         }
     }
 }

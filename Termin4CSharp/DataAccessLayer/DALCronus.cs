@@ -13,66 +13,66 @@ namespace Termin4CSharp.DataAccessLayer
         private SqlCommand cmd;
         private string sql;
 
-        public List<string> GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
+        public Dictionary<int, string[]> GetEmployees() //Innehållet och metadata i Employee (Personal) och relaterade tabeller: 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee]";
-            SqlCommand cmd = new SqlCommand(sql);
-            cmd.Connection = CRONUSConnector.GetConnection();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                Console.WriteLine(dr[0].ToString());
-            }
-            //EmployeeStatement = Connector.GetConnection();
-            return null;
+            return this.GetResultFromSQLString("SELECT * FROM [CRONUS Sverige AB$Employee]");
         }
 
-        public List<string> GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
+
+
+        public Dictionary<int, string[]> GetRelatives() //Information om Personal och deras släktingar (Personalanhörig): 
         {
-            String sql = "SELECT * FROM [CRONUS Sverige AB$Employee Relative]";
-            SqlCommand cmd = new SqlCommand(sql);
-            cmd.Connection = CRONUSConnector.GetConnection();
+            return this.GetResultFromSQLString("SELECT * FROM [CRONUS Sverige AB$Employee Relative]");
+        }
+
+        private Dictionary<int, string[]> GetResultFromSQLString(string sql)
+        {
+            SqlCommand cmd = new SqlCommand(sql, CRONUSConnector.GetConnection());
             SqlDataReader dr = cmd.ExecuteReader();
-            List<string> results = new List<string>();
+            return this.ParseDataReaderToColumnsAndValues(dr);
+        }
+        private Dictionary<int, string[]> ParseDataReaderToColumnsAndValues(SqlDataReader dr)
+        {
+            int rowIndexCounter = 1;
+            var results = new Dictionary<int, string[]>();
+            
+            bool columnsAdded = false;
             while (dr.Read())
             {
-                var cols = dr.GetSchemaTable().Columns;
-                foreach (var col in cols)
+                if (columnsAdded == false)
                 {
-                    for (int i = 0; i < 5; i++)
-                        Console.Write(dr.GetString(i).ToString());
+                    List<string> columns = Enumerable.Range(0, dr.FieldCount).Select(dr.GetName).ToList();
+                    results[0] = columns.ToArray();
+                    columnsAdded = true;
                 }
+                List<string> holder = new List<string>();
+                for (int i = 0; i < dr.FieldCount; i++)
+                {
+                    object o = dr.GetValue(i);
+                    if (o is byte[])
+                        holder.Add(string.Join("", ((byte[])o)));
+                    else
+                        holder.Add(o.ToString());
+                }
+                results[rowIndexCounter++] = holder.ToArray();
+                holder.Clear();
             }
-            //RekativesStatement = Connector.GetConnection();
-            return null;
+
+            return results;
         }
-        public List<string> GetEmployeeAbsence() //Information om anställda som har varit borta pga sjukdom år 2004 
+
+
+        public Dictionary<int, string[]> GetEmployeeAbsence() //Information om anställda som har varit borta pga sjukdom år 2004 
         {
-            String sql = "SELECT * FROM[CRONUS Sverige AB$Employee Absence] WHERE[From Date] between '2004-01-01' AND '2004-12-31' AND[Description] = 'Sjuk'";
-            SqlCommand cmd = new SqlCommand(sql);
-            cmd.Connection = CRONUSConnector.GetConnection();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                Console.WriteLine(dr[0]);
-            }
-            //EmployeeAbsenceStatement = Connector.GetConnection();
-            return null;
+            string sql = "SELECT* FROM[CRONUS Sverige AB$Employee Absence] WHERE[From Date] between '2004-01-01' AND '2004-12-31' AND[Description] = 'Sjuk'";
+            return this.GetResultFromSQLString(sql);
 
         }
-        public List<string> GetSickestEmployee()  //First name på anställda som har varit mest sjuka
+        public Dictionary<int, string[]> GetSickestEmployee()  //First name på anställda som har varit mest sjuka
         {
-            //String sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )" //osäker
-            String sql = "SELECT e.[First Name] FROM[CRONUS Sverige AB$Employee] e INNER JOIN [CRONUS Sverige AB$Employee Absence] a on e.No_ = a.[Employee No_] and a.[Cause of Absence Code] = 'SJUK' group by e.[First Name] order by count(*) desc";
-            SqlCommand cmd = new SqlCommand(sql);
-            cmd.Connection = CRONUSConnector.GetConnection();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                Console.WriteLine(dr[0]);
-            }
-            //SickestEmployeeStatement = Connector.GetConnection();
-            return null;
+            string sql = "SELECT [First Name] FROM [CRONUS Sverige AB$Employee] (SELECT MAX(Employee Absence) FROM [CRONUS Sverige AB$Employee] )";
+            return this.GetResultFromSQLString(sql);
+
         }
         public List<string> GetKeys() //Alla nycklar 
         {

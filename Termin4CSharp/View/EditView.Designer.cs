@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -37,25 +38,99 @@ namespace Termin4CSharp.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutControlHolder = new System.Windows.Forms.FlowLayoutPanel();
+            //this.objListView = new BrightIdeasSoftware.ObjectListView();
+            //this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.timestampColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.roomIdColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.purposeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.startTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.endTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.editButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            //this.deleteButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.flowLayoutControlHolder.SuspendLayout();
+            //((System.ComponentModel.ISupportInitialize)(this.objListView)).BeginInit();
             this.SuspendLayout();
             // 
-            // flowLayoutPanel1
+            // flowLayoutControlHolder
             // 
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1539, 797);
-            this.flowLayoutPanel1.TabIndex = 0;
+            //this.flowLayoutControlHolder.Controls.Add(this.objListView);
+            this.flowLayoutControlHolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutControlHolder.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutControlHolder.Name = "flowLayoutControlHolder";
+            this.flowLayoutControlHolder.Size = new System.Drawing.Size(1411, 765);
+            this.flowLayoutControlHolder.TabIndex = 0;
+            //// 
+            //// objListView
+            //// 
+            //this.objListView.AllColumns.Add(this.idColumn);
+            //this.objListView.AllColumns.Add(this.timestampColumn);
+            //this.objListView.AllColumns.Add(this.roomIdColumn);
+            //this.objListView.AllColumns.Add(this.purposeColumn);
+            //this.objListView.AllColumns.Add(this.startTimeColumn);
+            //this.objListView.AllColumns.Add(this.endTimeColumn);
+            //this.objListView.AllColumns.Add(this.editButtonColumn);
+            //this.objListView.AllColumns.Add(this.deleteButtonColumn);
+            //this.objListView.CellEditUseWholeCell = false;
+            //this.objListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            //this.idColumn,
+            //this.timestampColumn,
+            //this.roomIdColumn,
+            //this.purposeColumn,
+            //this.startTimeColumn,
+            //this.endTimeColumn,
+            //this.editButtonColumn,
+            //this.deleteButtonColumn});
+            //this.objListView.Location = new System.Drawing.Point(3, 3);
+            //this.objListView.Name = "objListView";
+            //this.objListView.Size = new System.Drawing.Size(500, 500);
+            //this.objListView.TabIndex = 0;
+            //this.objListView.UseCompatibleStateImageBehavior = false;
+            //this.objListView.View = System.Windows.Forms.View.Details;
+            //// 
+            //// idColumn
+            //// 
+            //this.idColumn.AspectName = "Id";
+            //// 
+            //// timestampColumn
+            //// 
+            //this.timestampColumn.AspectName = "Timestamp";
+            //// 
+            //// roomIdColumn
+            //// 
+            //this.roomIdColumn.AspectName = "RoomId";
+            //// 
+            //// purposeColumn
+            //// 
+            //this.purposeColumn.AspectName = "Purpose";
+            //// 
+            //// startTimeColumn
+            //// 
+            //this.startTimeColumn.AspectName = "Start_time";
+            //// 
+            //// endTimeColumn
+            //// 
+            //this.endTimeColumn.AspectName = "End_time";
+            //// 
+            //// editButtonColumn
+            //// 
+            //this.editButtonColumn.IsButton = true;
+            //this.editButtonColumn.Text = "Editera";
+            //// 
+            //// deleteButtonColumn
+            //// 
+            //this.deleteButtonColumn.Text = "Ta bort";
             // 
             // EditView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1539, 797);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.ClientSize = new System.Drawing.Size(1411, 765);
+            this.Controls.Add(this.flowLayoutControlHolder);
             this.Name = "EditView";
             this.Text = "EditView";
+            this.flowLayoutControlHolder.ResumeLayout(false);
+            //((System.ComponentModel.ISupportInitialize)(this.objListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -76,8 +151,8 @@ namespace Termin4CSharp.View
             // Sätt Redigering/uppdatering/skapa ny dynamiskt vvvv
             string createOrEditLabelText = IsExistingItemInDatabase ? "Editering av" : "Skapa ny";
             mainTitleLabel.Text = string.Format("{0} {1} ", createOrEditLabelText, Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name));
-            this.flowLayoutPanel1.Controls.Add(mainTitleLabel);
-            this.flowLayoutPanel1.SetFlowBreak(mainTitleLabel, true);
+            this.flowLayoutControlHolder.Controls.Add(mainTitleLabel);
+            this.flowLayoutControlHolder.SetFlowBreak(mainTitleLabel, true);
 
             var attributes = Utils.GetAttributeInfo(model, MembersOptimizedFor.EDITVIEW);
             Label attributeName = null;
@@ -95,7 +170,7 @@ namespace Termin4CSharp.View
                 {
                     attributeName = new Label();
                     attributeName.Text = Utils.ConvertAttributeNameToDisplayName(model, kv.Key);
-                    this.flowLayoutPanel1.Controls.Add(attributeName);
+                    this.flowLayoutControlHolder.Controls.Add(attributeName);
                 }
 
                 Control control = null;
@@ -104,7 +179,6 @@ namespace Termin4CSharp.View
                 // Then we find all foreign models if it's an existing object in database, or all models available (i.e. all from that table) for the control.
                 if (value is IModel || (value != null && value.GetType().IsGenericType))
                 {
-                    //List<IModel> imodels = Controller.GetReferenceAbleIModels(model, (IModel)value);
                     if (value is IModel)
                     {
                         Dictionary<IModel, bool> imodels = Controller.GetReferenceAbleIModels(model, ReferencedIModelType.SINGLE_IMODEL, value);
@@ -115,7 +189,7 @@ namespace Termin4CSharp.View
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
                         comboBox.Items.AddRange(imodels.Keys.ToArray());
-                        if (imodels.Count > 0)
+                        if (imodels.Any())
                         {
                             var filteredValues = imodels.Select(x => x).Where(x => x.Value);
                             object selectedValue = null;
@@ -155,7 +229,7 @@ namespace Termin4CSharp.View
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
                         if (model is Building || (model is Booking))
-                        {// && (kv.Key.Equals("End_time") || kv.Key.Equals("Start_time")))) {
+                        {
                             datePicker.Format = DateTimePickerFormat.Custom;
                             if (kv.Key.Equals("Timestamp"))
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:mm:ss";
@@ -166,7 +240,6 @@ namespace Termin4CSharp.View
                         control = datePicker;
                         if (model is Booking && kv.Key.Equals("Timestamp"))
                             control.Enabled = false;
-                        // Numbers
                     }
                     else if (value is Int16 || value is Int32 || value is Int64 || value is double)
                     {
@@ -178,7 +251,6 @@ namespace Termin4CSharp.View
                         numTextBox.Text = "dummyval";
                         numTextBox.Text = value == null ? "0" : value.ToString();
                         control = numTextBox;
-                        // Else
                     }
                     else
                     {
@@ -197,8 +269,105 @@ namespace Termin4CSharp.View
                     if (!(control is ComboBox || control is CheckedListBox))
                         this.oldIdentifyingAttribute[control.Name] = control.Text;
                 control.Visible = controlIsVisible;
-                this.flowLayoutPanel1.Controls.Add(control);
-                flowLayoutPanel1.SetFlowBreak(control, controlIsVisible);
+                this.flowLayoutControlHolder.Controls.Add(control);
+                flowLayoutControlHolder.SetFlowBreak(control, controlIsVisible);
+            }
+
+            // If it's a person, load all the bookings for that person from the current date and forward
+            // and put them in a ObjectListView with a button to edit and a button to delete the booking
+            if (model is Person && IsExistingItemInDatabase)
+            {
+                this.bookingListView = new BrightIdeasSoftware.ObjectListView();
+                this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.timestampColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.roomIdColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.purposeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.startTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.endTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.editButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                this.deleteButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+
+                ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).BeginInit();
+                this.flowLayoutControlHolder.Controls.Add(this.bookingListView);
+                // 
+                // objListView
+                // 
+                this.bookingListView.AllColumns.Add(this.idColumn);
+                this.bookingListView.AllColumns.Add(this.timestampColumn);
+                this.bookingListView.AllColumns.Add(this.roomIdColumn);
+                this.bookingListView.AllColumns.Add(this.purposeColumn);
+                this.bookingListView.AllColumns.Add(this.startTimeColumn);
+                this.bookingListView.AllColumns.Add(this.endTimeColumn);
+                this.bookingListView.AllColumns.Add(this.editButtonColumn);
+                this.bookingListView.AllColumns.Add(this.deleteButtonColumn);
+                this.bookingListView.CellEditUseWholeCell = false;
+                this.bookingListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+                    this.idColumn,
+                    this.timestampColumn,
+                    this.roomIdColumn,
+                    this.purposeColumn,
+                    this.startTimeColumn,
+                    this.endTimeColumn,
+                    this.editButtonColumn,
+                    this.deleteButtonColumn});
+                this.bookingListView.Location = new System.Drawing.Point(3, 3);
+                this.bookingListView.Name = "objListView";
+                this.bookingListView.Size = new System.Drawing.Size(500, 500);
+                this.bookingListView.TabIndex = 0;
+                this.bookingListView.UseCompatibleStateImageBehavior = false;
+                this.bookingListView.View = System.Windows.Forms.View.Details;
+                // 
+                // idColumn
+                // 
+                this.idColumn.AspectName = "Id";
+                // 
+                // timestampColumn
+                // 
+                this.timestampColumn.AspectName = "Timestamp";
+                // 
+                // roomIdColumn
+                // 
+                this.roomIdColumn.AspectName = "RoomId";
+                // 
+                // purposeColumn
+                // 
+                this.purposeColumn.AspectName = "Purpose";
+                // 
+                // startTimeColumn
+                // 
+                this.startTimeColumn.AspectName = "Start_time";
+                // 
+                // endTimeColumn
+                // 
+                this.endTimeColumn.AspectName = "End_time";
+                // 
+                // editButtonColumn
+                // 
+                this.editButtonColumn.IsButton = true;
+                this.editButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
+                this.editButtonColumn.Text = "Editera";
+                // 
+                // deleteButtonColumn
+                // 
+                this.deleteButtonColumn.IsButton = true;
+                this.deleteButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
+                this.deleteButtonColumn.Text = "Ta bort";
+
+                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
+                foreach (OLVColumn col in this.bookingListView.Columns)
+                    if (col != editButtonColumn && col != deleteButtonColumn)
+                        col.Text = Utils.ConvertAttributeNameToDisplayName(new Booking(), col.AspectName);
+                this.bookingListView.UseCellFormatEvents = true;
+                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
+                this.bookingListView.FormatCell += BookingListView_FormatCell;
+                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
+                this.bookingListView.SetObjects(this.Controller.GetBookingsForPerson((Person)model));
+                
+                ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).EndInit();
+
+                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
+                this.bookingListView.CellClick += BookingListView_CellClick;
+                bookingListView.ShowGroups = false;
             }
 
             // Adding responselabel
@@ -206,35 +375,66 @@ namespace Termin4CSharp.View
             this.responseLabel.Text = "";
             this.responseLabel.Size = new System.Drawing.Size(1000, 50);
             this.responseLabel.Font = new System.Drawing.Font("Helvetica", 12);
-            flowLayoutPanel1.Controls.Add(this.responseLabel);
-            flowLayoutPanel1.SetFlowBreak(this.responseLabel, true);
+            flowLayoutControlHolder.Controls.Add(this.responseLabel);
+            flowLayoutControlHolder.SetFlowBreak(this.responseLabel, true);
 
             // Adding savebutton
             this.saveButton = new Button();
             this.saveButton.Text = "Spara";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            flowLayoutPanel1.Controls.Add(this.saveButton);
+            flowLayoutControlHolder.Controls.Add(this.saveButton);
 
             // Adding deletebutton
             this.deleteButton = new Button();
             this.deleteButton.Text = "Ta bort";
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
-            flowLayoutPanel1.Controls.Add(this.deleteButton);
+            flowLayoutControlHolder.Controls.Add(this.deleteButton);
 
             // Adding closebutton
             this.closeButton = new Button();
             this.closeButton.Text = "Stäng";
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
-            flowLayoutPanel1.Controls.Add(this.closeButton);
+            flowLayoutControlHolder.Controls.Add(this.closeButton);
 
+        }
+
+        private void BookingListView_CellClick(object sender, CellClickEventArgs e)
+        {
+            Console.WriteLine();
+        }
+
+        private void BookingListView_ButtonClick(object sender, CellClickEventArgs e)
+        {
+            Console.WriteLine();
+        }
+
+        private void BookingListView_FormatCell(object sender, FormatCellEventArgs e)
+        {
+            if (e.Column.Text.Equals("Editera"))
+            {
+                e.SubItem.Text = "Editera";
+            }
+            else if (e.Column.Text.Equals("Ta bort"))
+            {
+                e.SubItem.Text = "Ta bort";
+            }
         }
 
         #endregion
 
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutControlHolder;
         private Label responseLabel;
         private Button saveButton;
         private Button deleteButton;
         private Button closeButton;
+        private ObjectListView bookingListView;
+        private OLVColumn idColumn;
+        private OLVColumn timestampColumn;
+        private OLVColumn roomIdColumn;
+        private OLVColumn purposeColumn;
+        private OLVColumn startTimeColumn;
+        private OLVColumn endTimeColumn;
+        private OLVColumn editButtonColumn;
+        private OLVColumn deleteButtonColumn;
     }
 }

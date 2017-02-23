@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model
 {
-    class Booking : IModel
+    public class Booking : IModel
     {
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }
@@ -46,9 +46,9 @@ namespace Termin4CSharp.Model
             var other = obj as Booking;
             if (other == null)
                 return false;
-            return this.Id == other.Id && this.Timestamp.Equals(other.Timestamp) && this.RoomId.Equals(other.RoomId) &&
+            return this.Id == other.Id; /*&& this.Timestamp.Equals(other.Timestamp) && this.RoomId.Equals(other.RoomId) &&
                 this.PersonId.Equals(other.PersonId) && this.Purpose.Equals(other.Purpose) && Utils.DateCompare(this.Start_time, other.Start_time) && Utils.DateCompare(this.End_time, other.End_time);
-        }
+       */ }
 
         public Dictionary<string, object> GetReferencedModels()
         {

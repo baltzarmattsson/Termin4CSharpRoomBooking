@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Termin4CSharp.Controller
 
         public EditView EditView { get; set; }
         public AdminTabController AdminController { get; set; }
+        public EditViewController OuterEditViewController { get; set; }
         private bool isExistingObjectInDatabase = false;
         private Dictionary<string, object> identifyingAttributesValues;
 
@@ -25,12 +27,13 @@ namespace Termin4CSharp.Controller
         public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
         private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
 
-        public EditViewController(EditView editView, AdminTabController adminController = null)
+        public EditViewController(EditView editView, AdminTabController adminController = null, EditViewController outerEditViewController = null)
         {
             this.EditView = editView;
             this.EditView.Controller = this;
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
+            this.OuterEditViewController = outerEditViewController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
 
             this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
@@ -73,6 +76,8 @@ namespace Termin4CSharp.Controller
             EditView.Close();
             if (this.AdminController != null)
                 this.AdminController.HandleEditViewClosed();
+            if (this.OuterEditViewController != null)
+                this.UpdateBookingListInPersonEditingView();
 
         }
         public int Delete(IModel model)
@@ -335,6 +340,29 @@ namespace Termin4CSharp.Controller
             return controlValues;
         }
 
+        public void HandleRightDeleteContextMenu(Booking selectedBookingInRightClickMenu)
+        {
+            DAL dal = new DAL(this);
+            int affectedRows = dal.Remove(selectedBookingInRightClickMenu);
+            if (affectedRows > 0)
+            {
+                this.UpdateResponseLabel("Bokning borttagen");
+                ObjectListView bookingView = this.EditView.GetBookingObjectListView();
+                bookingView.SetObjects(this.GetBookingsForPerson((Person)this.EditView.Model));
+            }
+            else if (affectedRows != -1)
+            {
+                this.UpdateResponseLabel("Ingen bokning borttagen");
+            }
+        }
+
+        public void ShowNewEditView(Booking selectedBookingInRightClickMenu)
+        {
+            EditView innerEditView = new EditView(selectedBookingInRightClickMenu, true);
+            EditViewController innerController = new EditViewController(innerEditView, outerEditViewController: this);
+            innerEditView.Show();
+        }
+
         // TODO ta bort denna och bara stäng fönstret istället
         private void ClearFields(Control.ControlCollection controls)
         {
@@ -383,6 +411,14 @@ namespace Termin4CSharp.Controller
                 if (string.IsNullOrEmpty(idValue.Value.ToString()))
                     return false;
             return true;
+        }
+
+        public void UpdateBookingListInPersonEditingView()
+        {
+            ObjectListView bookingView = this.OuterEditViewController.EditView.GetBookingObjectListView();
+            if (bookingView != null)
+                if (this.OuterEditViewController != null)
+                    bookingView.SetObjects(this.OuterEditViewController.GetBookingsForPerson((Person)this.OuterEditViewController.EditView.Model));
         }
 
         public void NotifyExceptionToView(string s)

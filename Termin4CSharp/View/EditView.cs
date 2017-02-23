@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
 using Termin4CSharp.Controller;
 using Termin4CSharp.Model;
 
@@ -56,5 +57,12 @@ namespace Termin4CSharp.View
             return this.flowLayoutControlHolder.Controls;
         }
 
+        public ObjectListView GetBookingObjectListView()
+        {
+            foreach (var control in this.GetControls())
+                if (control is ObjectListView)
+                    return (ObjectListView)control;
+            return null;
+        }
     }
 }

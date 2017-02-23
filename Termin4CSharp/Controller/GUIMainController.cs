@@ -205,24 +205,6 @@ namespace Termin4CSharp.Controller
                 }
                 if (erpData != null)
                     this.GUIMain.SetERPData(erpData);
-
-
-
-                /**
-                 *             "Personal",
-            "Personalanhörig",
-            "Personalfrånvaro 2004",
-            "Personal med flest antal sjukdagar",
-            "Avdelningsinformation",
-            "Personal med högst lön",
-            "METADATA - Nycklar",
-            "METADATA - Indexes",
-            "METADATA - Constraints ",
-            "METADATA - Tabeller",
-            "METADATA - Tabeller2",
-            "METADATA - Kolumner",
-            "METADATA - Kolumner2" 
-                         */
             }
         }
     }

@@ -470,10 +470,12 @@ namespace Termin4CSharp.View
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
+            this.roomHolder.CellClick += RoomHolder_CellClick;
+            //////////////this.room Holder.Cell Click += RoomHol der_Ce llClick;
             // 
             // idColumn
             // 
-            this.idColumn.AspectName = "Id";
+                        this.idColumn.AspectName = "Id";
             // 
             // bnameColumn
             // 

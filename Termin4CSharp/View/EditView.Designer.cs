@@ -284,8 +284,8 @@ namespace Termin4CSharp.View
                 this.purposeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
                 this.startTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
                 this.endTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-                this.editButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-                this.deleteButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                //this.editButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+                //this.deleteButtonColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
 
                 ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).BeginInit();
                 this.flowLayoutControlHolder.Controls.Add(this.bookingListView);
@@ -298,8 +298,8 @@ namespace Termin4CSharp.View
                 this.bookingListView.AllColumns.Add(this.purposeColumn);
                 this.bookingListView.AllColumns.Add(this.startTimeColumn);
                 this.bookingListView.AllColumns.Add(this.endTimeColumn);
-                this.bookingListView.AllColumns.Add(this.editButtonColumn);
-                this.bookingListView.AllColumns.Add(this.deleteButtonColumn);
+                //this.bookingListView.AllColumns.Add(this.editButtonColumn);
+                //this.bookingListView.AllColumns.Add(this.deleteButtonColumn);
                 this.bookingListView.CellEditUseWholeCell = false;
                 this.bookingListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
                     this.idColumn,
@@ -307,9 +307,9 @@ namespace Termin4CSharp.View
                     this.roomIdColumn,
                     this.purposeColumn,
                     this.startTimeColumn,
-                    this.endTimeColumn,
-                    this.editButtonColumn,
-                    this.deleteButtonColumn});
+                    this.endTimeColumn });
+                    /*this.editButtonColumn,
+                    this.deleteButtonColumn});*/
                 this.bookingListView.Location = new System.Drawing.Point(3, 3);
                 this.bookingListView.Name = "objListView";
                 this.bookingListView.Size = new System.Drawing.Size(500, 500);
@@ -342,31 +342,29 @@ namespace Termin4CSharp.View
                 this.endTimeColumn.AspectName = "End_time";
                 // 
                 // editButtonColumn
-                // 
-                this.editButtonColumn.IsButton = true;
-                this.editButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
-                this.editButtonColumn.Text = "Editera";
-                // 
-                // deleteButtonColumn
-                // 
-                this.deleteButtonColumn.IsButton = true;
-                this.deleteButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
-                this.deleteButtonColumn.Text = "Ta bort";
-
-                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
+                //// 
+                //this.editButtonColumn.IsButton = true;
+                //this.editButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
+                //this.editButtonColumn.Text = "Editera";
+                //// 
+                //// deleteButtonColumn
+                //// 
+                //this.deleteButtonColumn.IsButton = true;
+                //this.deleteButtonColumn.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
+                //this.deleteButtonColumn.Text = "Ta bort";
+                
                 foreach (OLVColumn col in this.bookingListView.Columns)
                     if (col != editButtonColumn && col != deleteButtonColumn)
                         col.Text = Utils.ConvertAttributeNameToDisplayName(new Booking(), col.AspectName);
-                this.bookingListView.UseCellFormatEvents = true;
-                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
-                this.bookingListView.FormatCell += BookingListView_FormatCell;
-                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
-                this.bookingListView.SetObjects(this.Controller.GetBookingsForPerson((Person)model));
-                
-                ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).EndInit();
+                //this.bookingListView.UseCellFormatEvents = true;
+                //this.bookingListView.FormatCell += BookingListView_FormatCell;
 
-                this.bookingListView.ButtonClick += BookingListView_ButtonClick;
-                this.bookingListView.CellClick += BookingListView_CellClick;
+                this.bookingListView.CellRightClick += BookingListView_CellRightClick;
+
+                this.bookingListView.SetObjects(this.Controller.GetBookingsForPerson((Person)model));
+
+                ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).EndInit();
+                
                 bookingListView.ShowGroups = false;
             }
 
@@ -398,14 +396,9 @@ namespace Termin4CSharp.View
 
         }
 
-        private void BookingListView_CellClick(object sender, CellClickEventArgs e)
+        private void BookingListView_CellRightClick(object sender, CellRightClickEventArgs e)
         {
-            Console.WriteLine();
-        }
-
-        private void BookingListView_ButtonClick(object sender, CellClickEventArgs e)
-        {
-            Console.WriteLine();
+            //e.MenuStrip.Show(new Control("asd"), e.HitTest.)
         }
 
         private void BookingListView_FormatCell(object sender, FormatCellEventArgs e)
@@ -419,6 +412,7 @@ namespace Termin4CSharp.View
                 e.SubItem.Text = "Ta bort";
             }
         }
+
 
         #endregion
 

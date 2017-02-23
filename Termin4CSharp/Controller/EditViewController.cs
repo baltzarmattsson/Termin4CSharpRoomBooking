@@ -117,6 +117,21 @@ namespace Termin4CSharp.Controller
                 model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.ADD);
                 if (model != null && model.GetIdentifyingAttributes().First().Value != null)
                 {
+
+                    //Special case for booking, since it cannot overlap another booking
+                    if (model is Booking)
+                    {
+                        DAL dal = new DAL(this);
+                        Booking parsedBooking = (Booking)model;
+                        bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
+                        if (isBookable == false)
+                        {
+                            this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
+                            return;
+                        }
+                    }
+
+
                     this.Save(model, oldIdentifyingAttributes);
                     if (this.ViewHasListOfIModels)
                     {
@@ -436,6 +451,7 @@ namespace Termin4CSharp.Controller
         public void HandleBookingDateTimePickerValueChanged(object sender, EventArgs e)
         {
             DateTimePicker datePicker = (DateTimePicker)sender;
+
             // If it's the start hour datepicker
             if (datePicker.Name.Equals(this.BookingStartDatePicker.Name))
             {

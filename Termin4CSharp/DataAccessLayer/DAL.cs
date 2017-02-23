@@ -104,6 +104,50 @@ namespace Termin4CSharp.DataAccessLayer
             return roomBookings;
         }
 
+        public bool IsRoomBookableOnDate(string roomId, DateTime onDate, DateTime toDate)
+        {
+            string sql = @"select 
+                                 isnull(
+                                    (select
+                                        case
+                                            when start_time >= @startTimeWhen and end_time <= @endTimeWhen then 0
+		                                    else 1
+                                        end
+                                    from Booking
+                                    where roomID = @roomid
+                                    and start_time >= @startTimeWhere and end_time <= @endTimeWhere)
+                                  , 1)";
+            SqlCommand cmd = new SqlCommand(sql, Connector.GetConnection());
+            cmd.Parameters.Add("@startTimeWhen", SqlDbType.DateTime).Value = onDate;
+            cmd.Parameters.Add("@endTimeWhen", SqlDbType.DateTime).Value = toDate;
+            cmd.Parameters.Add("@startTimeWhere", SqlDbType.DateTime).Value = onDate;
+            cmd.Parameters.Add("@endTimeWhere", SqlDbType.DateTime).Value = toDate;
+            cmd.Parameters.Add("@roomid", SqlDbType.VarChar).Value = roomId;
+
+            bool isBookable = default(bool);
+            SqlDataReader dr = null;
+            try
+            {
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    isBookable = dr.GetInt32(0) == 1;
+                    //isBookable = dr.GetBoolean(0);
+                    var a = dr[0];
+                    Console.WriteLine();
+                }
+                    
+            } catch (SqlException sqle)
+            {
+                this.HandleSqlException(new Booking(), sqle);
+            } finally
+            {
+                try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
+            }
+
+            return isBookable;
+        }
+
         public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate)
         {
             DAL dal = new DAL(null);

@@ -19,7 +19,7 @@ namespace Termin4CSharp.Controller
 
         public GUIMain GUIMain { get; set; }
         private List<string> buildingFilters, roomFilters, resourceFilters;
-        private object listView2;
+        public DateTime OnDateFilter { get; private set; }
 
         public Person LoggedInUser { get; private set; }
 
@@ -34,6 +34,7 @@ namespace Termin4CSharp.Controller
             buildingFilters = new List<string>();
             roomFilters = new List<string>();
             resourceFilters = new List<string>();
+            OnDateFilter = DateTime.Now;
 
             this.LoginUser("1", "1");
         }
@@ -52,13 +53,23 @@ namespace Termin4CSharp.Controller
                 tempHolder.Id = username;
                 this.LoggedInUser = dal.Get(tempHolder).First() as Person;
 
-                this.GUIMain.SetLoginResponseLabelText("Logged in as " + this.LoggedInUser.Name + " " + this.LoggedInUser.Id);
+                this.GUIMain.SetLoginResponseLabelText("Inloggad som " + this.LoggedInUser.Name + " " + this.LoggedInUser.Id);
+                this.GUIMain.UpdateRoomBookingLabel("Inloggad som " + this.LoggedInUser.Name + " " + this.LoggedInUser.Id);
+                this.GUIMain.SetAdminTabEnabled(true);
                 if (String.IsNullOrEmpty(LoggedInUser.RoleName) == false)
                 {
                     // Getting the role of the user
                     Role tempRoleObject = new Role(LoggedInUser.RoleName);
                     this.LoggedInUser.Role = dal.Get(tempRoleObject).First() as Role;
                 }
+            } else
+            {
+                Person p = new Person();
+                p.Id = "1";
+                dal.Add(p);
+                login = new Login("1", "1");
+                dal.Add(login);
+                this.LoginUser("1", "1");
             }
         }
         public void LoadRooms(DateTime onDate)
@@ -85,40 +96,39 @@ namespace Termin4CSharp.Controller
 
         }
 
-        public void NotifyExceptionToView()
+        public enum FilterControl
         {
-            throw new NotImplementedException();
+            BUILDING_BOX, ROOM_BOX, RESOURCE_BOX, MIN_CAPACITY_TRACKBAR, ON_DATE_DATE_PICKER
         }
-        public enum FilterBox
-        {
-            BUILDING, ROOM, RESOURCE, TRACKBAR
-        }
-        public void HandleFilterChange(FilterBox filterBox, CheckedListBox sender, ItemCheckEventArgs e)
+        public void HandleFilterChange(FilterControl filterControl, object sender, EventArgs e)
         {
 
             List<string> selectedList = null;
-            switch (filterBox)
+            switch (filterControl)
             {
-                case FilterBox.BUILDING:
+                case FilterControl.BUILDING_BOX:
                     selectedList = this.buildingFilters;
                     break;
-                case FilterBox.ROOM:
+                case FilterControl.ROOM_BOX:
                     selectedList = this.roomFilters;
                     break;
-                case FilterBox.RESOURCE:
+                case FilterControl.RESOURCE_BOX:
                     selectedList = this.resourceFilters;
                     break;
-                case FilterBox.TRACKBAR:
-                    this.MinCapacity = this.GUIMain.GetMinCapacityFilterValue();
+                case FilterControl.MIN_CAPACITY_TRACKBAR:
+                    this.MinCapacity = ((TrackBar)sender).Value;
+                    break;
+                case FilterControl.ON_DATE_DATE_PICKER:
+                    this.OnDateFilter = ((DateTimePicker)sender).Value;
                     break;
 
             }
-            if (filterBox != FilterBox.TRACKBAR)
+            if (filterControl != FilterControl.ON_DATE_DATE_PICKER && filterControl != FilterControl.MIN_CAPACITY_TRACKBAR)
             {
-                string selval = (string)sender.SelectedItem;
-                if (e.NewValue == CheckState.Checked)
+                string selval = (string)((CheckedListBox)sender).SelectedItem;
+                if (((ItemCheckEventArgs)e).NewValue == CheckState.Checked)
                     selectedList.Add(selval);
-                else if (e.NewValue == CheckState.Unchecked)
+                else if (((ItemCheckEventArgs)e).NewValue == CheckState.Unchecked)
                     selectedList.Remove(selval);
             }
 
@@ -127,11 +137,11 @@ namespace Termin4CSharp.Controller
             DateTime tempDate = DateTime.Now;
 
             DAL dal = new DAL(this);
-            List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(tempDate, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
+            List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(OnDateFilter, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
         }
 
-        private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
+        //private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
 
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e)
         {
@@ -154,7 +164,6 @@ namespace Termin4CSharp.Controller
 
         public void NotifyExceptionToView(string s)
         {
-            throw new NotImplementedException();
         }
 
         public void HandleCellDoubleClick(object sender, CellClickEventArgs e)
@@ -162,7 +171,7 @@ namespace Termin4CSharp.Controller
             if (e.ColumnIndex > 4)
             {
                 e.SubItem.BackColor = System.Drawing.Color.Yellow;
-                if (e.ClickCount == 2)
+                if (e.ClickCount == 2 && this.LoggedInUser != null)
                 {
                     string itemText = e.SubItem.Text;
                     if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}"))
@@ -171,17 +180,27 @@ namespace Termin4CSharp.Controller
                         Booking b = new Booking();
                         b.RoomId = targetRoom.Id;
                         b.PersonId = this.LoggedInUser.Id;
-                        b.Start_time = DateTime.Parse(e.SubItem.Text);
+                        DateTime parsedDate = DateTime.Parse(e.SubItem.Text);
+                        DateTime startDate = new DateTime(OnDateFilter.Year, OnDateFilter.Month, OnDateFilter.Day, parsedDate.Hour, parsedDate.Minute, 0);
+                        b.Start_time = startDate;
                         b.End_time = b.Start_time.AddHours(1);
                         EditView ev = new EditView(b, false);
-                        EditViewController editController = null;
-                        editController = new EditViewController(ev, null);
+                        EditViewController editController = new EditViewController(ev, guiMainController: this);
                         ev.Show();
                     }
+                }
+                else if (this.LoggedInUser == null)
+                {
+                    this.UpdateRoomBookingLabel("Vänligen logga in för att boka rum");
                 }
 
             }
 
+        }
+
+        private void UpdateRoomBookingLabel(string text)
+        {
+            this.GUIMain.UpdateRoomBookingLabel(text);
         }
 
         public void HandleERPComboBoxSelectedIndexChanged(object sender, EventArgs e)
@@ -206,6 +225,20 @@ namespace Termin4CSharp.Controller
                 if (erpData != null)
                     this.GUIMain.SetERPData(erpData);
             }
+        }
+
+        public void HandleLogOUtMenuStripClick()
+        {
+            this.LoggedInUser = null;
+            this.GUIMain.SetFocusOnFirstTab();
+            this.GUIMain.SetLoginResponseLabelText("Utloggad");
+            this.GUIMain.UpdateRoomBookingLabel("");
+            this.GUIMain.SetAdminTabEnabled(false);
+        }
+
+        public void HandleMyProfileMenuStripClick()
+        {
+            
         }
     }
 }

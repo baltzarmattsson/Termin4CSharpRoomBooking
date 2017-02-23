@@ -36,19 +36,16 @@ namespace Termin4CSharp.View
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("save button?");
             this.Controller.HandleSaveButtonClick(this.oldIdentifyingAttribute);
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("delete button");
             this.Controller.HandleDeleteButtonClick();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("closebutton");
             this.Controller.HandleCloseButtonClick();
         }
 

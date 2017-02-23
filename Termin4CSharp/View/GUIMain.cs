@@ -77,15 +77,15 @@ namespace Termin4CSharp.View
 
         private void buildingFilterBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Controller.HandleFilterChange(FilterBox.BUILDING, sender as CheckedListBox, e);
+            Controller.HandleFilterChange(FilterControl.BUILDING_BOX, sender as CheckedListBox, e);
         }
         private void roomFilterBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Controller.HandleFilterChange(FilterBox.ROOM, sender as CheckedListBox, e);
+            Controller.HandleFilterChange(FilterControl.ROOM_BOX, sender as CheckedListBox, e);
         }
         private void resourceFilterBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Controller.HandleFilterChange(FilterBox.RESOURCE, sender as CheckedListBox, e);
+            Controller.HandleFilterChange(FilterControl.RESOURCE_BOX, sender as CheckedListBox, e);
         }
 
         public ObjectListView GetRoomHolder()
@@ -203,7 +203,7 @@ namespace Termin4CSharp.View
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             this.label11.Text = "Minst antal platser: (" + capacityTrackbarRoomBookingTab.Value + ")";
-            this.Controller.HandleFilterChange(FilterBox.TRACKBAR, null, null);
+            this.Controller.HandleFilterChange(FilterControl.MIN_CAPACITY_TRACKBAR, sender, e);
         }
         public int GetMinCapacityFilterValue()
         {
@@ -215,6 +215,10 @@ namespace Termin4CSharp.View
             this.Controller.LoginUser(this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
         }
 
+        public void UpdateRoomBookingLabel(string text)
+        {
+            this.roomBookingResponseLabel.Text = text;
+        }
 
         private void ERPcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -237,11 +241,35 @@ namespace Termin4CSharp.View
                 listView2.Items.Add(new ListViewItem(data[i]));
         }
 
+        public void SetFocusOnFirstTab()
+        {
+            this.loginTab.Focus();
+            this.tabPK.SelectedTab = this.loginTab;
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
         }
 
-        
+        private void myProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Controller.HandleMyProfileMenuStripClick();
+        }
+
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Controller.HandleLogOUtMenuStripClick();
+        }
+
+        public void SetAdminTabEnabled(bool isEnabled)
+        {
+            this.adminTab.Enabled = isEnabled;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            this.Controller.HandleFilterChange(FilterControl.ON_DATE_DATE_PICKER, sender, e);
+        }
     }
 }

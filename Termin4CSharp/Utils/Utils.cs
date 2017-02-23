@@ -34,14 +34,13 @@ namespace Termin4CSharp
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
                 excludePattern += "|\\bBName\\b|\\bRType\\b|\\bRoleName\\b|\\bPersonId\\b|\\bRoomId\\b|\\bPersonId\\b";
             excludePattern += ")";
-            //var names = t.GetMembers()
-            //            .Select(x => x.Name)
-            //            .Where(x => !Regex.IsMatch(x, excludePattern));
-            var names = t.GetProperties()
+            var names = t.GetMembers()
                         .Select(x => x.Name)
                         .Where(x => !Regex.IsMatch(x, excludePattern));
+            //var names = t.GetProperties()
+            //            .Select(x => x.Name)
+            //            .Where(x => !Regex.IsMatch(x, excludePattern));
             var properties = t.GetProperties();
-            Console.Write("");
             foreach (string attName in names)
             {
 

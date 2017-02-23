@@ -40,9 +40,9 @@ namespace Termin4CSharp.View
             this.ScrollBarERP = new System.Windows.Forms.VScrollBar();
             this.ListViewERP = new System.Windows.Forms.ListView();
             this.label13 = new System.Windows.Forms.Label();
-            this.OK = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.mainLabel1PK = new System.Windows.Forms.TabControl();
+            this.rootContainer = new System.Windows.Forms.TabControl();
+            this.tabPKTrue = new System.Windows.Forms.TabPage();
+            this.tabPK = new System.Windows.Forms.TabControl();
             this.loginTab = new System.Windows.Forms.TabPage();
             this.responseLabelLoginTab = new System.Windows.Forms.Label();
             this.mainLabelLoginTab = new System.Windows.Forms.Label();
@@ -54,6 +54,7 @@ namespace Termin4CSharp.View
             this.passwordLabelLoginTab = new System.Windows.Forms.Label();
             this.usernameLabelLoginTab = new System.Windows.Forms.Label();
             this.roomBookTab = new System.Windows.Forms.TabPage();
+            this.roomBookingResponseLabel = new System.Windows.Forms.Label();
             this.clearFiltersButtonRoomBookingTab = new System.Windows.Forms.Button();
             this.roomHolder = new BrightIdeasSoftware.ObjectListView();
             this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -95,10 +96,6 @@ namespace Termin4CSharp.View
             this.buildingLabelRoomBookingTab = new System.Windows.Forms.Label();
             this.buildingFilterBox = new System.Windows.Forms.CheckedListBox();
             this.toDateLabelRoomBookingTab = new System.Windows.Forms.Label();
-            this.fromDateLabelRoomBookingTab = new System.Windows.Forms.Label();
-            this.toDatePickerRoomBookingTab = new System.Windows.Forms.DateTimePicker();
-            this.fromDatePickerRoomBookingTab = new System.Windows.Forms.DateTimePicker();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.adminTab = new System.Windows.Forms.TabPage();
             this.createLabelAdminTab = new System.Windows.Forms.Label();
             this.editLabelAdminTab = new System.Windows.Forms.Label();
@@ -107,8 +104,12 @@ namespace Termin4CSharp.View
             this.createTypeBox = new System.Windows.Forms.ComboBox();
             this.editArticleBox = new System.Windows.Forms.ComboBox();
             this.editTypeBox = new System.Windows.Forms.ComboBox();
-            this.mainLabel2WS = new System.Windows.Forms.TabPage();
-            this.mainLabel3ERP = new System.Windows.Forms.TabPage();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.arkivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.myProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabWS = new System.Windows.Forms.TabPage();
+            this.tabERP = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             this.searchERPButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -118,20 +119,18 @@ namespace Termin4CSharp.View
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.asadssadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minProfilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loggaUtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onDateRoomBookingDatePicker = new System.Windows.Forms.DateTimePicker();
             this.tabPage3.SuspendLayout();
-            this.OK.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.mainLabel1PK.SuspendLayout();
+            this.rootContainer.SuspendLayout();
+            this.tabPKTrue.SuspendLayout();
+            this.tabPK.SuspendLayout();
             this.loginTab.SuspendLayout();
             this.roomBookTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomHolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.capacityTrackbarRoomBookingTab)).BeginInit();
             this.adminTab.SuspendLayout();
-            this.mainLabel3ERP.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip2.SuspendLayout();
+            this.tabERP.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage3
@@ -216,39 +215,40 @@ namespace Termin4CSharp.View
             this.label13.TabIndex = 26;
             this.label13.Text = "CRONUS\r\n";
             // 
-            // OK
+            // rootContainer
             // 
-            this.OK.AccessibleName = "";
-            this.OK.Controls.Add(this.tabPage1);
-            this.OK.Controls.Add(this.mainLabel2WS);
-            this.OK.Controls.Add(this.mainLabel3ERP);
-            this.OK.Location = new System.Drawing.Point(-6, 23);
-            this.OK.Name = "OK";
-            this.OK.SelectedIndex = 0;
-            this.OK.Size = new System.Drawing.Size(1329, 713);
-            this.OK.TabIndex = 0;
+            this.rootContainer.AccessibleName = "";
+            this.rootContainer.Controls.Add(this.tabPKTrue);
+            this.rootContainer.Controls.Add(this.tabWS);
+            this.rootContainer.Controls.Add(this.tabERP);
+            this.rootContainer.Location = new System.Drawing.Point(0, 0);
+            this.rootContainer.Name = "rootContainer";
+            this.rootContainer.SelectedIndex = 0;
+            this.rootContainer.Size = new System.Drawing.Size(1329, 713);
+            this.rootContainer.TabIndex = 0;
             // 
-            // tabPage1
+            // tabPKTrue
             // 
-            this.tabPage1.Controls.Add(this.mainLabel1PK);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1321, 687);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Programkonstruktion";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPKTrue.Controls.Add(this.tabPK);
+            this.tabPKTrue.Controls.Add(this.menuStrip2);
+            this.tabPKTrue.Location = new System.Drawing.Point(4, 22);
+            this.tabPKTrue.Name = "tabPKTrue";
+            this.tabPKTrue.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPKTrue.Size = new System.Drawing.Size(1321, 687);
+            this.tabPKTrue.TabIndex = 0;
+            this.tabPKTrue.Text = "Programkonstruktion";
+            this.tabPKTrue.UseVisualStyleBackColor = true;
             // 
-            // mainLabel1PK
+            // tabPK
             // 
-            this.mainLabel1PK.Controls.Add(this.loginTab);
-            this.mainLabel1PK.Controls.Add(this.roomBookTab);
-            this.mainLabel1PK.Controls.Add(this.adminTab);
-            this.mainLabel1PK.Location = new System.Drawing.Point(0, 0);
-            this.mainLabel1PK.Name = "mainLabel1PK";
-            this.mainLabel1PK.SelectedIndex = 0;
-            this.mainLabel1PK.Size = new System.Drawing.Size(1306, 691);
-            this.mainLabel1PK.TabIndex = 3;
+            this.tabPK.Controls.Add(this.loginTab);
+            this.tabPK.Controls.Add(this.roomBookTab);
+            this.tabPK.Controls.Add(this.adminTab);
+            this.tabPK.Location = new System.Drawing.Point(0, 30);
+            this.tabPK.Name = "tabPK";
+            this.tabPK.SelectedIndex = 0;
+            this.tabPK.Size = new System.Drawing.Size(1306, 691);
+            this.tabPK.TabIndex = 3;
             // 
             // loginTab
             // 
@@ -352,6 +352,7 @@ namespace Termin4CSharp.View
             // 
             // roomBookTab
             // 
+            this.roomBookTab.Controls.Add(this.roomBookingResponseLabel);
             this.roomBookTab.Controls.Add(this.clearFiltersButtonRoomBookingTab);
             this.roomBookTab.Controls.Add(this.roomHolder);
             this.roomBookTab.Controls.Add(this.freeTextFilterTextbox);
@@ -364,10 +365,7 @@ namespace Termin4CSharp.View
             this.roomBookTab.Controls.Add(this.buildingLabelRoomBookingTab);
             this.roomBookTab.Controls.Add(this.buildingFilterBox);
             this.roomBookTab.Controls.Add(this.toDateLabelRoomBookingTab);
-            this.roomBookTab.Controls.Add(this.fromDateLabelRoomBookingTab);
-            this.roomBookTab.Controls.Add(this.toDatePickerRoomBookingTab);
-            this.roomBookTab.Controls.Add(this.fromDatePickerRoomBookingTab);
-            this.roomBookTab.Controls.Add(this.comboBox4);
+            this.roomBookTab.Controls.Add(this.onDateRoomBookingDatePicker);
             this.roomBookTab.Location = new System.Drawing.Point(4, 22);
             this.roomBookTab.Name = "roomBookTab";
             this.roomBookTab.Padding = new System.Windows.Forms.Padding(3);
@@ -376,6 +374,14 @@ namespace Termin4CSharp.View
             this.roomBookTab.Text = "Boka rum";
             this.roomBookTab.UseVisualStyleBackColor = true;
             this.roomBookTab.Enter += new System.EventHandler(this.tabPage5_GotFocus);
+            // 
+            // roomBookingResponseLabel
+            // 
+            this.roomBookingResponseLabel.AutoSize = true;
+            this.roomBookingResponseLabel.Location = new System.Drawing.Point(1096, 41);
+            this.roomBookingResponseLabel.Name = "roomBookingResponseLabel";
+            this.roomBookingResponseLabel.Size = new System.Drawing.Size(0, 13);
+            this.roomBookingResponseLabel.TabIndex = 23;
             // 
             // clearFiltersButtonRoomBookingTab
             // 
@@ -703,46 +709,11 @@ namespace Termin4CSharp.View
             // toDateLabelRoomBookingTab
             // 
             this.toDateLabelRoomBookingTab.AutoSize = true;
-            this.toDateLabelRoomBookingTab.Location = new System.Drawing.Point(6, 40);
+            this.toDateLabelRoomBookingTab.Location = new System.Drawing.Point(6, 17);
             this.toDateLabelRoomBookingTab.Name = "toDateLabelRoomBookingTab";
-            this.toDateLabelRoomBookingTab.Size = new System.Drawing.Size(23, 13);
+            this.toDateLabelRoomBookingTab.Size = new System.Drawing.Size(30, 13);
             this.toDateLabelRoomBookingTab.TabIndex = 7;
-            this.toDateLabelRoomBookingTab.Text = "Till:";
-            // 
-            // fromDateLabelRoomBookingTab
-            // 
-            this.fromDateLabelRoomBookingTab.AutoSize = true;
-            this.fromDateLabelRoomBookingTab.Location = new System.Drawing.Point(6, 14);
-            this.fromDateLabelRoomBookingTab.Name = "fromDateLabelRoomBookingTab";
-            this.fromDateLabelRoomBookingTab.Size = new System.Drawing.Size(31, 13);
-            this.fromDateLabelRoomBookingTab.TabIndex = 6;
-            this.fromDateLabelRoomBookingTab.Text = "Från:";
-            // 
-            // toDatePickerRoomBookingTab
-            // 
-            this.toDatePickerRoomBookingTab.Location = new System.Drawing.Point(69, 34);
-            this.toDatePickerRoomBookingTab.Name = "toDatePickerRoomBookingTab";
-            this.toDatePickerRoomBookingTab.Size = new System.Drawing.Size(200, 20);
-            this.toDatePickerRoomBookingTab.TabIndex = 5;
-            // 
-            // fromDatePickerRoomBookingTab
-            // 
-            this.fromDatePickerRoomBookingTab.Location = new System.Drawing.Point(69, 8);
-            this.fromDatePickerRoomBookingTab.Name = "fromDatePickerRoomBookingTab";
-            this.fromDatePickerRoomBookingTab.Size = new System.Drawing.Size(200, 20);
-            this.fromDatePickerRoomBookingTab.TabIndex = 4;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "Min profil",
-            "Logga ut"});
-            this.comboBox4.Location = new System.Drawing.Point(793, 24);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(100, 21);
-            this.comboBox4.TabIndex = 3;
-            this.comboBox4.Text = "Användarnamn";
+            this.toDateLabelRoomBookingTab.Text = "Dag:";
             // 
             // adminTab
             // 
@@ -837,30 +808,63 @@ namespace Termin4CSharp.View
             this.editTypeBox.TabIndex = 1;
             this.editTypeBox.SelectedIndexChanged += new System.EventHandler(this.editTypeBox_SelectedIndexChanged);
             // 
-            // mainLabel2WS
+            // menuStrip2
             // 
-            this.mainLabel2WS.Location = new System.Drawing.Point(4, 22);
-            this.mainLabel2WS.Name = "mainLabel2WS";
-            this.mainLabel2WS.Padding = new System.Windows.Forms.Padding(3);
-            this.mainLabel2WS.Size = new System.Drawing.Size(1321, 687);
-            this.mainLabel2WS.TabIndex = 1;
-            this.mainLabel2WS.Text = "Webbservice";
-            this.mainLabel2WS.UseVisualStyleBackColor = true;
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.arkivToolStripMenuItem});
+            this.menuStrip2.Location = new System.Drawing.Point(3, 3);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.Size = new System.Drawing.Size(1315, 24);
+            this.menuStrip2.TabIndex = 4;
+            this.menuStrip2.Text = "menuStrip2";
             // 
-            // mainLabel3ERP
+            // arkivToolStripMenuItem
             // 
-            this.mainLabel3ERP.Controls.Add(this.label13);
-            this.mainLabel3ERP.Controls.Add(this.label12);
-            this.mainLabel3ERP.Controls.Add(this.searchERPButton);
-            this.mainLabel3ERP.Controls.Add(this.comboBox1);
-            this.mainLabel3ERP.Controls.Add(this.listView2);
-            this.mainLabel3ERP.Location = new System.Drawing.Point(4, 22);
-            this.mainLabel3ERP.Name = "mainLabel3ERP";
-            this.mainLabel3ERP.Padding = new System.Windows.Forms.Padding(3);
-            this.mainLabel3ERP.Size = new System.Drawing.Size(1321, 687);
-            this.mainLabel3ERP.TabIndex = 2;
-            this.mainLabel3ERP.Text = "ERP";
-            this.mainLabel3ERP.UseVisualStyleBackColor = true;
+            this.arkivToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.myProfileToolStripMenuItem,
+            this.logOutToolStripMenuItem});
+            this.arkivToolStripMenuItem.Name = "arkivToolStripMenuItem";
+            this.arkivToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.arkivToolStripMenuItem.Text = "Profil";
+            // 
+            // myProfileToolStripMenuItem
+            // 
+            this.myProfileToolStripMenuItem.Name = "myProfileToolStripMenuItem";
+            this.myProfileToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.myProfileToolStripMenuItem.Text = "Min profil";
+            this.myProfileToolStripMenuItem.Click += new System.EventHandler(this.myProfileToolStripMenuItem_Click);
+            // 
+            // logOutToolStripMenuItem
+            // 
+            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.logOutToolStripMenuItem.Text = "Logga ut";
+            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
+            // 
+            // tabWS
+            // 
+            this.tabWS.Location = new System.Drawing.Point(4, 22);
+            this.tabWS.Name = "tabWS";
+            this.tabWS.Padding = new System.Windows.Forms.Padding(3);
+            this.tabWS.Size = new System.Drawing.Size(1321, 687);
+            this.tabWS.TabIndex = 1;
+            this.tabWS.Text = "Webbservice";
+            this.tabWS.UseVisualStyleBackColor = true;
+            // 
+            // tabERP
+            // 
+            this.tabERP.Controls.Add(this.label13);
+            this.tabERP.Controls.Add(this.label12);
+            this.tabERP.Controls.Add(this.searchERPButton);
+            this.tabERP.Controls.Add(this.comboBox1);
+            this.tabERP.Controls.Add(this.listView2);
+            this.tabERP.Location = new System.Drawing.Point(4, 22);
+            this.tabERP.Name = "tabERP";
+            this.tabERP.Padding = new System.Windows.Forms.Padding(3);
+            this.tabERP.Size = new System.Drawing.Size(1321, 687);
+            this.tabERP.TabIndex = 2;
+            this.tabERP.Text = "ERP";
+            this.tabERP.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
@@ -932,34 +936,20 @@ namespace Termin4CSharp.View
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.asadssadToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1313, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // asadssadToolStripMenuItem
+            // onDateRoomBookingDatePicker
             // 
-            this.asadssadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.minProfilToolStripMenuItem,
-            this.loggaUtToolStripMenuItem});
-            this.asadssadToolStripMenuItem.Name = "asadssadToolStripMenuItem";
-            this.asadssadToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.asadssadToolStripMenuItem.Text = "Arkiv";
-            // 
-            // minProfilToolStripMenuItem
-            // 
-            this.minProfilToolStripMenuItem.Name = "minProfilToolStripMenuItem";
-            this.minProfilToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.minProfilToolStripMenuItem.Text = "Min profil";
-            // 
-            // loggaUtToolStripMenuItem
-            // 
-            this.loggaUtToolStripMenuItem.Name = "loggaUtToolStripMenuItem";
-            this.loggaUtToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.loggaUtToolStripMenuItem.Text = "Logga ut";
+            this.onDateRoomBookingDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.onDateRoomBookingDatePicker.Location = new System.Drawing.Point(9, 33);
+            this.onDateRoomBookingDatePicker.Name = "onDateRoomBookingDatePicker";
+            this.onDateRoomBookingDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.onDateRoomBookingDatePicker.TabIndex = 5;
+            this.onDateRoomBookingDatePicker.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // GUIMain
             // 
@@ -967,16 +957,17 @@ namespace Termin4CSharp.View
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1313, 571);
-            this.Controls.Add(this.OK);
+            this.Controls.Add(this.rootContainer);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "GUIMain";
             this.Text = "Lunds universitet";
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.OK.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.mainLabel1PK.ResumeLayout(false);
+            this.rootContainer.ResumeLayout(false);
+            this.tabPKTrue.ResumeLayout(false);
+            this.tabPKTrue.PerformLayout();
+            this.tabPK.ResumeLayout(false);
             this.loginTab.ResumeLayout(false);
             this.loginTab.PerformLayout();
             this.roomBookTab.ResumeLayout(false);
@@ -985,10 +976,10 @@ namespace Termin4CSharp.View
             ((System.ComponentModel.ISupportInitialize)(this.capacityTrackbarRoomBookingTab)).EndInit();
             this.adminTab.ResumeLayout(false);
             this.adminTab.PerformLayout();
-            this.mainLabel3ERP.ResumeLayout(false);
-            this.mainLabel3ERP.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
+            this.tabERP.ResumeLayout(false);
+            this.tabERP.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1006,14 +997,14 @@ namespace Termin4CSharp.View
 
         #endregion
 
-        private System.Windows.Forms.TabControl OK;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage mainLabel2WS;
-        private System.Windows.Forms.TabPage mainLabel3ERP;
+        private System.Windows.Forms.TabControl rootContainer;
+        private System.Windows.Forms.TabPage tabPKTrue;
+        private System.Windows.Forms.TabPage tabWS;
+        private System.Windows.Forms.TabPage tabERP;
         private ComboBox comboBox1;
         private ListView listView2;
         private Button searchERPButton;
-        private TabControl mainLabel1PK;
+        private TabControl tabPK;
         private TabPage loginTab;
         private Label mainLabelLoginTab;
         private Label infoTextLoginTab;
@@ -1039,10 +1030,6 @@ namespace Termin4CSharp.View
         private Label buildingLabelRoomBookingTab;
         private CheckedListBox buildingFilterBox;
         private Label toDateLabelRoomBookingTab;
-        private Label fromDateLabelRoomBookingTab;
-        private DateTimePicker toDatePickerRoomBookingTab;
-        private DateTimePicker fromDatePickerRoomBookingTab;
-        private ComboBox comboBox4;
         private TabPage adminTab;
         private Button createObjectButton;
         private ComboBox createTypeBox;
@@ -1092,8 +1079,11 @@ namespace Termin4CSharp.View
         private TabPage tabPage3;
         private Label responseLabelLoginTab;
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem asadssadToolStripMenuItem;
-        private ToolStripMenuItem minProfilToolStripMenuItem;
-        private ToolStripMenuItem loggaUtToolStripMenuItem;
+        private MenuStrip menuStrip2;
+        private ToolStripMenuItem arkivToolStripMenuItem;
+        private ToolStripMenuItem myProfileToolStripMenuItem;
+        private ToolStripMenuItem logOutToolStripMenuItem;
+        private Label roomBookingResponseLabel;
+        private DateTimePicker onDateRoomBookingDatePicker;
     }
 }

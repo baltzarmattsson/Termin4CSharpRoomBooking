@@ -19,6 +19,7 @@ namespace Termin4CSharp.Controller
         public EditView EditView { get; set; }
         public AdminTabController AdminController { get; set; }
         public EditViewController OuterEditViewController { get; set; }
+        public GUIMainController GuiMainController { get; set; }
         private bool isExistingObjectInDatabase = false;
         private Dictionary<string, object> identifyingAttributesValues;
 
@@ -27,13 +28,17 @@ namespace Termin4CSharp.Controller
         public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
         private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
 
-        public EditViewController(EditView editView, AdminTabController adminController = null, EditViewController outerEditViewController = null)
+        public DateTimePicker BookingStartDatePicker { get; set; }
+        public DateTimePicker BookingEndDatePicker { get; set; }
+
+        public EditViewController(EditView editView, AdminTabController adminController = null, EditViewController outerEditViewController = null, GUIMainController guiMainController = null)
         {
             this.EditView = editView;
             this.EditView.Controller = this;
             this.isExistingObjectInDatabase = this.EditView.IsExistingItemInDatabase;
             this.AdminController = adminController;
             this.OuterEditViewController = outerEditViewController;
+            this.GuiMainController = guiMainController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
 
             this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
@@ -78,6 +83,8 @@ namespace Termin4CSharp.Controller
                 this.AdminController.HandleEditViewClosed();
             if (this.OuterEditViewController != null)
                 this.UpdateBookingListInPersonEditingView();
+            if (this.GuiMainController != null)
+                this.GuiMainController.LoadRooms(this.GuiMainController.OnDateFilter);
 
         }
         public int Delete(IModel model)
@@ -424,6 +431,21 @@ namespace Termin4CSharp.Controller
         public void NotifyExceptionToView(string s)
         {
             this.UpdateResponseLabel(s);
+        }
+
+        public void HandleBookingDateTimePickerValueChanged(object sender, EventArgs e)
+        {
+            DateTimePicker datePicker = (DateTimePicker)sender;
+            // If it's the start hour datepicker
+            if (datePicker.Name.Equals(this.BookingStartDatePicker.Name))
+            {
+                this.BookingEndDatePicker.Value = datePicker.Value.AddHours(1);
+            }
+            // Else if it's the end hour datepicker
+            else
+            {
+                this.BookingStartDatePicker.Value = datePicker.Value.AddHours(-1);
+            }
         }
     }
 }

@@ -159,13 +159,24 @@ namespace Termin4CSharp.View
                         datePicker.Width = 500;
                         datePicker.Name = kv.Key;
                         datePicker.Value = value == null || value.Equals(default(DateTime)) ? DateTime.Now : (DateTime)value;
-                        if (model is Building || (model is Booking))
+                        if (model is Building || model is Booking)
                         {
                             datePicker.Format = DateTimePickerFormat.Custom;
                             if (kv.Key.Equals("Timestamp"))
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:mm:ss";
                             else if (kv.Key.Equals("Avail_start") || kv.Key.Equals("Avail_end"))
+                            {
                                 datePicker.CustomFormat = "HH:00";
+                            }
+                            else if (kv.Key.Equals("Start_time") || kv.Key.Equals("End_time"))
+                            {
+                                datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
+                                datePicker.ValueChanged += DatePicker_ValueChanged;
+                                if (kv.Key.Equals("Start_time"))
+                                    this.Controller.BookingStartDatePicker = datePicker;
+                                else if (kv.Key.Equals("End_time"))
+                                    this.Controller.BookingEndDatePicker = datePicker;
+                            }
                             else
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
                             datePicker.ShowUpDown = true;
@@ -312,6 +323,11 @@ namespace Termin4CSharp.View
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             flowLayoutControlHolder.Controls.Add(this.closeButton);
 
+        }
+
+        private void DatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            this.Controller.HandleBookingDateTimePickerValueChanged(sender, e);
         }
 
         private void RightClickMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

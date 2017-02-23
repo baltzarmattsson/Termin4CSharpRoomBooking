@@ -740,7 +740,7 @@ namespace Termin4CSharp
             // Person
             else if (model is Person && key.Equals("role") || key.Equals("rolename"))
             {
-                keyEqv = "RollNamn";
+                keyEqv = "Role";
             }
             if (keyEqv == null)
                 throw new Exception("keyEqv is null");

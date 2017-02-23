@@ -19,14 +19,16 @@ namespace Termin4CSharp.View
         public IModel Model { get; set; }
         public EditViewController Controller { get; set; }
         public bool IsExistingItemInDatabase { get; private set; }
+        private bool isMyProfileClick;
         private Dictionary<string, object> oldIdentifyingAttribute;
 
-        public EditView(IModel model, bool isExistingItemInDatabase)
+        public EditView(IModel model, bool isExistingItemInDatabase, bool isMyProfileClick = false)
         {
             InitializeComponent();
             this.Model = model;
             this.IsExistingItemInDatabase = isExistingItemInDatabase;
             this.oldIdentifyingAttribute = new Dictionary<string, object>();
+            this.isMyProfileClick = isMyProfileClick;
         }
 
         public void SetResponseLabel(string message)

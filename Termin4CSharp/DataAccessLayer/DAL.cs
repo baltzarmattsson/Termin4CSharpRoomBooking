@@ -132,9 +132,7 @@ namespace Termin4CSharp.DataAccessLayer
                 while (dr.Read())
                 {
                     isBookable = dr.GetInt32(0) == 1;
-                    //isBookable = dr.GetBoolean(0);
-                    var a = dr[0];
-                    Console.WriteLine();
+                    break;
                 }
                     
             } catch (SqlException sqle)

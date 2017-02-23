@@ -238,7 +238,12 @@ namespace Termin4CSharp.Controller
 
         public void HandleMyProfileMenuStripClick()
         {
-            
+            if (this.LoggedInUser != null)
+            {
+                EditView ev = new EditView(this.LoggedInUser, isExistingItemInDatabase: true, isMyProfileClick: true);
+                EditViewController editController = new EditViewController(ev);
+                ev.Show();
+            }
         }
     }
 }

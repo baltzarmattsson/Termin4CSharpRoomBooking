@@ -116,7 +116,8 @@ namespace Termin4CSharp.View
                         ComboBox comboBox = new ComboBox();
                         if (isIdentifyingAttribute)
                             comboBox.SelectedValueChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
-                        comboBox.Name = Utils.ConvertReferencedIModelToColumnName(model, kv.Key);
+                        //comboBox.Name = Utils.ConvertReferencedIModelToColumnName(model, kv.Key);
+                        comboBox.Name = kv.Key;
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
                         comboBox.Items.AddRange(imodels.Keys.ToArray());
@@ -212,6 +213,8 @@ namespace Termin4CSharp.View
                 if (IsExistingItemInDatabase && isIdentifyingAttribute)
                     if (!(control is ComboBox || control is CheckedListBox))
                         this.oldIdentifyingAttribute[control.Name] = control.Text;
+                if ((isIdentifyingAttribute || kv.Key.Equals("Role")) && isMyProfileClick)
+                    control.Enabled = false;
                 control.Visible = controlIsVisible;
                 this.flowLayoutControlHolder.Controls.Add(control);
                 flowLayoutControlHolder.SetFlowBreak(control, controlIsVisible);
@@ -289,7 +292,7 @@ namespace Termin4CSharp.View
                 foreach (OLVColumn col in this.bookingListView.Columns)
                 {
                     col.Text = Utils.ConvertAttributeNameToDisplayName(new Booking(), col.AspectName);
-                    col.Width = 500 / 6; //500width / 6 columns
+                    col.Width = 500 / 6; // width / columns
                 }
 
                 this.bookingListView.SetObjects(this.Controller.GetBookingsForPerson((Person)model));
@@ -315,6 +318,8 @@ namespace Termin4CSharp.View
             this.deleteButton = new Button();
             this.deleteButton.Text = "Ta bort";
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            if (isMyProfileClick)
+                this.deleteButton.Enabled = false;
             flowLayoutControlHolder.Controls.Add(this.deleteButton);
 
             // Adding closebutton

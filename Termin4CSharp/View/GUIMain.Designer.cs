@@ -233,7 +233,7 @@ namespace Termin4CSharp.View
             this.tabPage1.Controls.Add(this.mainLabel1PK);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1321, 687);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programkonstruktion";
@@ -263,7 +263,7 @@ namespace Termin4CSharp.View
             this.loginTab.Controls.Add(this.usernameLabelLoginTab);
             this.loginTab.Location = new System.Drawing.Point(4, 22);
             this.loginTab.Name = "loginTab";
-            this.loginTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.loginTab.Padding = new System.Windows.Forms.Padding(3);
             this.loginTab.Size = new System.Drawing.Size(1298, 665);
             this.loginTab.TabIndex = 0;
             this.loginTab.Text = "Logga in ";
@@ -370,7 +370,7 @@ namespace Termin4CSharp.View
             this.roomBookTab.Controls.Add(this.comboBox4);
             this.roomBookTab.Location = new System.Drawing.Point(4, 22);
             this.roomBookTab.Name = "roomBookTab";
-            this.roomBookTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.roomBookTab.Padding = new System.Windows.Forms.Padding(3);
             this.roomBookTab.Size = new System.Drawing.Size(1298, 665);
             this.roomBookTab.TabIndex = 1;
             this.roomBookTab.Text = "Boka rum";
@@ -451,7 +451,7 @@ namespace Termin4CSharp.View
             this.olvColumn24});
             this.roomHolder.Cursor = System.Windows.Forms.Cursors.Default;
             this.roomHolder.Location = new System.Drawing.Point(132, 82);
-            this.roomHolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.roomHolder.Margin = new System.Windows.Forms.Padding(2);
             this.roomHolder.Name = "roomHolder";
             this.roomHolder.SelectedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.roomHolder.ShowGroups = false;
@@ -460,8 +460,8 @@ namespace Termin4CSharp.View
             this.roomHolder.UseCellFormatEvents = true;
             this.roomHolder.UseCompatibleStateImageBehavior = false;
             this.roomHolder.View = System.Windows.Forms.View.Details;
+            this.roomHolder.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.RoomHolder_CellClick);
             this.roomHolder.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.formatRow);
-            this.roomHolder.CellClick += RoomHolder_CellClick;
             // 
             // idColumn
             // 
@@ -755,7 +755,7 @@ namespace Termin4CSharp.View
             this.adminTab.Controls.Add(this.editTypeBox);
             this.adminTab.Location = new System.Drawing.Point(4, 22);
             this.adminTab.Name = "adminTab";
-            this.adminTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.adminTab.Padding = new System.Windows.Forms.Padding(3);
             this.adminTab.Size = new System.Drawing.Size(1298, 665);
             this.adminTab.TabIndex = 3;
             this.adminTab.Text = "Admin";
@@ -841,8 +841,8 @@ namespace Termin4CSharp.View
             // 
             this.mainLabel2WS.Location = new System.Drawing.Point(4, 22);
             this.mainLabel2WS.Name = "mainLabel2WS";
-            this.mainLabel2WS.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.mainLabel2WS.Size = new System.Drawing.Size(1303, 685);
+            this.mainLabel2WS.Padding = new System.Windows.Forms.Padding(3);
+            this.mainLabel2WS.Size = new System.Drawing.Size(1321, 687);
             this.mainLabel2WS.TabIndex = 1;
             this.mainLabel2WS.Text = "Webbservice";
             this.mainLabel2WS.UseVisualStyleBackColor = true;
@@ -856,8 +856,8 @@ namespace Termin4CSharp.View
             this.mainLabel3ERP.Controls.Add(this.listView2);
             this.mainLabel3ERP.Location = new System.Drawing.Point(4, 22);
             this.mainLabel3ERP.Name = "mainLabel3ERP";
-            this.mainLabel3ERP.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.mainLabel3ERP.Size = new System.Drawing.Size(1303, 685);
+            this.mainLabel3ERP.Padding = new System.Windows.Forms.Padding(3);
+            this.mainLabel3ERP.Size = new System.Drawing.Size(1321, 687);
             this.mainLabel3ERP.TabIndex = 2;
             this.mainLabel3ERP.Text = "ERP";
             this.mainLabel3ERP.UseVisualStyleBackColor = true;
@@ -952,13 +952,13 @@ namespace Termin4CSharp.View
             // minProfilToolStripMenuItem
             // 
             this.minProfilToolStripMenuItem.Name = "minProfilToolStripMenuItem";
-            this.minProfilToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.minProfilToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.minProfilToolStripMenuItem.Text = "Min profil";
             // 
             // loggaUtToolStripMenuItem
             // 
             this.loggaUtToolStripMenuItem.Name = "loggaUtToolStripMenuItem";
-            this.loggaUtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loggaUtToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.loggaUtToolStripMenuItem.Text = "Logga ut";
             // 
             // GUIMain

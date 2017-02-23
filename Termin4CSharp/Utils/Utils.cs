@@ -34,9 +34,13 @@ namespace Termin4CSharp
             else if (memOptFor == MembersOptimizedFor.EDITVIEW)
                 excludePattern += "|\\bBName\\b|\\bRType\\b|\\bRoleName\\b|\\bPersonId\\b|\\bRoomId\\b|\\bPersonId\\b";
             excludePattern += ")";
-            var names = t.GetMembers()
+            //var names = t.GetMembers()
+            //            .Select(x => x.Name)
+            //            .Where(x => !Regex.IsMatch(x, excludePattern));
+            var names = t.GetProperties()
                         .Select(x => x.Name)
                         .Where(x => !Regex.IsMatch(x, excludePattern));
+            var properties = t.GetProperties();
             Console.Write("");
             foreach (string attName in names)
             {
@@ -79,25 +83,6 @@ namespace Termin4CSharp
             }
             return attributeValues;
         }
-
-        //public static SqlCommand RemoveAllFromTableWhereIModelIsPresent(IModel model, IModel fromTable) {
-        //    string refColumn = null, tableName = null;
-        //    tableName = Utils.IModelTableName(fromTable);
-
-        //    if (model is Room && fromTable is Room_Resource)
-        //        refColumn = "roomid";
-        //    if (refColumn == null || tableName == null)
-        //        throw new Exception("null");
-
-        //    var whereParams = new Dictionary<string, object>();
-        //    whereParams[refColumn] = model.GetIdentifyingAttributes().First().Value;
-
-        //    string sql = string.Format("delete from {0} where {1} = @@{2}", tableName, refColumn, refColumn);
-
-        //    SqlCommand cmd = new SqlCommand(sql);
-        //    Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true);
-        //    return cmd;
-        //}
 
         public static IModel ParseDataReaderToIModel(IModel model, SqlDataReader dr, bool findResursiveIModels = true)
         {
@@ -219,8 +204,6 @@ namespace Termin4CSharp
             IModel modelListType = models.First();
             string tableName = optTableName != null ? optTableName : Utils.IModelTableName(modelListType);
 
-            //if (queryType == QueryType.GET)
-            //    throw new Exception("nope");
             if (tableName == null)
                 throw new Exception("Table is null");
 
@@ -322,8 +305,6 @@ namespace Termin4CSharp
                     // If its an UPDATE, REMOVE or GET-query, change the optWhereParams-dict to the identifying attributes of IModel
                     if ((optWhereParams == null || optWhereParams.Count == 0) && (queryType == QueryType.REMOVE || queryType == QueryType.UPDATE || queryType == QueryType.GET))
                         optWhereParams = model.GetIdentifyingAttributes();
-                    //else if ((optWhereParams != null && optWhereParams.Count > 0) && queryType == QueryType.UPDATE)
-
 
                     foreach (KeyValuePair<string, object> whereKV in optWhereParams)
                     {
@@ -335,8 +316,7 @@ namespace Termin4CSharp
                     sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
                 }
             }
-
-
+            
             //Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             if (queryType != QueryType.GET)
@@ -377,17 +357,10 @@ namespace Termin4CSharp
 
             if (freeText != null)
             {
-                //sqlBuilder.Append("where r.bname like @@freeText0 or r.id like @@freeText1 or r.capacity like @@freeText2 or r.rtype like @@freeText3 or r.floor like @@freeText4 " + 
-                //    "or r.id in (select roomID from " + DbFields.RoomResourceTable + " where resID like @@freeText5)");
-
-                //sqlBuilder.Append(" inner join Building b on b.name = ro.bname" +
-                // " left join Room_Resource rr on rr.roomID = ro.id " +
-                // " left join Resource re on rr.resID = re.id " +
                 sqlBuilder.Append(" where ro.bname like @@freeText0 " +
                 " or ro.id like @@freeText1 " +
                 " or re.id like (select innerRes.id from Resource innerRes where type in (@@freeText3)) " +
                 " or ro.floor like @@freeText4 ");
-                //" or ro.capacity >= @@freeText5 ");
                 for (int i = 0; i < 5; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
@@ -746,8 +719,9 @@ namespace Termin4CSharp
                     keyEqv = "BName";
                 else if (key.Equals("roomtype"))
                     keyEqv = "RType";
-                // Booking
+
             }
+            // Booking
             else if (model is Booking)
             {
                 if (key.Equals("person"))
@@ -758,14 +732,13 @@ namespace Termin4CSharp
                     keyEqv = "RoomId";
                 else if (key.Equals("roomid"))
                     keyEqv = "Room";
-                // Login
             }
+            // Login
             else if (model is Login && key.Equals("person"))
             {
                 keyEqv = "PersonId";
-
-                // Person
             }
+            // Person
             else if (model is Person && key.Equals("role") || key.Equals("rolename"))
             {
                 keyEqv = "RollNamn";

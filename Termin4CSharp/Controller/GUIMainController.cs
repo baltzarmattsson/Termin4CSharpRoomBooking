@@ -176,6 +176,8 @@ namespace Termin4CSharp.Controller
                     string itemText = e.SubItem.Text;
                     if (Regex.IsMatch(itemText, "[0-9]{2}:[0-9]{2}"))
                     {
+                        // Updating logged in user
+                        this.LoggedInUser = (Person)new DAL(this).Get(LoggedInUser).First();
                         Room targetRoom = (Room)e.Model;
                         Booking b = new Booking();
                         b.RoomId = targetRoom.Id;

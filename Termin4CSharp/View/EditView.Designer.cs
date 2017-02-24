@@ -40,7 +40,6 @@ namespace Termin4CSharp.View
         private void InitializeComponent()
         {
             this.flowLayoutControlHolder = new System.Windows.Forms.FlowLayoutPanel();
-            //this.tableLayoutControlHolder;
             this.flowLayoutControlHolder.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,6 +145,7 @@ namespace Termin4CSharp.View
                         CheckedListBox checkBox = new CheckedListBox();
                         checkBox.Name = kv.Key;
                         checkBox.Width = 500;
+                        checkBox.Height = 250;
                         foreach (var imodel in imodels)
                             checkBox.Items.Add(imodel.Key, imodel.Value);
                         checkBox.ItemCheck += new ItemCheckEventHandler(this.Controller.HandleListOfIModelsBoxCheck);
@@ -228,7 +228,7 @@ namespace Termin4CSharp.View
                 Label bookingListViewLabel = new Label();
                 bookingListViewLabel.Text = "Bokningar";
                 this.flowLayoutControlHolder.Controls.Add(bookingListViewLabel);
-                this.flowLayoutControlHolder.
+                //this.flowLayoutControlHolder.
                 //this.flowLayoutControlHolder.SetFlowBreak(bookingListViewLabel, true);
 
                 this.bookingListView = new BrightIdeasSoftware.ObjectListView();

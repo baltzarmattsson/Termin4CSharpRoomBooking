@@ -545,6 +545,12 @@ namespace Termin4CSharp
                     case "id":
                         retName = "ID";
                         break;
+                    case "roomtype":
+                        retName = "Rumtyp";
+                        break;
+                    case "resources":
+                        retName = "Tillgängliga resurser";
+                        break;
                 }
             }
             else if (model is Building)
@@ -568,6 +574,9 @@ namespace Termin4CSharp
                         break;
                     case "name":
                         retName = "Namn";
+                        break;
+                    case "rooms":
+                        retName = "Rum";
                         break;
                 }
             }
@@ -602,6 +611,9 @@ namespace Termin4CSharp
                     case "end_time":
                         retName = "Sluttid";
                         break;
+                    case "room":
+                        retName = "Rum";
+                        break;
                 }
             }
             else if (model is Institution)
@@ -627,7 +639,7 @@ namespace Termin4CSharp
                         retName = "En resurs";
                         break;
                     case "type":
-                        retName = "Typ";
+                        retName = "Resursnamn";
                         break;
                 }
             }
@@ -668,6 +680,9 @@ namespace Termin4CSharp
                     case "id":
                         retName = "ID";
                         break;
+                    case "name":
+                        retName = "Rollnamn";
+                        break;
                 }
             }
             else if (model is Login)
@@ -702,7 +717,7 @@ namespace Termin4CSharp
                         retName = "ID";
                         break;
                     case "type":
-                        retName = "Typ";
+                        retName = "Rumtyp";
                         break;
                 }
             }
@@ -752,7 +767,7 @@ namespace Termin4CSharp
         public static bool IdIsAutoIncrementInDb(IModel model)
         {
             bool isAuto = false;
-            if (model is Booking)
+            if (model is Booking || model is Resource)
                 isAuto = true;
             return isAuto;
         }

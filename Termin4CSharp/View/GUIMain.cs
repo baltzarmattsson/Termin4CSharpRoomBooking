@@ -132,6 +132,13 @@ namespace Termin4CSharp.View
             }
         }
 
+        public void SetLoginControlsToStatus(bool enabled)
+        {
+            this.passwordTextfieldLogin.Enabled = enabled;
+            this.usernameTextfieldLogin.Enabled = enabled;
+            this.loginButtonLoginTab.Text = enabled ? "Logga in" : "Logga ut";
+        }
+
         public void SetRooms(List<Room> rooms)
         {
             this.roomHolder.SetObjects(rooms);
@@ -210,9 +217,14 @@ namespace Termin4CSharp.View
             return this.capacityTrackbarRoomBookingTab.Value;
         }
 
+        public void SetPKResponseLabelText(string text)
+        {
+            this.responseLabelPK.Text = text;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Controller.LoginUser(this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
+            this.Controller.HandleLoginOrLogoutButtonClick((Button)sender, this.usernameTextfieldLogin.Text, this.passwordTextfieldLogin.Text);
         }
 
         public void UpdateRoomBookingLabel(string text)

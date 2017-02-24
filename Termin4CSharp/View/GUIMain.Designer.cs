@@ -54,7 +54,7 @@ namespace Termin4CSharp.View
             this.passwordLabelLoginTab = new System.Windows.Forms.Label();
             this.usernameLabelLoginTab = new System.Windows.Forms.Label();
             this.roomBookTab = new System.Windows.Forms.TabPage();
-            this.roomBookingResponseLabel = new System.Windows.Forms.Label();
+            this.freeTextSearchLabel = new System.Windows.Forms.Label();
             this.clearFiltersButtonRoomBookingTab = new System.Windows.Forms.Button();
             this.roomHolder = new BrightIdeasSoftware.ObjectListView();
             this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -96,6 +96,7 @@ namespace Termin4CSharp.View
             this.buildingLabelRoomBookingTab = new System.Windows.Forms.Label();
             this.buildingFilterBox = new System.Windows.Forms.CheckedListBox();
             this.toDateLabelRoomBookingTab = new System.Windows.Forms.Label();
+            this.onDateRoomBookingDatePicker = new System.Windows.Forms.DateTimePicker();
             this.adminTab = new System.Windows.Forms.TabPage();
             this.createLabelAdminTab = new System.Windows.Forms.Label();
             this.editLabelAdminTab = new System.Windows.Forms.Label();
@@ -104,6 +105,7 @@ namespace Termin4CSharp.View
             this.createTypeBox = new System.Windows.Forms.ComboBox();
             this.editArticleBox = new System.Windows.Forms.ComboBox();
             this.editTypeBox = new System.Windows.Forms.ComboBox();
+            this.roomBookingResponseLabel = new System.Windows.Forms.Label();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.arkivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,7 +121,7 @@ namespace Termin4CSharp.View
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.onDateRoomBookingDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.responseLabelPK = new System.Windows.Forms.Label();
             this.tabPage3.SuspendLayout();
             this.rootContainer.SuspendLayout();
             this.tabPKTrue.SuspendLayout();
@@ -154,7 +156,7 @@ namespace Termin4CSharp.View
             this.HeaderERP.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HeaderERP.Location = new System.Drawing.Point(32, 27);
             this.HeaderERP.Name = "HeaderERP";
-            this.HeaderERP.Size = new System.Drawing.Size(439, 50);
+            this.HeaderERP.Size = new System.Drawing.Size(759, 84);
             this.HeaderERP.TabIndex = 25;
             this.HeaderERP.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
             // 
@@ -186,7 +188,7 @@ namespace Termin4CSharp.View
             "METADATA - Kolumner2"});
             this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
             this.ComboBoxERP.Name = "ComboBoxERP";
-            this.ComboBoxERP.Size = new System.Drawing.Size(121, 21);
+            this.ComboBoxERP.Size = new System.Drawing.Size(121, 32);
             this.ComboBoxERP.TabIndex = 23;
             // 
             // ScrollBarERP
@@ -209,9 +211,10 @@ namespace Termin4CSharp.View
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(29, 52);
+            this.label13.Location = new System.Drawing.Point(53, 96);
+            this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(78, 20);
+            this.label13.Size = new System.Drawing.Size(136, 32);
             this.label13.TabIndex = 26;
             this.label13.Text = "CRONUS\r\n";
             // 
@@ -222,19 +225,23 @@ namespace Termin4CSharp.View
             this.rootContainer.Controls.Add(this.tabWS);
             this.rootContainer.Controls.Add(this.tabERP);
             this.rootContainer.Location = new System.Drawing.Point(0, 0);
+            this.rootContainer.Margin = new System.Windows.Forms.Padding(6);
             this.rootContainer.Name = "rootContainer";
             this.rootContainer.SelectedIndex = 0;
-            this.rootContainer.Size = new System.Drawing.Size(1329, 713);
+            this.rootContainer.Size = new System.Drawing.Size(2437, 1316);
             this.rootContainer.TabIndex = 0;
             // 
             // tabPKTrue
             // 
+            this.tabPKTrue.Controls.Add(this.responseLabelPK);
             this.tabPKTrue.Controls.Add(this.tabPK);
+            this.tabPKTrue.Controls.Add(this.roomBookingResponseLabel);
             this.tabPKTrue.Controls.Add(this.menuStrip2);
-            this.tabPKTrue.Location = new System.Drawing.Point(4, 22);
+            this.tabPKTrue.Location = new System.Drawing.Point(4, 33);
+            this.tabPKTrue.Margin = new System.Windows.Forms.Padding(6);
             this.tabPKTrue.Name = "tabPKTrue";
-            this.tabPKTrue.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPKTrue.Size = new System.Drawing.Size(1321, 687);
+            this.tabPKTrue.Padding = new System.Windows.Forms.Padding(6);
+            this.tabPKTrue.Size = new System.Drawing.Size(2429, 1279);
             this.tabPKTrue.TabIndex = 0;
             this.tabPKTrue.Text = "Programkonstruktion";
             this.tabPKTrue.UseVisualStyleBackColor = true;
@@ -244,10 +251,11 @@ namespace Termin4CSharp.View
             this.tabPK.Controls.Add(this.loginTab);
             this.tabPK.Controls.Add(this.roomBookTab);
             this.tabPK.Controls.Add(this.adminTab);
-            this.tabPK.Location = new System.Drawing.Point(0, 30);
+            this.tabPK.Location = new System.Drawing.Point(0, 55);
+            this.tabPK.Margin = new System.Windows.Forms.Padding(6);
             this.tabPK.Name = "tabPK";
             this.tabPK.SelectedIndex = 0;
-            this.tabPK.Size = new System.Drawing.Size(1306, 691);
+            this.tabPK.Size = new System.Drawing.Size(2394, 1276);
             this.tabPK.TabIndex = 3;
             // 
             // loginTab
@@ -261,10 +269,11 @@ namespace Termin4CSharp.View
             this.loginTab.Controls.Add(this.usernameTextfieldLogin);
             this.loginTab.Controls.Add(this.passwordLabelLoginTab);
             this.loginTab.Controls.Add(this.usernameLabelLoginTab);
-            this.loginTab.Location = new System.Drawing.Point(4, 22);
+            this.loginTab.Location = new System.Drawing.Point(4, 33);
+            this.loginTab.Margin = new System.Windows.Forms.Padding(6);
             this.loginTab.Name = "loginTab";
-            this.loginTab.Padding = new System.Windows.Forms.Padding(3);
-            this.loginTab.Size = new System.Drawing.Size(1298, 665);
+            this.loginTab.Padding = new System.Windows.Forms.Padding(6);
+            this.loginTab.Size = new System.Drawing.Size(2386, 1239);
             this.loginTab.TabIndex = 0;
             this.loginTab.Text = "Logga in ";
             this.loginTab.UseVisualStyleBackColor = true;
@@ -272,19 +281,20 @@ namespace Termin4CSharp.View
             // responseLabelLoginTab
             // 
             this.responseLabelLoginTab.AutoSize = true;
-            this.responseLabelLoginTab.Location = new System.Drawing.Point(53, 270);
-            this.responseLabelLoginTab.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.responseLabelLoginTab.Location = new System.Drawing.Point(97, 498);
+            this.responseLabelLoginTab.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.responseLabelLoginTab.Name = "responseLabelLoginTab";
-            this.responseLabelLoginTab.Size = new System.Drawing.Size(0, 13);
+            this.responseLabelLoginTab.Size = new System.Drawing.Size(0, 25);
             this.responseLabelLoginTab.TabIndex = 8;
             // 
             // mainLabelLoginTab
             // 
             this.mainLabelLoginTab.AutoSize = true;
             this.mainLabelLoginTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainLabelLoginTab.Location = new System.Drawing.Point(51, 56);
+            this.mainLabelLoginTab.Location = new System.Drawing.Point(94, 103);
+            this.mainLabelLoginTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.mainLabelLoginTab.Name = "mainLabelLoginTab";
-            this.mainLabelLoginTab.Size = new System.Drawing.Size(407, 29);
+            this.mainLabelLoginTab.Size = new System.Drawing.Size(699, 48);
             this.mainLabelLoginTab.TabIndex = 7;
             this.mainLabelLoginTab.Text = "Rumsbokning för Ekonomihögskolan\r\n";
             // 
@@ -292,17 +302,19 @@ namespace Termin4CSharp.View
             // 
             this.infoTextLoginTab.AutoSize = true;
             this.infoTextLoginTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.infoTextLoginTab.Location = new System.Drawing.Point(51, 133);
+            this.infoTextLoginTab.Location = new System.Drawing.Point(94, 246);
+            this.infoTextLoginTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.infoTextLoginTab.Name = "infoTextLoginTab";
-            this.infoTextLoginTab.Size = new System.Drawing.Size(333, 13);
+            this.infoTextLoginTab.Size = new System.Drawing.Size(556, 25);
             this.infoTextLoginTab.TabIndex = 6;
             this.infoTextLoginTab.Text = "För att logga in, ange användaridentitet från Lucat nedan\r\n";
             // 
             // loginButtonLoginTab
             // 
-            this.loginButtonLoginTab.Location = new System.Drawing.Point(54, 293);
+            this.loginButtonLoginTab.Location = new System.Drawing.Point(99, 541);
+            this.loginButtonLoginTab.Margin = new System.Windows.Forms.Padding(6);
             this.loginButtonLoginTab.Name = "loginButtonLoginTab";
-            this.loginButtonLoginTab.Size = new System.Drawing.Size(75, 23);
+            this.loginButtonLoginTab.Size = new System.Drawing.Size(138, 42);
             this.loginButtonLoginTab.TabIndex = 5;
             this.loginButtonLoginTab.Text = "Logga in";
             this.loginButtonLoginTab.UseVisualStyleBackColor = true;
@@ -312,47 +324,52 @@ namespace Termin4CSharp.View
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(51, 133);
+            this.label3.Location = new System.Drawing.Point(94, 246);
+            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 13);
+            this.label3.Size = new System.Drawing.Size(0, 25);
             this.label3.TabIndex = 4;
             // 
             // passwordTextfieldLogin
             // 
-            this.passwordTextfieldLogin.Location = new System.Drawing.Point(54, 235);
+            this.passwordTextfieldLogin.Location = new System.Drawing.Point(99, 434);
+            this.passwordTextfieldLogin.Margin = new System.Windows.Forms.Padding(6);
             this.passwordTextfieldLogin.Name = "passwordTextfieldLogin";
             this.passwordTextfieldLogin.PasswordChar = '*';
-            this.passwordTextfieldLogin.Size = new System.Drawing.Size(318, 20);
+            this.passwordTextfieldLogin.Size = new System.Drawing.Size(580, 29);
             this.passwordTextfieldLogin.TabIndex = 3;
             // 
             // usernameTextfieldLogin
             // 
-            this.usernameTextfieldLogin.Location = new System.Drawing.Point(54, 186);
+            this.usernameTextfieldLogin.Location = new System.Drawing.Point(99, 343);
+            this.usernameTextfieldLogin.Margin = new System.Windows.Forms.Padding(6);
             this.usernameTextfieldLogin.Name = "usernameTextfieldLogin";
-            this.usernameTextfieldLogin.Size = new System.Drawing.Size(318, 20);
+            this.usernameTextfieldLogin.Size = new System.Drawing.Size(580, 29);
             this.usernameTextfieldLogin.TabIndex = 1;
             // 
             // passwordLabelLoginTab
             // 
             this.passwordLabelLoginTab.AutoSize = true;
-            this.passwordLabelLoginTab.Location = new System.Drawing.Point(51, 219);
+            this.passwordLabelLoginTab.Location = new System.Drawing.Point(94, 404);
+            this.passwordLabelLoginTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.passwordLabelLoginTab.Name = "passwordLabelLoginTab";
-            this.passwordLabelLoginTab.Size = new System.Drawing.Size(54, 13);
+            this.passwordLabelLoginTab.Size = new System.Drawing.Size(100, 25);
             this.passwordLabelLoginTab.TabIndex = 2;
             this.passwordLabelLoginTab.Text = "Lösenord:";
             // 
             // usernameLabelLoginTab
             // 
             this.usernameLabelLoginTab.AutoSize = true;
-            this.usernameLabelLoginTab.Location = new System.Drawing.Point(51, 170);
+            this.usernameLabelLoginTab.Location = new System.Drawing.Point(94, 314);
+            this.usernameLabelLoginTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.usernameLabelLoginTab.Name = "usernameLabelLoginTab";
-            this.usernameLabelLoginTab.Size = new System.Drawing.Size(82, 13);
+            this.usernameLabelLoginTab.Size = new System.Drawing.Size(152, 25);
             this.usernameLabelLoginTab.TabIndex = 0;
             this.usernameLabelLoginTab.Text = "Användarnamn:";
             // 
             // roomBookTab
             // 
-            this.roomBookTab.Controls.Add(this.roomBookingResponseLabel);
+            this.roomBookTab.Controls.Add(this.freeTextSearchLabel);
             this.roomBookTab.Controls.Add(this.clearFiltersButtonRoomBookingTab);
             this.roomBookTab.Controls.Add(this.roomHolder);
             this.roomBookTab.Controls.Add(this.freeTextFilterTextbox);
@@ -366,28 +383,31 @@ namespace Termin4CSharp.View
             this.roomBookTab.Controls.Add(this.buildingFilterBox);
             this.roomBookTab.Controls.Add(this.toDateLabelRoomBookingTab);
             this.roomBookTab.Controls.Add(this.onDateRoomBookingDatePicker);
-            this.roomBookTab.Location = new System.Drawing.Point(4, 22);
+            this.roomBookTab.Location = new System.Drawing.Point(4, 33);
+            this.roomBookTab.Margin = new System.Windows.Forms.Padding(6);
             this.roomBookTab.Name = "roomBookTab";
-            this.roomBookTab.Padding = new System.Windows.Forms.Padding(3);
-            this.roomBookTab.Size = new System.Drawing.Size(1298, 665);
+            this.roomBookTab.Padding = new System.Windows.Forms.Padding(6);
+            this.roomBookTab.Size = new System.Drawing.Size(2386, 1239);
             this.roomBookTab.TabIndex = 1;
             this.roomBookTab.Text = "Boka rum";
             this.roomBookTab.UseVisualStyleBackColor = true;
             this.roomBookTab.Enter += new System.EventHandler(this.tabPage5_GotFocus);
             // 
-            // roomBookingResponseLabel
+            // freeTextSearchLabel
             // 
-            this.roomBookingResponseLabel.AutoSize = true;
-            this.roomBookingResponseLabel.Location = new System.Drawing.Point(1096, 41);
-            this.roomBookingResponseLabel.Name = "roomBookingResponseLabel";
-            this.roomBookingResponseLabel.Size = new System.Drawing.Size(0, 13);
-            this.roomBookingResponseLabel.TabIndex = 23;
+            this.freeTextSearchLabel.AutoSize = true;
+            this.freeTextSearchLabel.Location = new System.Drawing.Point(16, 122);
+            this.freeTextSearchLabel.Name = "freeTextSearchLabel";
+            this.freeTextSearchLabel.Size = new System.Drawing.Size(101, 25);
+            this.freeTextSearchLabel.TabIndex = 24;
+            this.freeTextSearchLabel.Text = "Fritext sök";
             // 
             // clearFiltersButtonRoomBookingTab
             // 
-            this.clearFiltersButtonRoomBookingTab.Location = new System.Drawing.Point(6, 376);
+            this.clearFiltersButtonRoomBookingTab.Location = new System.Drawing.Point(11, 694);
+            this.clearFiltersButtonRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
             this.clearFiltersButtonRoomBookingTab.Name = "clearFiltersButtonRoomBookingTab";
-            this.clearFiltersButtonRoomBookingTab.Size = new System.Drawing.Size(120, 23);
+            this.clearFiltersButtonRoomBookingTab.Size = new System.Drawing.Size(220, 42);
             this.clearFiltersButtonRoomBookingTab.TabIndex = 21;
             this.clearFiltersButtonRoomBookingTab.Text = "Rensa filter";
             this.clearFiltersButtonRoomBookingTab.UseVisualStyleBackColor = true;
@@ -456,12 +476,12 @@ namespace Termin4CSharp.View
             this.olvColumn23,
             this.olvColumn24});
             this.roomHolder.Cursor = System.Windows.Forms.Cursors.Default;
-            this.roomHolder.Location = new System.Drawing.Point(132, 82);
-            this.roomHolder.Margin = new System.Windows.Forms.Padding(2);
+            this.roomHolder.Location = new System.Drawing.Point(242, 61);
+            this.roomHolder.Margin = new System.Windows.Forms.Padding(4);
             this.roomHolder.Name = "roomHolder";
             this.roomHolder.SelectedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.roomHolder.ShowGroups = false;
-            this.roomHolder.Size = new System.Drawing.Size(1158, 552);
+            this.roomHolder.Size = new System.Drawing.Size(2140, 1106);
             this.roomHolder.TabIndex = 22;
             this.roomHolder.UseCellFormatEvents = true;
             this.roomHolder.UseCompatibleStateImageBehavior = false;
@@ -494,144 +514,171 @@ namespace Termin4CSharp.View
             this.olvColumn1.ButtonPadding = new System.Drawing.Size(1, 1);
             this.olvColumn1.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn1.Text = "00:00";
+            this.olvColumn1.Width = 40;
             // 
             // olvColumn2
             // 
             this.olvColumn2.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn2.Text = "01:00";
+            this.olvColumn2.Width = 40;
             // 
             // olvColumn3
             // 
             this.olvColumn3.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn3.Text = "02:00";
+            this.olvColumn3.Width = 40;
             // 
             // olvColumn4
             // 
             this.olvColumn4.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn4.Text = "03:00";
+            this.olvColumn4.Width = 40;
             // 
             // olvColumn5
             // 
             this.olvColumn5.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn5.Text = "04:00";
+            this.olvColumn5.Width = 40;
             // 
             // olvColumn6
             // 
             this.olvColumn6.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn6.Text = "05:00";
+            this.olvColumn6.Width = 40;
             // 
             // olvColumn7
             // 
             this.olvColumn7.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn7.Text = "06:00";
+            this.olvColumn7.Width = 40;
             // 
             // olvColumn8
             // 
             this.olvColumn8.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn8.Text = "07:00";
+            this.olvColumn8.Width = 40;
             // 
             // olvColumn9
             // 
             this.olvColumn9.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn9.Text = "08:00";
+            this.olvColumn9.Width = 40;
             // 
             // olvColumn10
             // 
             this.olvColumn10.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn10.Text = "09:00";
+            this.olvColumn10.Width = 40;
             // 
             // olvColumn11
             // 
             this.olvColumn11.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn11.Text = "10:00";
+            this.olvColumn11.Width = 40;
             // 
             // olvColumn12
             // 
             this.olvColumn12.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn12.Text = "11:00";
+            this.olvColumn12.Width = 40;
             // 
             // olvColumn13
             // 
             this.olvColumn13.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn13.Text = "12:00";
+            this.olvColumn13.Width = 40;
             // 
             // olvColumn14
             // 
             this.olvColumn14.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn14.Text = "13:00";
+            this.olvColumn14.Width = 40;
             // 
             // olvColumn15
             // 
             this.olvColumn15.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn15.Text = "14:00";
+            this.olvColumn15.Width = 40;
             // 
             // olvColumn16
             // 
             this.olvColumn16.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn16.Text = "15:00";
+            this.olvColumn16.Width = 40;
             // 
             // olvColumn17
             // 
             this.olvColumn17.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn17.Text = "16:00";
+            this.olvColumn17.Width = 40;
             // 
             // olvColumn18
             // 
             this.olvColumn18.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn18.Text = "17:00";
+            this.olvColumn18.Width = 40;
             // 
             // olvColumn19
             // 
             this.olvColumn19.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn19.Text = "18:00";
+            this.olvColumn19.Width = 40;
             // 
             // olvColumn20
             // 
             this.olvColumn20.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn20.Text = "19:00";
+            this.olvColumn20.Width = 40;
             // 
             // olvColumn21
             // 
             this.olvColumn21.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn21.Text = "20:00";
+            this.olvColumn21.Width = 40;
             // 
             // olvColumn22
             // 
             this.olvColumn22.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn22.Text = "21:00";
+            this.olvColumn22.Width = 40;
             // 
             // olvColumn23
             // 
             this.olvColumn23.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn23.Text = "22:00";
+            this.olvColumn23.Width = 40;
             // 
             // olvColumn24
             // 
             this.olvColumn24.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.olvColumn24.Text = "23:00";
+            this.olvColumn24.Width = 40;
             // 
             // freeTextFilterTextbox
             // 
-            this.freeTextFilterTextbox.Location = new System.Drawing.Point(9, 82);
+            this.freeTextFilterTextbox.Location = new System.Drawing.Point(17, 151);
+            this.freeTextFilterTextbox.Margin = new System.Windows.Forms.Padding(6);
             this.freeTextFilterTextbox.Name = "freeTextFilterTextbox";
-            this.freeTextFilterTextbox.Size = new System.Drawing.Size(117, 20);
+            this.freeTextFilterTextbox.Size = new System.Drawing.Size(211, 29);
             this.freeTextFilterTextbox.TabIndex = 8;
             this.freeTextFilterTextbox.TextChanged += new System.EventHandler(this.textBox3_TextChanged_1);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 407);
+            this.label11.Location = new System.Drawing.Point(11, 751);
+            this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(68, 13);
+            this.label11.Size = new System.Drawing.Size(126, 25);
             this.label11.TabIndex = 19;
             this.label11.Text = "Antal platser:";
             // 
             // capacityTrackbarRoomBookingTab
             // 
-            this.capacityTrackbarRoomBookingTab.Location = new System.Drawing.Point(6, 423);
+            this.capacityTrackbarRoomBookingTab.Location = new System.Drawing.Point(11, 781);
+            this.capacityTrackbarRoomBookingTab.Margin = new System.Windows.Forms.Padding(6);
             this.capacityTrackbarRoomBookingTab.Name = "capacityTrackbarRoomBookingTab";
-            this.capacityTrackbarRoomBookingTab.Size = new System.Drawing.Size(120, 45);
+            this.capacityTrackbarRoomBookingTab.Size = new System.Drawing.Size(220, 80);
             this.capacityTrackbarRoomBookingTab.TabIndex = 18;
             this.capacityTrackbarRoomBookingTab.Tag = "";
             this.capacityTrackbarRoomBookingTab.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -639,9 +686,10 @@ namespace Termin4CSharp.View
             // resourceLabelRoomBookingTab
             // 
             this.resourceLabelRoomBookingTab.AutoSize = true;
-            this.resourceLabelRoomBookingTab.Location = new System.Drawing.Point(6, 290);
+            this.resourceLabelRoomBookingTab.Location = new System.Drawing.Point(11, 535);
+            this.resourceLabelRoomBookingTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.resourceLabelRoomBookingTab.Name = "resourceLabelRoomBookingTab";
-            this.resourceLabelRoomBookingTab.Size = new System.Drawing.Size(52, 13);
+            this.resourceLabelRoomBookingTab.Size = new System.Drawing.Size(96, 25);
             this.resourceLabelRoomBookingTab.TabIndex = 16;
             this.resourceLabelRoomBookingTab.Text = "Resurser:";
             // 
@@ -651,19 +699,21 @@ namespace Termin4CSharp.View
             this.resourceFilterBox.Items.AddRange(new object[] {
             "Rullstolsanpassat",
             "Projektor"});
-            this.resourceFilterBox.Location = new System.Drawing.Point(6, 306);
+            this.resourceFilterBox.Location = new System.Drawing.Point(11, 565);
+            this.resourceFilterBox.Margin = new System.Windows.Forms.Padding(6);
             this.resourceFilterBox.Name = "resourceFilterBox";
             this.resourceFilterBox.ScrollAlwaysVisible = true;
-            this.resourceFilterBox.Size = new System.Drawing.Size(120, 34);
+            this.resourceFilterBox.Size = new System.Drawing.Size(217, 124);
             this.resourceFilterBox.TabIndex = 15;
             this.resourceFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.resourceFilterBox_ItemCheck);
             // 
             // roomLabelRoomBookingTab
             // 
             this.roomLabelRoomBookingTab.AutoSize = true;
-            this.roomLabelRoomBookingTab.Location = new System.Drawing.Point(6, 206);
+            this.roomLabelRoomBookingTab.Location = new System.Drawing.Point(11, 380);
+            this.roomLabelRoomBookingTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.roomLabelRoomBookingTab.Name = "roomLabelRoomBookingTab";
-            this.roomLabelRoomBookingTab.Size = new System.Drawing.Size(32, 13);
+            this.roomLabelRoomBookingTab.Size = new System.Drawing.Size(58, 25);
             this.roomLabelRoomBookingTab.TabIndex = 14;
             this.roomLabelRoomBookingTab.Text = "Rum:";
             // 
@@ -675,19 +725,21 @@ namespace Termin4CSharp.View
             "101",
             "102",
             "103"});
-            this.roomFilterBox.Location = new System.Drawing.Point(6, 222);
+            this.roomFilterBox.Location = new System.Drawing.Point(11, 410);
+            this.roomFilterBox.Margin = new System.Windows.Forms.Padding(6);
             this.roomFilterBox.Name = "roomFilterBox";
             this.roomFilterBox.ScrollAlwaysVisible = true;
-            this.roomFilterBox.Size = new System.Drawing.Size(120, 34);
+            this.roomFilterBox.Size = new System.Drawing.Size(217, 124);
             this.roomFilterBox.TabIndex = 11;
             this.roomFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.roomFilterBox_ItemCheck);
             // 
             // buildingLabelRoomBookingTab
             // 
             this.buildingLabelRoomBookingTab.AutoSize = true;
-            this.buildingLabelRoomBookingTab.Location = new System.Drawing.Point(6, 120);
+            this.buildingLabelRoomBookingTab.Location = new System.Drawing.Point(11, 222);
+            this.buildingLabelRoomBookingTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.buildingLabelRoomBookingTab.Name = "buildingLabelRoomBookingTab";
-            this.buildingLabelRoomBookingTab.Size = new System.Drawing.Size(61, 13);
+            this.buildingLabelRoomBookingTab.Size = new System.Drawing.Size(113, 25);
             this.buildingLabelRoomBookingTab.TabIndex = 10;
             this.buildingLabelRoomBookingTab.Text = "Byggnader:";
             // 
@@ -699,21 +751,33 @@ namespace Termin4CSharp.View
             "EC2",
             "EC3",
             "ALFA"});
-            this.buildingFilterBox.Location = new System.Drawing.Point(6, 136);
+            this.buildingFilterBox.Location = new System.Drawing.Point(11, 251);
+            this.buildingFilterBox.Margin = new System.Windows.Forms.Padding(6);
             this.buildingFilterBox.Name = "buildingFilterBox";
             this.buildingFilterBox.ScrollAlwaysVisible = true;
-            this.buildingFilterBox.Size = new System.Drawing.Size(120, 34);
+            this.buildingFilterBox.Size = new System.Drawing.Size(217, 124);
             this.buildingFilterBox.TabIndex = 9;
             this.buildingFilterBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.buildingFilterBox_ItemCheck);
             // 
             // toDateLabelRoomBookingTab
             // 
             this.toDateLabelRoomBookingTab.AutoSize = true;
-            this.toDateLabelRoomBookingTab.Location = new System.Drawing.Point(6, 17);
+            this.toDateLabelRoomBookingTab.Location = new System.Drawing.Point(11, 31);
+            this.toDateLabelRoomBookingTab.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.toDateLabelRoomBookingTab.Name = "toDateLabelRoomBookingTab";
-            this.toDateLabelRoomBookingTab.Size = new System.Drawing.Size(30, 13);
+            this.toDateLabelRoomBookingTab.Size = new System.Drawing.Size(54, 25);
             this.toDateLabelRoomBookingTab.TabIndex = 7;
             this.toDateLabelRoomBookingTab.Text = "Dag:";
+            // 
+            // onDateRoomBookingDatePicker
+            // 
+            this.onDateRoomBookingDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.onDateRoomBookingDatePicker.Location = new System.Drawing.Point(17, 61);
+            this.onDateRoomBookingDatePicker.Margin = new System.Windows.Forms.Padding(6);
+            this.onDateRoomBookingDatePicker.Name = "onDateRoomBookingDatePicker";
+            this.onDateRoomBookingDatePicker.Size = new System.Drawing.Size(214, 29);
+            this.onDateRoomBookingDatePicker.TabIndex = 5;
+            this.onDateRoomBookingDatePicker.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // adminTab
             // 
@@ -724,10 +788,11 @@ namespace Termin4CSharp.View
             this.adminTab.Controls.Add(this.createTypeBox);
             this.adminTab.Controls.Add(this.editArticleBox);
             this.adminTab.Controls.Add(this.editTypeBox);
-            this.adminTab.Location = new System.Drawing.Point(4, 22);
+            this.adminTab.Location = new System.Drawing.Point(4, 33);
+            this.adminTab.Margin = new System.Windows.Forms.Padding(6);
             this.adminTab.Name = "adminTab";
-            this.adminTab.Padding = new System.Windows.Forms.Padding(3);
-            this.adminTab.Size = new System.Drawing.Size(1298, 665);
+            this.adminTab.Padding = new System.Windows.Forms.Padding(6);
+            this.adminTab.Size = new System.Drawing.Size(2386, 1239);
             this.adminTab.TabIndex = 3;
             this.adminTab.Text = "Admin";
             this.adminTab.UseVisualStyleBackColor = true;
@@ -736,10 +801,10 @@ namespace Termin4CSharp.View
             // 
             this.createLabelAdminTab.AutoSize = true;
             this.createLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createLabelAdminTab.Location = new System.Drawing.Point(97, 153);
-            this.createLabelAdminTab.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.createLabelAdminTab.Location = new System.Drawing.Point(178, 282);
+            this.createLabelAdminTab.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.createLabelAdminTab.Name = "createLabelAdminTab";
-            this.createLabelAdminTab.Size = new System.Drawing.Size(62, 22);
+            this.createLabelAdminTab.Size = new System.Drawing.Size(108, 38);
             this.createLabelAdminTab.TabIndex = 8;
             this.createLabelAdminTab.Text = "Skapa";
             // 
@@ -747,18 +812,19 @@ namespace Termin4CSharp.View
             // 
             this.editLabelAdminTab.AutoSize = true;
             this.editLabelAdminTab.Font = new System.Drawing.Font("Helvetica Neue", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editLabelAdminTab.Location = new System.Drawing.Point(97, 63);
-            this.editLabelAdminTab.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.editLabelAdminTab.Location = new System.Drawing.Point(178, 116);
+            this.editLabelAdminTab.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.editLabelAdminTab.Name = "editLabelAdminTab";
-            this.editLabelAdminTab.Size = new System.Drawing.Size(67, 22);
+            this.editLabelAdminTab.Size = new System.Drawing.Size(115, 38);
             this.editLabelAdminTab.TabIndex = 7;
             this.editLabelAdminTab.Text = "Editera";
             // 
             // editObjectButton
             // 
-            this.editObjectButton.Location = new System.Drawing.Point(97, 116);
+            this.editObjectButton.Location = new System.Drawing.Point(178, 214);
+            this.editObjectButton.Margin = new System.Windows.Forms.Padding(6);
             this.editObjectButton.Name = "editObjectButton";
-            this.editObjectButton.Size = new System.Drawing.Size(121, 23);
+            this.editObjectButton.Size = new System.Drawing.Size(222, 42);
             this.editObjectButton.TabIndex = 6;
             this.editObjectButton.Text = "Editera";
             this.editObjectButton.UseVisualStyleBackColor = true;
@@ -766,9 +832,10 @@ namespace Termin4CSharp.View
             // 
             // createObjectButton
             // 
-            this.createObjectButton.Location = new System.Drawing.Point(97, 205);
+            this.createObjectButton.Location = new System.Drawing.Point(178, 378);
+            this.createObjectButton.Margin = new System.Windows.Forms.Padding(6);
             this.createObjectButton.Name = "createObjectButton";
-            this.createObjectButton.Size = new System.Drawing.Size(121, 23);
+            this.createObjectButton.Size = new System.Drawing.Size(222, 42);
             this.createObjectButton.TabIndex = 5;
             this.createObjectButton.Text = "Skapa";
             this.createObjectButton.UseVisualStyleBackColor = true;
@@ -778,18 +845,20 @@ namespace Termin4CSharp.View
             // 
             this.createTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.createTypeBox.FormattingEnabled = true;
-            this.createTypeBox.Location = new System.Drawing.Point(97, 178);
+            this.createTypeBox.Location = new System.Drawing.Point(178, 329);
+            this.createTypeBox.Margin = new System.Windows.Forms.Padding(6);
             this.createTypeBox.Name = "createTypeBox";
-            this.createTypeBox.Size = new System.Drawing.Size(121, 21);
+            this.createTypeBox.Size = new System.Drawing.Size(219, 32);
             this.createTypeBox.TabIndex = 4;
             // 
             // editArticleBox
             // 
             this.editArticleBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.editArticleBox.FormattingEnabled = true;
-            this.editArticleBox.Location = new System.Drawing.Point(225, 88);
+            this.editArticleBox.Location = new System.Drawing.Point(413, 162);
+            this.editArticleBox.Margin = new System.Windows.Forms.Padding(6);
             this.editArticleBox.Name = "editArticleBox";
-            this.editArticleBox.Size = new System.Drawing.Size(425, 21);
+            this.editArticleBox.Size = new System.Drawing.Size(776, 32);
             this.editArticleBox.TabIndex = 2;
             // 
             // editTypeBox
@@ -802,19 +871,33 @@ namespace Termin4CSharp.View
             "Person",
             "Resurs",
             "Person"});
-            this.editTypeBox.Location = new System.Drawing.Point(97, 88);
+            this.editTypeBox.Location = new System.Drawing.Point(178, 162);
+            this.editTypeBox.Margin = new System.Windows.Forms.Padding(6);
             this.editTypeBox.Name = "editTypeBox";
-            this.editTypeBox.Size = new System.Drawing.Size(121, 21);
+            this.editTypeBox.Size = new System.Drawing.Size(219, 32);
             this.editTypeBox.TabIndex = 1;
             this.editTypeBox.SelectedIndexChanged += new System.EventHandler(this.editTypeBox_SelectedIndexChanged);
             // 
+            // roomBookingResponseLabel
+            // 
+            this.roomBookingResponseLabel.AutoSize = true;
+            this.roomBookingResponseLabel.Location = new System.Drawing.Point(188, 23);
+            this.roomBookingResponseLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.roomBookingResponseLabel.Name = "roomBookingResponseLabel";
+            this.roomBookingResponseLabel.Size = new System.Drawing.Size(44, 25);
+            this.roomBookingResponseLabel.TabIndex = 23;
+            this.roomBookingResponseLabel.Text = "asd";
+            // 
             // menuStrip2
             // 
+            this.menuStrip2.BackColor = System.Drawing.Color.White;
+            this.menuStrip2.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.arkivToolStripMenuItem});
-            this.menuStrip2.Location = new System.Drawing.Point(3, 3);
+            this.menuStrip2.Location = new System.Drawing.Point(6, 6);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1315, 24);
+            this.menuStrip2.Padding = new System.Windows.Forms.Padding(11, 4, 0, 4);
+            this.menuStrip2.Size = new System.Drawing.Size(2417, 42);
             this.menuStrip2.TabIndex = 4;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -824,29 +907,30 @@ namespace Termin4CSharp.View
             this.myProfileToolStripMenuItem,
             this.logOutToolStripMenuItem});
             this.arkivToolStripMenuItem.Name = "arkivToolStripMenuItem";
-            this.arkivToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.arkivToolStripMenuItem.Size = new System.Drawing.Size(73, 34);
             this.arkivToolStripMenuItem.Text = "Profil";
             // 
             // myProfileToolStripMenuItem
             // 
             this.myProfileToolStripMenuItem.Name = "myProfileToolStripMenuItem";
-            this.myProfileToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.myProfileToolStripMenuItem.Size = new System.Drawing.Size(195, 34);
             this.myProfileToolStripMenuItem.Text = "Min profil";
             this.myProfileToolStripMenuItem.Click += new System.EventHandler(this.myProfileToolStripMenuItem_Click);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(195, 34);
             this.logOutToolStripMenuItem.Text = "Logga ut";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
             // tabWS
             // 
-            this.tabWS.Location = new System.Drawing.Point(4, 22);
+            this.tabWS.Location = new System.Drawing.Point(4, 33);
+            this.tabWS.Margin = new System.Windows.Forms.Padding(6);
             this.tabWS.Name = "tabWS";
-            this.tabWS.Padding = new System.Windows.Forms.Padding(3);
-            this.tabWS.Size = new System.Drawing.Size(1321, 687);
+            this.tabWS.Padding = new System.Windows.Forms.Padding(6);
+            this.tabWS.Size = new System.Drawing.Size(2429, 1279);
             this.tabWS.TabIndex = 1;
             this.tabWS.Text = "Webbservice";
             this.tabWS.UseVisualStyleBackColor = true;
@@ -858,10 +942,11 @@ namespace Termin4CSharp.View
             this.tabERP.Controls.Add(this.searchERPButton);
             this.tabERP.Controls.Add(this.comboBox1);
             this.tabERP.Controls.Add(this.listView2);
-            this.tabERP.Location = new System.Drawing.Point(4, 22);
+            this.tabERP.Location = new System.Drawing.Point(4, 33);
+            this.tabERP.Margin = new System.Windows.Forms.Padding(6);
             this.tabERP.Name = "tabERP";
-            this.tabERP.Padding = new System.Windows.Forms.Padding(3);
-            this.tabERP.Size = new System.Drawing.Size(1321, 687);
+            this.tabERP.Padding = new System.Windows.Forms.Padding(6);
+            this.tabERP.Size = new System.Drawing.Size(2429, 1279);
             this.tabERP.TabIndex = 2;
             this.tabERP.Text = "ERP";
             this.tabERP.UseVisualStyleBackColor = true;
@@ -870,17 +955,19 @@ namespace Termin4CSharp.View
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(29, 24);
+            this.label12.Location = new System.Drawing.Point(53, 44);
+            this.label12.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(439, 50);
+            this.label12.Size = new System.Drawing.Size(759, 84);
             this.label12.TabIndex = 25;
             this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
             // 
             // searchERPButton
             // 
-            this.searchERPButton.Location = new System.Drawing.Point(67, 140);
+            this.searchERPButton.Location = new System.Drawing.Point(123, 258);
+            this.searchERPButton.Margin = new System.Windows.Forms.Padding(6);
             this.searchERPButton.Name = "searchERPButton";
-            this.searchERPButton.Size = new System.Drawing.Size(75, 23);
+            this.searchERPButton.Size = new System.Drawing.Size(138, 42);
             this.searchERPButton.TabIndex = 27;
             this.searchERPButton.Text = "Visa";
             // 
@@ -900,17 +987,19 @@ namespace Termin4CSharp.View
             "METADATA - Tabeller2",
             "METADATA - Kolumner",
             "METADATA - Kolumner2"});
-            this.comboBox1.Location = new System.Drawing.Point(67, 116);
+            this.comboBox1.Location = new System.Drawing.Point(123, 214);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(6);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(297, 21);
+            this.comboBox1.Size = new System.Drawing.Size(541, 32);
             this.comboBox1.TabIndex = 28;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // listView2
             // 
-            this.listView2.Location = new System.Drawing.Point(67, 170);
+            this.listView2.Location = new System.Drawing.Point(123, 314);
+            this.listView2.Margin = new System.Windows.Forms.Padding(6);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(863, 332);
+            this.listView2.Size = new System.Drawing.Size(1579, 610);
             this.listView2.TabIndex = 30;
             this.listView2.UseCompatibleStateImageBehavior = false;
             // 
@@ -936,30 +1025,35 @@ namespace Termin4CSharp.View
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1313, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(11, 4, 0, 4);
+            this.menuStrip1.Size = new System.Drawing.Size(2407, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // onDateRoomBookingDatePicker
+            // responseLabelPK
             // 
-            this.onDateRoomBookingDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.onDateRoomBookingDatePicker.Location = new System.Drawing.Point(9, 33);
-            this.onDateRoomBookingDatePicker.Name = "onDateRoomBookingDatePicker";
-            this.onDateRoomBookingDatePicker.Size = new System.Drawing.Size(200, 20);
-            this.onDateRoomBookingDatePicker.TabIndex = 5;
-            this.onDateRoomBookingDatePicker.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            this.responseLabelPK.AutoSize = true;
+            this.responseLabelPK.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.142858F);
+            this.responseLabelPK.Location = new System.Drawing.Point(1526, 23);
+            this.responseLabelPK.Name = "responseLabelPK";
+            this.responseLabelPK.Size = new System.Drawing.Size(86, 26);
+            this.responseLabelPK.TabIndex = 24;
+            this.responseLabelPK.Text = "Status: ";
             // 
             // GUIMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1313, 571);
+            this.ClientSize = new System.Drawing.Size(2407, 1054);
             this.Controls.Add(this.rootContainer);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "GUIMain";
             this.Text = "Lunds universitet";
             this.tabPage3.ResumeLayout(false);
@@ -1085,5 +1179,7 @@ namespace Termin4CSharp.View
         private ToolStripMenuItem logOutToolStripMenuItem;
         private Label roomBookingResponseLabel;
         private DateTimePicker onDateRoomBookingDatePicker;
+        private Label freeTextSearchLabel;
+        private Label responseLabelPK;
     }
 }

@@ -359,8 +359,9 @@ namespace Termin4CSharp
                 sqlBuilder.Append(" where ro.bname like @@freeText0 " +
                 " or ro.id like @@freeText1 " +
                 " or re.id like (select innerRes.id from Resource innerRes where type in (@@freeText3)) " +
-                " or ro.floor like @@freeText4 ");
-                for (int i = 0; i < 5; i++)
+                " or ro.floor like @@freeText4 " + 
+                " or ro.rtype like @@freeText5");
+                for (int i = 0; i < 6; i++)
                     whereParams["freeText" + i] = freeText;
                 whereCondition = WhereCondition.LIKE;
             }
@@ -551,6 +552,9 @@ namespace Termin4CSharp
                     case "resources":
                         retName = "Tillgängliga resurser";
                         break;
+                    case "rtype":
+                        retName = "Rumtyp";
+                        break;
                 }
             }
             else if (model is Building)
@@ -613,6 +617,9 @@ namespace Termin4CSharp
                         break;
                     case "room":
                         retName = "Rum";
+                        break;
+                    case "rtype":
+                        retName = "Rumtyp";
                         break;
                 }
             }

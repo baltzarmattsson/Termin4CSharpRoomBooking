@@ -40,28 +40,27 @@ namespace Termin4CSharp.View
         private void InitializeComponent()
         {
             this.flowLayoutControlHolder = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutControlHolder.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutControlHolder
             // 
-            //this.flowLayoutControlHolder.Controls.Add(this.objListView);
             this.flowLayoutControlHolder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutControlHolder.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutControlHolder.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutControlHolder.Name = "flowLayoutControlHolder";
-            this.flowLayoutControlHolder.Size = new System.Drawing.Size(1411, 1500);
+            this.flowLayoutControlHolder.Size = new System.Drawing.Size(1411, 1548);
             this.flowLayoutControlHolder.TabIndex = 0;
             // 
             // EditView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1411, 1500);
+            this.ClientSize = new System.Drawing.Size(1411, 1548);
             this.Controls.Add(this.flowLayoutControlHolder);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "EditView";
             this.Text = "EditView";
-            this.flowLayoutControlHolder.ResumeLayout(false);
-            //((System.ComponentModel.ISupportInitialize)(this.objListView)).EndInit();
             this.ResumeLayout(false);
 
         }

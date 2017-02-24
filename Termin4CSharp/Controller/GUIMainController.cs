@@ -37,8 +37,23 @@ namespace Termin4CSharp.Controller
             OnDateFilter = DateTime.Now;
 
             this.LoginUser("1", "1");
+            this.AutosizeColumns();
+            this.HandleAdminTabBasedOnUserRole();
         }
-        public void LoginUser(string username, string password)
+
+        private void HandleAdminTabBasedOnUserRole()
+        {
+            if (this.LoggedInUser != null && this.LoggedInUser.RoleName != null)
+            {
+                this.GUIMain.SetAdminTabEnabled(this.LoggedInUser.RoleName.Equals("Admin"));
+            }
+            else
+            {
+                this.GUIMain.SetAdminTabEnabled(false);
+            }
+        }
+
+        private void LoginUser(string username, string password)
         {
             if (this.LoggedInUser != null)
                 this.LoggedInUser = null;
@@ -62,16 +77,50 @@ namespace Termin4CSharp.Controller
                     Role tempRoleObject = new Role(LoggedInUser.RoleName);
                     this.LoggedInUser.Role = dal.Get(tempRoleObject).First() as Role;
                 }
+                this.SetLoginControlsToStatus(false);
             } else
             {
-                Person p = new Person();
-                p.Id = "1";
-                dal.Add(p);
-                login = new Login("1", "1");
-                dal.Add(login);
-                this.LoginUser("1", "1");
+                //this.NotifyExceptionToView("Felaktig inloggning");
+
+                this.GUIMain.SetLoginResponseLabelText("Felaktig inloggning, vänligen försök igen");
+                // TEMP
+                //Person p = new Person();
+                //p.Id = "1";
+                //dal.Add(p);
+                //login = new Login("1", "1");
+                //dal.Add(login);
             }
         }
+
+        private void LogoutUser()
+        {
+            this.LoggedInUser = null;
+            this.GUIMain.SetFocusOnFirstTab();
+            this.GUIMain.SetLoginResponseLabelText("Utloggad");
+            this.GUIMain.UpdateRoomBookingLabel("");
+            this.GUIMain.SetAdminTabEnabled(false);
+            this.SetLoginControlsToStatus(true);
+
+        }
+
+        private void SetLoginControlsToStatus(bool enabled)
+        {
+            this.GUIMain.SetLoginControlsToStatus(enabled);
+        }
+
+        public void HandleLoginOrLogoutButtonClick(Button loginButton, string username, string password)
+        {
+            this.NotifyExceptionToView("");
+            if (loginButton.Text.Equals("Logga in"))
+            {
+                this.LoginUser(username, password);
+            }
+            else if (loginButton.Text.Equals("Logga ut"))
+            {
+                this.LogoutUser();
+            }
+        }
+
         public void LoadRooms(DateTime onDate)
         {
             DAL dal = new DAL(this);
@@ -139,6 +188,7 @@ namespace Termin4CSharp.Controller
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(OnDateFilter, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
+            //this.AutosizeColumns();
         }
 
         //private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
@@ -146,15 +196,16 @@ namespace Termin4CSharp.Controller
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e)
         {
 
+
+
+            DAL dal = new DAL(this);
+            //List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
+            List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(this.OnDateFilter, freeText: sender.Text);
+            this.ClearFilterSelections();
+            this.GUIMain.SetRooms(filteredRooms);
+
             ObjectListView roomHolder = this.GUIMain.GetRoomHolder();
             roomHolder.ModelFilter = TextMatchFilter.Contains(roomHolder, sender.Text);
-
-
-            //DAL dal = new DAL(this);
-            ////List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
-            //List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate()
-            //this.ClearFilterSelections();
-            //this.GUIMain.SetRooms(filteredRooms);
         }
 
         public void ClearFilterSelections()
@@ -164,6 +215,7 @@ namespace Termin4CSharp.Controller
 
         public void NotifyExceptionToView(string s)
         {
+            this.GUIMain.SetPKResponseLabelText(s);
         }
 
         public void HandleCellDoubleClick(object sender, CellClickEventArgs e)
@@ -193,11 +245,30 @@ namespace Termin4CSharp.Controller
                 }
                 else if (this.LoggedInUser == null)
                 {
-                    this.UpdateRoomBookingLabel("Vänligen logga in för att boka rum");
+                    this.NotifyExceptionToView("Vänligen logga in för att boka rum");
                 }
 
             }
 
+        }
+
+        private void AutosizeColumns()
+        {
+            foreach (ColumnHeader col in this.GUIMain.GetRoomHolder().Columns)
+            {
+                if (col.Index > 4)
+                    break;
+                //auto resize column width
+
+                int colWidthBeforeAutoResize = col.Width;
+                col.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                int colWidthAfterAutoResizeByHeader = col.Width;
+                col.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                int colWidthAfterAutoResizeByContent = col.Width;
+
+                if (colWidthAfterAutoResizeByHeader > colWidthAfterAutoResizeByContent)
+                    col.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
         }
 
         private void UpdateRoomBookingLabel(string text)
@@ -231,11 +302,7 @@ namespace Termin4CSharp.Controller
 
         public void HandleLogOUtMenuStripClick()
         {
-            this.LoggedInUser = null;
-            this.GUIMain.SetFocusOnFirstTab();
-            this.GUIMain.SetLoginResponseLabelText("Utloggad");
-            this.GUIMain.UpdateRoomBookingLabel("");
-            this.GUIMain.SetAdminTabEnabled(false);
+            this.LogoutUser();
         }
 
         public void HandleMyProfileMenuStripClick()

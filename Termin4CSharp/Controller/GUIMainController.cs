@@ -240,6 +240,8 @@ namespace Termin4CSharp.Controller
         {
             if (this.LoggedInUser != null)
             {
+                DAL dal = new DAL(this);
+                this.LoggedInUser = (Person)dal.Get(this.LoggedInUser).First();
                 EditView ev = new EditView(this.LoggedInUser, isExistingItemInDatabase: true, isMyProfileClick: true);
                 EditViewController editController = new EditViewController(ev);
                 ev.Show();

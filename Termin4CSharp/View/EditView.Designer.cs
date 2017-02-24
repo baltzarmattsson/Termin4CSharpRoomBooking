@@ -40,6 +40,7 @@ namespace Termin4CSharp.View
         private void InitializeComponent()
         {
             this.flowLayoutControlHolder = new System.Windows.Forms.FlowLayoutPanel();
+            //this.tableLayoutControlHolder;
             this.flowLayoutControlHolder.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,14 +50,14 @@ namespace Termin4CSharp.View
             this.flowLayoutControlHolder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutControlHolder.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutControlHolder.Name = "flowLayoutControlHolder";
-            this.flowLayoutControlHolder.Size = new System.Drawing.Size(1411, 765);
+            this.flowLayoutControlHolder.Size = new System.Drawing.Size(1411, 1500);
             this.flowLayoutControlHolder.TabIndex = 0;
             // 
             // EditView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1411, 765);
+            this.ClientSize = new System.Drawing.Size(1411, 1500);
             this.Controls.Add(this.flowLayoutControlHolder);
             this.Name = "EditView";
             this.Text = "EditView";
@@ -224,6 +225,12 @@ namespace Termin4CSharp.View
             // and put them in a ObjectListView with a button to edit and a button to delete the booking
             if (model is Person && IsExistingItemInDatabase)
             {
+                Label bookingListViewLabel = new Label();
+                bookingListViewLabel.Text = "Bokningar";
+                this.flowLayoutControlHolder.Controls.Add(bookingListViewLabel);
+                this.flowLayoutControlHolder.
+                //this.flowLayoutControlHolder.SetFlowBreak(bookingListViewLabel, true);
+
                 this.bookingListView = new BrightIdeasSoftware.ObjectListView();
                 this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
                 this.timestampColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -253,7 +260,7 @@ namespace Termin4CSharp.View
                     this.endTimeColumn });
                 this.bookingListView.Location = new System.Drawing.Point(3, 3);
                 this.bookingListView.Name = "objListView";
-                this.bookingListView.Size = new System.Drawing.Size(500, 500);
+                this.bookingListView.Size = new System.Drawing.Size(500, 250);
                 this.bookingListView.TabIndex = 0;
                 this.bookingListView.UseCompatibleStateImageBehavior = false;
                 this.bookingListView.View = System.Windows.Forms.View.Details;
@@ -298,6 +305,7 @@ namespace Termin4CSharp.View
                 this.bookingListView.SetObjects(this.Controller.GetBookingsForPerson((Person)model));
                 ((System.ComponentModel.ISupportInitialize)(this.bookingListView)).EndInit();
                 bookingListView.ShowGroups = false;
+                bookingListView.FullRowSelect = true;
             }
 
             // Adding responselabel

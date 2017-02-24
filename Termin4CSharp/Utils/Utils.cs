@@ -518,6 +518,9 @@ namespace Termin4CSharp
                         break;
                     case "email":
                         break;
+                    case "role":
+                        retName = "Behörighetsroll";
+                        break;
                 }
             }
             else if (model is Room)

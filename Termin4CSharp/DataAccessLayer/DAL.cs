@@ -192,9 +192,11 @@ namespace Termin4CSharp.DataAccessLayer
         }
 
 
-        public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0)
+        //public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0)
+        public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, HashSet<string> buildingNames = null, HashSet<string> roomIDs = null, HashSet<string> resourceNames = null, string freeText = null, int minCapacity = 0)
         {
 
+            //SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
             var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();

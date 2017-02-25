@@ -56,7 +56,7 @@ namespace Termin4CSharp.View
 
         public void ClearFilterSelections()
         {
-
+            this.capacityTrackbarRoomBookingTab.Value = 0;
             CheckedListBox[] filterBoxes = { this.buildingFilterBox, this.resourceFilterBox, this.roomFilterBox };
             foreach (var fbox in filterBoxes)
             {

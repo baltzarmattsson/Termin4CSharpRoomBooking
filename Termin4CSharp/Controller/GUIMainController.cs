@@ -19,7 +19,8 @@ namespace Termin4CSharp.Controller
     {
 
         public GUIMain GUIMain { get; set; }
-        private List<string> buildingFilters, roomFilters, resourceFilters;
+        //private List<string> buildingFilters, roomFilters, resourceFilters;
+        private HashSet<string> buildingFilters, roomFilters, resourceFilters;
         public DateTime OnDateFilter { get; private set; }
 
         public Person LoggedInUser { get; private set; }
@@ -32,9 +33,9 @@ namespace Termin4CSharp.Controller
             this.GUIMain.Controller = this;
             this.LoadRooms(DateTime.Now);
             this.LoadFilters();
-            buildingFilters = new List<string>();
-            roomFilters = new List<string>();
-            resourceFilters = new List<string>();
+            buildingFilters = new HashSet<string>();
+            roomFilters = new HashSet<string>();
+            resourceFilters = new HashSet<string>();
             OnDateFilter = DateTime.Now;
 
             this.LoginUser("1", "1");
@@ -155,7 +156,7 @@ namespace Termin4CSharp.Controller
         public void HandleFilterChange(FilterControl filterControl, object sender, EventArgs e)
         {
 
-            List<string> selectedList = null;
+            HashSet<string> selectedList = null;
             switch (filterControl)
             {
                 case FilterControl.BUILDING_BOX:
@@ -181,7 +182,13 @@ namespace Termin4CSharp.Controller
                 if (((ItemCheckEventArgs)e).NewValue == CheckState.Checked)
                     selectedList.Add(selval);
                 else if (((ItemCheckEventArgs)e).NewValue == CheckState.Unchecked)
+                {
+                    int beforeremove = selectedList.Count;
                     selectedList.Remove(selval);
+                    int afterremove = selectedList.Count;
+                    Console.WriteLine();
+                }
+                Console.WriteLine(selectedList);
             }
 
             // TODO skapa en thread som väntar 0.5s tills man söker och stackar inte sökningar på varandra
@@ -213,6 +220,10 @@ namespace Termin4CSharp.Controller
 
         public void ClearFilterSelections()
         {
+            this.buildingFilters.Clear();
+            this.resourceFilters.Clear();
+            this.roomFilters.Clear();
+            this.MinCapacity = 0;
             this.GUIMain.ClearFilterSelections();
         }
 

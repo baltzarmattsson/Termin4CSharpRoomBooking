@@ -332,7 +332,7 @@ namespace Termin4CSharp
             return cmd;
         }
 
-        public static SqlCommand FindRoomsWithFilters(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0)
+        public static SqlCommand FindRoomsWithFilters(HashSet<string> buildingNames, HashSet<string> roomIDs, HashSet<string> resourceNames, string freeText = null, int minCapacity = 0)
         {
 
             StringBuilder sqlBuilder = new StringBuilder();

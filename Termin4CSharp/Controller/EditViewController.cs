@@ -65,14 +65,16 @@ namespace Termin4CSharp.Controller
                 affectedRows = dal.Add(model);
                 dbMethod = "tillagd";
             }
+            string displayName = Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name);
+            displayName = displayName[0].ToString().ToUpper() + displayName.Substring(1);
             if (affectedRows > 0)
             {
-                this.UpdateResponseLabel(string.Format("{0} {1}", Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name), dbMethod));
+                this.UpdateResponseLabel(string.Format("{0} {1}", displayName, dbMethod));
                 this.isExistingObjectInDatabase = true;
             }
             else if (affectedRows != -1)
             { //-1 is error from DAL
-                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name), dbMethod));
+                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", displayName, dbMethod));
             }
             return affectedRows;
         }

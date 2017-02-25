@@ -623,18 +623,6 @@ namespace Termin4CSharp
                         break;
                 }
             }
-            else if (model is Institution)
-            {
-                switch (key.ToLower())
-                {
-                    case "modeleqv":
-                        retName = "En institution";
-                        break;
-                    case "name":
-                        retName = "Namn";
-                        break;
-                }
-            }
             else if (model is Resource)
             {
                 switch (key.ToLower())
@@ -647,18 +635,6 @@ namespace Termin4CSharp
                         break;
                     case "type":
                         retName = "Resursnamn";
-                        break;
-                }
-            }
-            else if (model is Institution_Building)
-            {
-                switch (key.ToLower())
-                {
-                    case "modeleqv":
-                        break;
-                    case "bname":
-                        break;
-                    case "iname":
                         break;
                 }
             }
@@ -793,12 +769,8 @@ namespace Termin4CSharp
                 retTable = DbFields.BuildingTable;
             else if (model is Booking)
                 retTable = DbFields.BookingTable;
-            else if (model is Institution)
-                retTable = DbFields.InstitutionTable;
             else if (model is Resource)
                 retTable = DbFields.ResourceTable;
-            else if (model is Institution_Building)
-                retTable = DbFields.InstBuildTable;
             else if (model is Room_Resource)
                 retTable = DbFields.RoomResourceTable;
             else if (model is Role)

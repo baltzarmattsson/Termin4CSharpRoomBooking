@@ -79,7 +79,6 @@
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\Building.cs" />
     <Compile Include="Model\DbHelpers\RoomAndOpeningHoursHolder.cs" />
-    <Compile Include="Model\Institution_Building.cs" />
     <Compile Include="Model\Login.cs" />
     <Compile Include="Model\ModelEnums.cs" />
     <Compile Include="Model\Role.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Model\Room_Resource.cs" />
     <Compile Include="Model\IController.cs" />
     <Compile Include="Model\IModel.cs" />
-    <Compile Include="Model\Institution.cs" />
     <Compile Include="Model\IView.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Resource.cs" />

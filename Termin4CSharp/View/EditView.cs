@@ -34,9 +34,9 @@ namespace Termin4CSharp.View
         public void SetResponseLabel(string message, bool concat = false)
         {
             if (concat)
-                this.responseLabel.Text = message;
-            else
                 this.responseLabel.Text += message;
+            else
+                this.responseLabel.Text = message;
         }
 
         private void saveButton_Click(object sender, EventArgs e)

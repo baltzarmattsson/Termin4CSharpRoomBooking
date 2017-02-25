@@ -46,38 +46,6 @@ namespace Termin4CSharp.Controller
 
             this.EditView.InitializeLoad();
         }
-
-        public int Save(IModel model, Dictionary<string, object> oldIdentifyingAttributes = null)
-        {
-            DAL dal = new DAL(this);
-            int affectedRows = 0;
-            string dbMethod = "";
-            if (isExistingObjectInDatabase)
-            {
-                if (oldIdentifyingAttributes != null && oldIdentifyingAttributes.Count > 0)
-                    affectedRows = dal.Update(model, oldIdentifyingAttributes);
-                else
-                    affectedRows = dal.Update(model);
-                dbMethod = "uppdaterad";
-            }
-            else
-            {
-                affectedRows = dal.Add(model);
-                dbMethod = "tillagd";
-            }
-            string displayName = Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name);
-            displayName = displayName[0].ToString().ToUpper() + displayName.Substring(1);
-            if (affectedRows > 0)
-            {
-                this.UpdateResponseLabel(string.Format("{0} {1}", displayName, dbMethod));
-                this.isExistingObjectInDatabase = true;
-            }
-            else if (affectedRows != -1)
-            { //-1 is error from DAL
-                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", displayName, dbMethod));
-            }
-            return affectedRows;
-        }
         public void Close()
         {
             EditView.Close();
@@ -145,8 +113,8 @@ namespace Termin4CSharp.Controller
                             }
                             if (isExistingObjectInDatabase == false)
                             {
-                                DAL dal = new DAL(this);
-                                bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
+                                DAL d = new DAL(this);
+                                bool isBookable = d.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
                                 if (isBookable == false)
                                 {
                                     this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
@@ -163,7 +131,38 @@ namespace Termin4CSharp.Controller
                         }
 
 
-                        int affectedRows = this.Save(model, oldIdentifyingAttributes);
+                        // SAVING OBJECT
+
+                        DAL dal = new DAL(this);
+                        int affectedRows = 0;
+                        string dbMethod = "";
+                        if (isExistingObjectInDatabase)
+                        {
+                            if (oldIdentifyingAttributes != null && oldIdentifyingAttributes.Count > 0)
+                                affectedRows = dal.Update(model, oldIdentifyingAttributes);
+                            else
+                                affectedRows = dal.Update(model);
+                            dbMethod = "uppdaterad";
+                        }
+                        else
+                        {
+                            affectedRows = dal.Add(model);
+                            dbMethod = "tillagd";
+                        }
+                        string displayName = Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name);
+                        displayName = displayName[0].ToString().ToUpper() + displayName.Substring(1);
+                        if (affectedRows > 0)
+                        {
+                            this.UpdateResponseLabel(string.Format("{0} {1}", displayName, dbMethod));
+                            this.isExistingObjectInDatabase = true;
+                        }
+                        else if (affectedRows != -1)
+                        { //-1 is error from DAL
+                            this.UpdateResponseLabel(string.Format("Ingen {0} {1}", displayName, dbMethod));
+                        }
+
+                        // END OF SAVING
+
                         if (affectedRows > 0 && this.ViewHasListOfIModels)
                         {
                             // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
@@ -196,7 +195,7 @@ namespace Termin4CSharp.Controller
                                     doOrdinaryAddAndDelete = true;
                                 }
 
-                                DAL dal = new DAL(this);
+                                dal = new DAL(this);
                                 int added = 0, updatedOrRemoved = 0;
 
                                 if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any()))
@@ -334,9 +333,7 @@ namespace Termin4CSharp.Controller
 
             // If the lists arent initialized, initialize them
             if (this.changedStatusOnReferencingModels.ContainsKey(modelType) == false)
-            {
                 this.changedStatusOnReferencingModels[modelType] = new Dictionary<IModel, bool>();
-            }
             Dictionary<IModel, bool> changedList = this.changedStatusOnReferencingModels[modelType];
             this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
 

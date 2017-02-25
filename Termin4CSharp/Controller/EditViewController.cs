@@ -122,16 +122,26 @@ namespace Termin4CSharp.Controller
 
                         //Special case for booking, since it cannot overlap another booking
                         //But if it's an update to an existing item, we're not doing the check
-                        if (model is Booking && isExistingObjectInDatabase == false)
+                        if (model is Booking)
                         {
-                            DAL dal = new DAL(this);
                             Booking parsedBooking = (Booking)model;
-                            bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
-                            if (isBookable == false)
+                            if (isExistingObjectInDatabase == false)
                             {
-                                this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
-                                return;
+                                DAL dal = new DAL(this);
+                                bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
+                                if (isBookable == false)
+                                {
+                                    this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
+                                    return;
+                                }
+                                
                             }
+                            DateTime startDate = parsedBooking.Start_time;
+                            DateTime endDate = parsedBooking.End_time;
+                            startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, 0, 0);
+                            endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, endDate.Hour, 0, 0);
+                            ((Booking)model).Start_time = startDate;
+                            ((Booking)model).End_time = endDate;
                         }
 
 

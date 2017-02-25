@@ -29,7 +29,7 @@ namespace Termin4CSharp.DataAccessLayer
         {
             try
             {
-                SqlConnection conn = new SqlConnection(URL2);
+                SqlConnection conn = new SqlConnection(URL);
                 conn.Open();
                 //Console.WriteLine("Connection open!"); 
                 //conn.Close(); 

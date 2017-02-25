@@ -717,8 +717,12 @@ namespace Termin4CSharp
             {
                 if (key.Equals("building"))
                     keyEqv = "BName";
+                else if (key.Equals("bname"))
+                    keyEqv = "Building";
                 else if (key.Equals("roomtype"))
                     keyEqv = "RType";
+                else if (key.Equals("rtype"))
+                    keyEqv = "RoomType";
 
             }
             // Booking
@@ -734,9 +738,12 @@ namespace Termin4CSharp
                     keyEqv = "Room";
             }
             // Login
-            else if (model is Login && key.Equals("person"))
+            else if (model is Login)
             {
-                keyEqv = "PersonId";
+                if (key.Equals("person"))
+                    keyEqv = "PersonId";
+                else if (key.Equals("personid"))
+                    keyEqv = "Person";
             }
             // Person
             else if (model is Person && key.Equals("role") || key.Equals("rolename"))

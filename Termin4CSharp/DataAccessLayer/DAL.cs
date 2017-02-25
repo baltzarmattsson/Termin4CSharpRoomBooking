@@ -106,6 +106,10 @@ namespace Termin4CSharp.DataAccessLayer
 
         public bool IsRoomBookableOnDate(string roomId, DateTime onDate, DateTime toDate)
         {
+
+            toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, toDate.Hour, 0, 0);
+            onDate = new DateTime(onDate.Year, onDate.Month, onDate.Day, onDate.Hour, 0, 0);
+
             string sql = @"select 
                                  isnull(
                                     (select
@@ -131,6 +135,7 @@ namespace Termin4CSharp.DataAccessLayer
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
+                    Console.WriteLine("IsBookable: " + dr.GetInt32(0));
                     isBookable = dr.GetInt32(0) == 1;
                     break;
                 }

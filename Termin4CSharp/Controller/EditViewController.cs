@@ -67,12 +67,12 @@ namespace Termin4CSharp.Controller
             }
             if (affectedRows > 0)
             {
-                this.UpdateResponseLabel(string.Format("{0} {1}", model.GetType().Name, dbMethod));
+                this.UpdateResponseLabel(string.Format("{0} {1}", Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name), dbMethod));
                 this.isExistingObjectInDatabase = true;
             }
             else if (affectedRows != -1)
             { //-1 is error from DAL
-                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", model.GetType().Name, dbMethod));
+                this.UpdateResponseLabel(string.Format("Ingen {0} {1}", Utils.ConvertAttributeNameToDisplayName(model, model.GetType().Name), dbMethod));
             }
             return affectedRows;
         }
@@ -114,82 +114,87 @@ namespace Termin4CSharp.Controller
             {
                 IModel model = null;
                 var controlValues = this.ViewControlsToDictionary(EditView.GetControls());
-                model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.ADD);
-                if (model != null && model.GetIdentifyingAttributes().First().Value != null)
+                if (controlValues != null)
                 {
-
-                    //Special case for booking, since it cannot overlap another booking
-                    if (model is Booking)
+                    model = Utils.ParseWinFormsToIModel(EditView.Model, controlValues, QueryType.ADD);
+                    if (model != null && model.GetIdentifyingAttributes().First().Value != null)
                     {
-                        DAL dal = new DAL(this);
-                        Booking parsedBooking = (Booking)model;
-                        bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
-                        if (isBookable == false)
+
+                        //Special case for booking, since it cannot overlap another booking
+                        //But if it's an update to an existing item, we're not doing the check
+                        if (model is Booking && isExistingObjectInDatabase == false)
                         {
-                            this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
-                            return;
+                            DAL dal = new DAL(this);
+                            Booking parsedBooking = (Booking)model;
+                            bool isBookable = dal.IsRoomBookableOnDate(parsedBooking.RoomId, parsedBooking.Start_time, parsedBooking.End_time);
+                            if (isBookable == false)
+                            {
+                                this.UpdateResponseLabel("Rummet är redan bokad denna tid, vänligen välj en annan");
+                                return;
+                            }
+                        }
+
+
+                        this.Save(model, oldIdentifyingAttributes);
+                        if (this.ViewHasListOfIModels)
+                        {
+                            // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
+                            foreach (var changedStatusForType in this.changedStatusOnReferencingModels)
+                            {
+
+                                Type referencedType = changedStatusForType.Key;
+                                Dictionary<IModel, bool> changedStatus = changedStatusForType.Value;
+                                Dictionary<IModel, bool> initialStatus = this.InitialStatusOnReferencingModels.ContainsKey(referencedType) ? this.InitialStatusOnReferencingModels[referencedType] : null;
+
+                                List<IModel> toBeAdded = new List<IModel>();
+                                List<IModel> toDeleteOrUpdateToNull = new List<IModel>();
+
+                                bool doOrdinaryAddAndDelete = false;
+
+                                var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
+                                foreach (var intersectedModel in intersected)
+                                {
+                                    if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
+                                        toDeleteOrUpdateToNull.Add(intersectedModel);
+                                    else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
+                                        toBeAdded.Add(intersectedModel);
+                                }
+                                // If it's an associationtable, and a changedStatus-dict contains elements
+                                // delete all associated-table-objects with ID from each IDs
+                                if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource)
+                                {
+                                    toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                    toDeleteOrUpdateToNull = toDeleteOrUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
+                                    doOrdinaryAddAndDelete = true;
+                                }
+
+                                DAL dal = new DAL(this);
+                                int added = 0, updatedOrRemoved = 0;
+
+                                if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any()))
+                                {
+                                    // TODO skapa metod som lägger till / tar bort multiple IModels så de slipper for-eachas
+                                    foreach (IModel add in toBeAdded)
+                                        added += dal.Add(add);
+                                    foreach (IModel remove in toDeleteOrUpdateToNull)
+                                        updatedOrRemoved += dal.Remove(remove);
+                                }
+                                else if (!doOrdinaryAddAndDelete)
+                                {
+                                    if (toBeAdded.Any())
+                                        added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
+                                    if (toDeleteOrUpdateToNull.Any())
+                                        updatedOrRemoved = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toDeleteOrUpdateToNull, model, false);
+                                }
+                            }
                         }
                     }
 
-
-                    this.Save(model, oldIdentifyingAttributes);
-                    if (this.ViewHasListOfIModels)
+                    else
                     {
-                        // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
-                        foreach (var changedStatusForType in this.changedStatusOnReferencingModels)
-                        {
-
-                            Type referencedType = changedStatusForType.Key;
-                            Dictionary<IModel, bool> changedStatus = changedStatusForType.Value;
-                            Dictionary<IModel, bool> initialStatus = this.InitialStatusOnReferencingModels.ContainsKey(referencedType) ? this.InitialStatusOnReferencingModels[referencedType] : null;
-
-                            List<IModel> toBeAdded = new List<IModel>();
-                            List<IModel> toDeleteOrUpdateToNull = new List<IModel>();
-
-                            bool doOrdinaryAddAndDelete = false;
-
-                            var intersected = initialStatus.Keys.Intersect(changedStatus.Keys).ToList();
-                            foreach (var intersectedModel in intersected)
-                            {
-                                if (initialStatus[intersectedModel] == true && changedStatus[intersectedModel] == false)
-                                    toDeleteOrUpdateToNull.Add(intersectedModel);
-                                else if (initialStatus[intersectedModel] == false && changedStatus[intersectedModel] == true)
-                                    toBeAdded.Add(intersectedModel);
-                            }
-                            // If it's an associationtable, and a changedStatus-dict contains elements
-                            // delete all associated-table-objects with ID from each IDs
-                            if (model is Room && changedStatus.Any() && changedStatus.First().Key is Resource)
-                            {
-                                toBeAdded = toBeAdded.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
-                                toDeleteOrUpdateToNull = toDeleteOrUpdateToNull.Select(x => (IModel)new Room_Resource(((Room)model).Id, ((Resource)x).Id)).ToList();
-                                doOrdinaryAddAndDelete = true;
-                            }
-
-                            DAL dal = new DAL(this);
-                            int added = 0, updatedOrRemoved = 0;
-
-                            if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any()))
-                            {
-                                // TODO skapa metod som lägger till / tar bort multiple IModels så de slipper for-eachas
-                                foreach (IModel add in toBeAdded)
-                                    added += dal.Add(add);
-                                foreach (IModel remove in toDeleteOrUpdateToNull)
-                                    updatedOrRemoved += dal.Remove(remove);
-                            }
-                            else if (!doOrdinaryAddAndDelete)
-                            {
-                                if (toBeAdded.Any())
-                                    added = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toBeAdded, model, true);
-                                if (toDeleteOrUpdateToNull.Any())
-                                    updatedOrRemoved = dal.ConnectOrNullReferencedIModelsToIModelToQuery(toDeleteOrUpdateToNull, model, false);
-                            }
-                        }
+                        this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
                     }
                 }
-            }
-            else
-            {
-                this.UpdateResponseLabel(string.Format("Identifierande attribut ({0}) kan ej vara tomt", string.Join(", ", this.identifyingAttributesValues.Keys)));
             }
         }
 
@@ -329,9 +334,11 @@ namespace Termin4CSharp.Controller
                         {
                             controlValues[c.Name] = Int32.Parse(numTextBox.Text);
                         }
-                        catch (FormatException)
+                        catch (Exception e)
                         {
-                            EditView.SetResponseLabel("Ett nummer är för stort, försök igen");
+                            if (e is OverflowException || e is FormatException)
+                                EditView.SetResponseLabel("Ett nummer är för stort, försök igen");
+                            return null;
                         }
                     }
                     else

@@ -45,8 +45,7 @@ namespace Termin4CSharp.Model
             var other = obj as Building;
             if (other == null)
                 return false;
-            return this.Name.Equals(other.Name); // && this.Address.Equals(other.Address) && Utils.DateCompare(this.Avail_start, other.Avail_start)
-                //&& Utils.DateCompare(this.Avail_end, other.Avail_end); // && Utils.CompareLists(this.Rooms.Cast<IModel>().ToList(), other.Rooms.Cast<IModel>().ToList());
+            return this.Name.Equals(other.Name);
         }
     }
 }

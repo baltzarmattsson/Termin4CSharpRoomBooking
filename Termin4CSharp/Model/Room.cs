@@ -52,8 +52,7 @@ namespace Termin4CSharp.Model
             var other = obj as Room;
             if (other == null)
                 return false;
-            return /*this.BName.Equals(other.BName) && */ this.Id.Equals(other.Id) && this.Capacity == other.Capacity;
-            ////*** && this.Floor.Equals(other.Floor) && this.RType.Equals(other.RType); && this.Building == other.Building;
+            return this.Id.Equals(other.Id);
         }
     }
 }

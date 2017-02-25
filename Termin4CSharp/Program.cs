@@ -26,26 +26,6 @@ namespace Termin4CSharp
             GUIMainController controller = new GUIMainController(mainGui);
             AdminTabController adminController = new AdminTabController(mainGui);
             Application.Run(mainGui);
-
-            //DALCronus dalc = new DALCronus();
-            //dalc.GetRelatives();
-
-            //SqlConnection connection = new SqlConnection("Data Source=DESKTOP-STUECFJ;Initial Catalog=\"Demo Database NAV (5-0)\";Persist Security Info=True;User ID=admin;Password=admin");
-            //SqlCommand cmd = new SqlCommand("select * from Company", connection);
-            //cmd.Connection.Open();
-            //var dr = cmd.ExecuteReader();
-            //foreach (var FUCK in dr)
-            //    Console.WriteLine();
-
-
-
-
-
-
-
-
-
-
         }
     }
 }

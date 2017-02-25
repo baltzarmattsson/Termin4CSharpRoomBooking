@@ -31,14 +31,12 @@ namespace Termin4CSharp.DataAccessLayer
             {
                 SqlConnection conn = new SqlConnection(URL);
                 conn.Open();
-                //Console.WriteLine("Connection open!"); 
-                //conn.Close(); 
                 return conn;
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                throw e;
             }
             return null;
         }

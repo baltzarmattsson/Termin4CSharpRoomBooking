@@ -19,7 +19,6 @@ namespace Termin4CSharp.Controller
     {
 
         public GUIMain GUIMain { get; set; }
-        //private List<string> buildingFilters, roomFilters, resourceFilters;
         private HashSet<string> buildingFilters, roomFilters, resourceFilters;
         public DateTime OnDateFilter { get; private set; }
 
@@ -37,8 +36,7 @@ namespace Termin4CSharp.Controller
             roomFilters = new HashSet<string>();
             resourceFilters = new HashSet<string>();
             OnDateFilter = DateTime.Now;
-
-            this.LoginUser("1", "1");
+            
             this.AutosizeColumns();
             this.HandleAdminTabBasedOnUserRole();
 
@@ -100,7 +98,6 @@ namespace Termin4CSharp.Controller
             this.GUIMain.UpdateRoomBookingLabel("");
             this.GUIMain.SetAdminTabEnabled(false);
             this.SetLoginControlsToStatus(true);
-
         }
 
         private void SetLoginControlsToStatus(bool enabled)
@@ -124,7 +121,6 @@ namespace Termin4CSharp.Controller
         public void LoadRooms(DateTime onDate)
         {
             DAL dal = new DAL(this);
-
             List<Room> rooms = dal.FindRoomsWithOptionalFiltersOnDate(onDate);
             this.GUIMain.SetRooms(rooms);
         }
@@ -182,10 +178,7 @@ namespace Termin4CSharp.Controller
                     else if (((ItemCheckEventArgs)e).NewValue == CheckState.Unchecked)
                         selectedList.Remove(selval);
                 }
-            }
-
-            // TODO skapa en thread som väntar 0.5s tills man söker och stackar inte sökningar på varandra
-            
+            }           
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(OnDateFilter, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
@@ -197,7 +190,6 @@ namespace Termin4CSharp.Controller
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(this.OnDateFilter, freeText: sender.Text);
             this.ClearFilterSelections();
             this.GUIMain.SetRooms(filteredRooms);
-
             ObjectListView roomHolder = this.GUIMain.GetRoomHolder();
             roomHolder.ModelFilter = TextMatchFilter.Contains(roomHolder, sender.Text);
         }
@@ -245,9 +237,7 @@ namespace Termin4CSharp.Controller
                 {
                     this.NotifyExceptionToView("Vänligen logga in för att boka rum");
                 }
-
             }
-
         }
 
         private void LoadErpAndWsComboBoxes()

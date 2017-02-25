@@ -23,7 +23,6 @@ namespace Termin4CSharp
         {
             QUERIES, EDITVIEW
         }
-
         public static Dictionary<string, object> GetAttributeInfo(Object paramObj, MembersOptimizedFor memOptFor = MembersOptimizedFor.QUERIES)
         {
             Dictionary<string, object> attributeValues = new Dictionary<string, object>();
@@ -37,18 +36,13 @@ namespace Termin4CSharp
             var names = t.GetMembers()
                         .Select(x => x.Name)
                         .Where(x => !Regex.IsMatch(x, excludePattern));
-            //var names = t.GetProperties()
-            //            .Select(x => x.Name)
-            //            .Where(x => !Regex.IsMatch(x, excludePattern));
             var properties = t.GetProperties();
             foreach (string attName in names)
             {
-
                 object value = null;
                 if (paramObj is IModel)
                 {
                     var refModels = ((IModel)paramObj).GetReferencedModels();
-                    Console.Write("");
                     if (memOptFor == MembersOptimizedFor.EDITVIEW && refModels.ContainsKey(attName))
                     {
                         // Create IModel
@@ -217,7 +211,6 @@ namespace Termin4CSharp
             sqlBuilder.Append(string.Format("insert into {0} ({1}) values (", tableName, modelKeys));
 
             int indexCounter = 0;
-            string key = null;
             foreach (IModel model in models)
             {
                 sqlBuilder.Append("(");
@@ -315,8 +308,7 @@ namespace Termin4CSharp
                     sqlBuilder.Remove(sqlBuilder.Length - 5, 5); //Removes " and "
                 }
             }
-            
-            //Console.WriteLine(sqlBuilder.ToString());
+
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             if (queryType != QueryType.GET)
                 Utils.FillSqlCmd(cmd, modelAttributes);
@@ -328,7 +320,6 @@ namespace Termin4CSharp
                 cmd.Parameters.Add("@@@start", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date;
                 cmd.Parameters.Add("@@@end", SqlDbType.DateTime).Value = (DateTime)bookingSearchOnDate.Date.AddDays(1);
             }
-            Console.WriteLine(sqlBuilder.ToString());
             return cmd;
         }
 
@@ -346,7 +337,6 @@ namespace Termin4CSharp
             int indexCounter = 0;
 
             WhereCondition whereCondition = WhereCondition.EQUAL;
-
 
             sqlBuilder.Append(" inner join Building b on b.name = ro.bname " +
                               "left join Room_Resource rr " +
@@ -435,7 +425,6 @@ namespace Termin4CSharp
                     sqlBuilder.Append(" where ");
                 sqlBuilder.Append(" ro.capacity >= " + minCapacity);
             }
-            Console.WriteLine(sqlBuilder.ToString());
             SqlCommand cmd = new SqlCommand(sqlBuilder.ToString());
             Utils.FillSqlCmd(cmd, whereParams, isWhereParams: true, whereCondition: whereCondition);
 
@@ -484,10 +473,7 @@ namespace Termin4CSharp
 
                     else
                         throw new Exception("Type not implemented: " + val.GetType());
-
-                    Console.Write("{0} {1}\t", key, val == null ? null : val.ToString());
                 }
-                Console.WriteLine();
             }
         }
 
@@ -704,7 +690,6 @@ namespace Termin4CSharp
                         break;
                 }
             }
-
             return retName;
         }
 
@@ -723,7 +708,6 @@ namespace Termin4CSharp
                     keyEqv = "RType";
                 else if (key.Equals("rtype"))
                     keyEqv = "RoomType";
-
             }
             // Booking
             else if (model is Booking)
@@ -761,7 +745,6 @@ namespace Termin4CSharp
                 isAuto = true;
             return isAuto;
         }
-
         private static string IModelTableName(IModel model)
         {
             if (model == null)
@@ -805,25 +788,14 @@ namespace Termin4CSharp
                 case DbFields.BuildingTable:
                     display = "Byggnad";
                     break;
-                case DbFields.InstitutionTable:
-                    display = "Institution";
-                    break;
                 case DbFields.ResourceTable:
                     display = "Resurs";
                     break;
                 case DbFields.BookingTable:
-                    display = "okning";
-                    break;
-                case DbFields.InstBuildTable:
-                    break;
-                case DbFields.RoomResourceTable:
-                    break;
-                case DbFields.PersonRoleTable:
+                    display = "Bokning";
                     break;
                 case DbFields.LoginTable:
                     display = "Inloggning";
-                    break;
-                case DbFields.RoomTypeTable:
                     break;
                 case "name":
                     display = "Det namnet";
@@ -838,11 +810,7 @@ namespace Termin4CSharp
                 case "type":
                     display = "Den typen";
                     break;
-                default:
-                    throw new Exception("But what: " + dbValue);
             }
-
-
             return display;
         }
 
@@ -859,13 +827,6 @@ namespace Termin4CSharp
                     break;
             }
             return op;
-        }
-
-        public static bool CompareLists(List<IModel> first, List<IModel> second)
-        {
-            var firstNotSecond = first.Except(second).ToList();
-            var secondNotFirst = second.Except(first).ToList();
-            return !firstNotSecond.Any() && !secondNotFirst.Any();
         }
     }
 }

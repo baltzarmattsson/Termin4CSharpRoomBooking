@@ -92,8 +92,8 @@ namespace Termin4CSharp.View
 
                 bool controlIsVisible = true;
                 // If the models id is autoincrementing, and we're not creating a new item, skip inserting a control for that value
-                if (isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model)) //!IsExisting
-                    controlIsVisible = false; //continue;
+                if (isIdentifyingAttribute && Utils.IdIsAutoIncrementInDb(model))
+                    controlIsVisible = false;
 
                 var value = kv.Value;
                 if (controlIsVisible)
@@ -115,7 +115,6 @@ namespace Termin4CSharp.View
                         ComboBox comboBox = new ComboBox();
                         if (isIdentifyingAttribute)
                             comboBox.SelectedValueChanged += new EventHandler(this.Controller.HandleIdentifyingAttributesValueChange);
-                        //comboBox.Name = Utils.ConvertReferencedIModelToColumnName(model, kv.Key);
                         comboBox.Name = kv.Key;
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                         comboBox.Width = 500;
@@ -227,8 +226,6 @@ namespace Termin4CSharp.View
                 Label bookingListViewLabel = new Label();
                 bookingListViewLabel.Text = "Bokningar";
                 this.flowLayoutControlHolder.Controls.Add(bookingListViewLabel);
-                //this.flowLayoutControlHolder.
-                //this.flowLayoutControlHolder.SetFlowBreak(bookingListViewLabel, true);
 
                 this.bookingListView = new BrightIdeasSoftware.ObjectListView();
                 this.idColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));

@@ -426,26 +426,6 @@ namespace Termin4CSharp.Controller
             innerEditView.Show();
         }
 
-        // TODO ta bort denna och bara stäng fönstret istället
-        private void ClearFields(Control.ControlCollection controls)
-        {
-            foreach (Control c in controls)
-            {
-                if (c is TextBox)
-                {
-                    ((TextBox)c).Text = "";
-                }
-                else if (c is NumberTextBox)
-                {
-                    ((NumberTextBox)c).Text = "";
-                }
-                else if (c is DateTimePicker)
-                {
-                    ((DateTimePicker)c).Value = DateTime.Now;
-                }
-            }
-        }
-
         public void HandleIdentifyingAttributesValueChange(object sender, EventArgs e)
         {
             if (sender is TextBox)
@@ -460,8 +440,6 @@ namespace Termin4CSharp.Controller
                 var kvfirstval = kv.First().Value;
                 identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedItem).GetIdentifyingAttributes().First().Value;
             }
-            else
-                throw new Exception("What type then...." + sender.GetType());
         }
 
         private bool IdentifyingValuesAreNotEmpty()

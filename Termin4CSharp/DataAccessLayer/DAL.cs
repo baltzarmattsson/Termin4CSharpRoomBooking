@@ -17,8 +17,6 @@ namespace Termin4CSharp.DataAccessLayer
 
         public IController Controller { get; set; }
 
-        //public DAL() { }
-
         public DAL(IController controller)
         {
             this.Controller = controller;
@@ -110,17 +108,17 @@ namespace Termin4CSharp.DataAccessLayer
             toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, toDate.Hour, 0, 0);
             onDate = new DateTime(onDate.Year, onDate.Month, onDate.Day, onDate.Hour, 0, 0);
 
-            string sql = @"select 
-                                 isnull(
-                                    (select
-                                        case
-                                            when start_time >= @startTimeWhen and end_time <= @endTimeWhen then 0
-		                                    else 1
-                                        end
-                                    from Booking
-                                    where roomID = @roomid
-                                    and start_time >= @startTimeWhere and end_time <= @endTimeWhere)
-                                  , 1)";
+            string sql = "select " +
+                                " isnull( " +
+                                   " (select " +
+                                       " case " +
+                                           " when start_time >= @startTimeWhen and end_time <= @endTimeWhen then 0 " +
+		                                   " else 1 " +
+                                       " end " +
+                                  "  from Booking " +
+                                  "  where roomID = @roomid " +
+                                  "  and start_time >= @startTimeWhere and end_time <= @endTimeWhere) " +
+                                  ", 1)";
             SqlCommand cmd = new SqlCommand(sql, Connector.GetConnection());
             cmd.Parameters.Add("@startTimeWhen", SqlDbType.DateTime).Value = onDate;
             cmd.Parameters.Add("@endTimeWhen", SqlDbType.DateTime).Value = toDate;
@@ -135,7 +133,6 @@ namespace Termin4CSharp.DataAccessLayer
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Console.WriteLine("IsBookable: " + dr.GetInt32(0));
                     isBookable = dr.GetInt32(0) == 1;
                     break;
                 }
@@ -147,7 +144,6 @@ namespace Termin4CSharp.DataAccessLayer
             {
                 try { if (cmd.Connection != null) cmd.Connection.Close(); } catch { }
             }
-
             return isBookable;
         }
 
@@ -190,13 +186,8 @@ namespace Termin4CSharp.DataAccessLayer
 
             return resultList;
         }
-
-
-        //public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, List<string> buildingNames = null, List<string> roomIDs = null, List<string> resourceNames = null, string freeText = null, int minCapacity = 0)
         public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, HashSet<string> buildingNames = null, HashSet<string> roomIDs = null, HashSet<string> resourceNames = null, string freeText = null, int minCapacity = 0)
         {
-
-            //SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
             SqlDataReader dr = null;
             var resultList = new Dictionary<string, RoomAndOpeningHoursHolder>();
@@ -227,7 +218,6 @@ namespace Termin4CSharp.DataAccessLayer
             }
 
             List<Room> returnRooms = this.ConnectListOfRoomsWithTheirBookableTimes(resultList, onDate);
-
             return returnRooms;
         }
 
@@ -319,7 +309,6 @@ namespace Termin4CSharp.DataAccessLayer
                     //Getting column name
                     var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //Finds columnname within ' ', like 'name' or 'bName'
                     string column = columnRegmatch.Captures[0].ToString();
-                    //column = Utils.GenericDbValuesToDisplayValue(column);
                     column = Utils.ConvertAttributeNameToDisplayName(model, column);
                     message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
                     break;

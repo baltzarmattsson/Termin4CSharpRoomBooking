@@ -32,7 +32,6 @@ namespace Termin4CSharp.Controller
 
             this.LoadComboBoxes();
         }
-        // TODO Role loggedInUserRole bestämmer vilka typer som ska vara tillgängliga
         private void LoadComboBoxes()
         {
             DAL dal = new DAL(this);
@@ -96,18 +95,6 @@ namespace Termin4CSharp.Controller
             this.editTypeBox.Items.Clear();
             this.editTypeBox.Items.AddRange(editTypes.ToArray());
         }
-        ////private void SetEditArticles(List<IModel> editArticles) {
-        //    this.editArticleBox.Items.Clear();
-        //    this.toStringToIModel.Clear();
-        //    foreach (var article in editArticles) {
-        //        this.editArticleBox.Items.Add(article.ToString());
-        //        this.toStringToIModel[article.ToString()] = article;
-        //    }
-        //    if (this.editArticleBox.Items.Count > 0)
-        //        this.editArticleBox.SelectedIndex = 0;
-        //    else
-        //        this.editArticleBox.Text = null;
-        //}
         public void SetEditArticles(object editType)
         {
             DAL dal = new DAL(this);
@@ -115,7 +102,6 @@ namespace Termin4CSharp.Controller
             if (correspondingIModel != null)
             {
                 List<IModel> allResultsInCorrespondingTable = dal.Get(correspondingIModel, selectAll: true);
-                //this.SetEditArticles(allResultsInCorrespondingTable);
                 this.editArticleBox.Items.Clear();
                 this.toStringToIModel.Clear();
                 foreach (var article in allResultsInCorrespondingTable)
@@ -174,7 +160,7 @@ namespace Termin4CSharp.Controller
 
         public void NotifyExceptionToView(string s)
         {
-            throw new NotImplementedException();
+            this.GUIMain.SetPKResponseLabelText(s);
         }
     }
 

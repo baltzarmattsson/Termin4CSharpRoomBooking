@@ -49,7 +49,10 @@ namespace Termin4CSharp.Controller
         {
             if (this.LoggedInUser != null && this.LoggedInUser.RoleName != null)
             {
-                this.GUIMain.SetAdminTabEnabled(this.LoggedInUser.RoleName.Equals("Admin"));
+                if (this.LoggedInUser.RoleName.Equals("Admin"))
+                    this.GUIMain.SetAdminTabEnabled(true);
+                else
+                    this.GUIMain.SetAdminTabEnabled(false);
             }
             else
             {
@@ -84,16 +87,9 @@ namespace Termin4CSharp.Controller
                 this.SetLoginControlsToStatus(false);
             } else
             {
-                //this.NotifyExceptionToView("Felaktig inloggning");
-
                 this.GUIMain.SetLoginResponseLabelText("Felaktig inloggning, vänligen försök igen");
-                // TEMP
-                //Person p = new Person();
-                //p.Id = "1";
-                //dal.Add(p);
-                //login = new Login("1", "1");
-                //dal.Add(login);
             }
+            this.HandleAdminTabBasedOnUserRole();
         }
 
         private void LogoutUser()
@@ -179,37 +175,25 @@ namespace Termin4CSharp.Controller
             if (filterControl != FilterControl.ON_DATE_DATE_PICKER && filterControl != FilterControl.MIN_CAPACITY_TRACKBAR)
             {
                 string selval = (string)((CheckedListBox)sender).SelectedItem;
-                if (((ItemCheckEventArgs)e).NewValue == CheckState.Checked)
-                    selectedList.Add(selval);
-                else if (((ItemCheckEventArgs)e).NewValue == CheckState.Unchecked)
+                if (selval != null)
                 {
-                    int beforeremove = selectedList.Count;
-                    selectedList.Remove(selval);
-                    int afterremove = selectedList.Count;
-                    Console.WriteLine();
+                    if (((ItemCheckEventArgs)e).NewValue == CheckState.Checked)
+                        selectedList.Add(selval);
+                    else if (((ItemCheckEventArgs)e).NewValue == CheckState.Unchecked)
+                        selectedList.Remove(selval);
                 }
-                Console.WriteLine(selectedList);
             }
 
             // TODO skapa en thread som väntar 0.5s tills man söker och stackar inte sökningar på varandra
-
-            DateTime tempDate = DateTime.Now;
-
+            
             DAL dal = new DAL(this);
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(OnDateFilter, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
-            //this.AutosizeColumns();
         }
-
-        //private delegate List<Room> findFilteredRoomsDelegate(List<string> buildingNames, List<string> roomIDs, List<string> resourceNames, string freeText = null, int minCapacity = 0);
 
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e)
         {
-
-
-
             DAL dal = new DAL(this);
-            //List<Room> filteredRooms = dal.FindRoomsWithFilters(null, null, null, sender.Text);
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(this.OnDateFilter, freeText: sender.Text);
             this.ClearFilterSelections();
             this.GUIMain.SetRooms(filteredRooms);

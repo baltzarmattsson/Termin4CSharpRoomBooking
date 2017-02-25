@@ -31,9 +31,12 @@ namespace Termin4CSharp.View
             this.isMyProfileClick = isMyProfileClick;
         }
 
-        public void SetResponseLabel(string message)
+        public void SetResponseLabel(string message, bool concat = false)
         {
-            this.responseLabel.Text = message;
+            if (concat)
+                this.responseLabel.Text = message;
+            else
+                this.responseLabel.Text += message;
         }
 
         private void saveButton_Click(object sender, EventArgs e)

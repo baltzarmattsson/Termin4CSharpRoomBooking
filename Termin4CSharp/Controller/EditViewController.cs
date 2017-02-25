@@ -87,7 +87,6 @@ namespace Termin4CSharp.Controller
                 this.UpdateBookingListInPersonEditingView();
             if (this.GuiMainController != null)
                 this.GuiMainController.LoadRooms(this.GuiMainController.OnDateFilter);
-
         }
         public int Delete(IModel model)
         {
@@ -105,9 +104,9 @@ namespace Termin4CSharp.Controller
             return affectedRows;
         }
 
-        private void UpdateResponseLabel(string message)
+        private void UpdateResponseLabel(string message, bool concat = false)
         {
-            this.EditView.SetResponseLabel(message);
+            this.EditView.SetResponseLabel(message, concat);
         }
 
         public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null)
@@ -202,7 +201,6 @@ namespace Termin4CSharp.Controller
 
                                 if (doOrdinaryAddAndDelete && (toBeAdded.Any() || toDeleteOrUpdateToNull.Any()))
                                 {
-                                    // TODO skapa metod som lägger till / tar bort multiple IModels så de slipper for-eachas
                                     foreach (IModel add in toBeAdded)
                                         added += dal.Add(add);
                                     foreach (IModel remove in toDeleteOrUpdateToNull)

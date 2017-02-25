@@ -122,9 +122,16 @@ namespace Termin4CSharp.Controller
                     if (model != null && model.GetIdentifyingAttributes().First().Value != null)
                     {
 
-                        if (model is Resource && String.IsNullOrEmpty(((Resource)model).Type))
+                        if (model is Building)
                         {
-                            this.UpdateResponseLabel("Vänligen fyll i alla fält");
+                            DateTime opening, closing;
+                            opening = ((Building)model).Avail_start;
+                            closing = ((Building)model).Avail_end;
+                            if (opening > closing)
+                            {
+                                this.UpdateResponseLabel("Öppningstid kan inte vara senare än stängningstid");
+                                return;
+                            }
                         }
 
                         //Special case for booking, since it cannot overlap another booking

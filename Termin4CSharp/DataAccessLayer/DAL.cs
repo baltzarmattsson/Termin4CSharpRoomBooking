@@ -303,7 +303,7 @@ namespace Termin4CSharp.DataAccessLayer
                     var listOfIdentifyingKeys = new List<string>();
                     foreach (var id in model.GetIdentifyingAttributes().Keys)
                         listOfIdentifyingKeys.Add(Utils.ConvertAttributeNameToDisplayName(model, id));
-                    message = string.Format("Det finns redan {0} med {1} \"{2}\", vänligen välj ett annat", Utils.ConvertAttributeNameToDisplayName(model, "modeleqv"), string.Join(" eller ", listOfIdentifyingKeys), duplicateValue);
+                    message = string.Format("Det finns redan {0} med {1} \"{2}\", vänligen välj ett annat", Utils.ConvertAttributeNameToDisplayName(model, "modeleqv").ToLower(), string.Join(" eller ", listOfIdentifyingKeys).ToLower(), duplicateValue);
                     break;
                 case SqlCodes.ForeignKey:
                     //Getting tablename

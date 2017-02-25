@@ -110,8 +110,9 @@ namespace Termin4CSharp.View
             this.arkivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabWS = new System.Windows.Forms.TabPage();
             this.tabERP = new System.Windows.Forms.TabPage();
+            this.fileContentTextBox = new System.Windows.Forms.TextBox();
+            this.chooseFileButtonWS = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.erpComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -123,8 +124,6 @@ namespace Termin4CSharp.View
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.chooseFileButtonWS = new System.Windows.Forms.Button();
-            this.fileContentTextBox = new System.Windows.Forms.TextBox();
             this.tabPage3.SuspendLayout();
             this.rootContainer.SuspendLayout();
             this.tabPKTrue.SuspendLayout();
@@ -177,7 +176,7 @@ namespace Termin4CSharp.View
             this.ComboBoxERP.FormattingEnabled = true;
             this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
             this.ComboBoxERP.Name = "ComboBoxERP";
-            this.ComboBoxERP.Size = new System.Drawing.Size(121, 32);
+            this.ComboBoxERP.Size = new System.Drawing.Size(121, 33);
             this.ComboBoxERP.TabIndex = 23;
             // 
             // ScrollBarERP
@@ -200,7 +199,6 @@ namespace Termin4CSharp.View
             // 
             this.rootContainer.AccessibleName = "";
             this.rootContainer.Controls.Add(this.tabPKTrue);
-            this.rootContainer.Controls.Add(this.tabWS);
             this.rootContainer.Controls.Add(this.tabERP);
             this.rootContainer.Location = new System.Drawing.Point(0, 0);
             this.rootContainer.Margin = new System.Windows.Forms.Padding(6);
@@ -912,17 +910,6 @@ namespace Termin4CSharp.View
             this.logOutToolStripMenuItem.Text = "Logga ut";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
-            // tabWS
-            // 
-            this.tabWS.Location = new System.Drawing.Point(4, 33);
-            this.tabWS.Margin = new System.Windows.Forms.Padding(6);
-            this.tabWS.Name = "tabWS";
-            this.tabWS.Padding = new System.Windows.Forms.Padding(6);
-            this.tabWS.Size = new System.Drawing.Size(2429, 1279);
-            this.tabWS.TabIndex = 1;
-            this.tabWS.Text = "Webbservice";
-            this.tabWS.UseVisualStyleBackColor = true;
-            // 
             // tabERP
             // 
             this.tabERP.Controls.Add(this.fileContentTextBox);
@@ -941,6 +928,24 @@ namespace Termin4CSharp.View
             this.tabERP.TabIndex = 2;
             this.tabERP.Text = "ERP och Webbservice";
             this.tabERP.UseVisualStyleBackColor = true;
+            // 
+            // fileContentTextBox
+            // 
+            this.fileContentTextBox.Location = new System.Drawing.Point(912, 108);
+            this.fileContentTextBox.Multiline = true;
+            this.fileContentTextBox.Name = "fileContentTextBox";
+            this.fileContentTextBox.Size = new System.Drawing.Size(1339, 152);
+            this.fileContentTextBox.TabIndex = 35;
+            // 
+            // chooseFileButtonWS
+            // 
+            this.chooseFileButtonWS.Location = new System.Drawing.Point(912, 57);
+            this.chooseFileButtonWS.Name = "chooseFileButtonWS";
+            this.chooseFileButtonWS.Size = new System.Drawing.Size(75, 45);
+            this.chooseFileButtonWS.TabIndex = 34;
+            this.chooseFileButtonWS.Text = "Välj fil";
+            this.chooseFileButtonWS.UseVisualStyleBackColor = true;
+            this.chooseFileButtonWS.Click += new System.EventHandler(this.chooseFileButtonWS_Click);
             // 
             // label2
             // 
@@ -1028,24 +1033,6 @@ namespace Termin4CSharp.View
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // chooseFileButtonWS
-            // 
-            this.chooseFileButtonWS.Location = new System.Drawing.Point(912, 57);
-            this.chooseFileButtonWS.Name = "chooseFileButtonWS";
-            this.chooseFileButtonWS.Size = new System.Drawing.Size(75, 45);
-            this.chooseFileButtonWS.TabIndex = 34;
-            this.chooseFileButtonWS.Text = "Välj fil";
-            this.chooseFileButtonWS.UseVisualStyleBackColor = true;
-            this.chooseFileButtonWS.Click += new System.EventHandler(this.chooseFileButtonWS_Click);
-            // 
-            // fileContentTextBox
-            // 
-            this.fileContentTextBox.Location = new System.Drawing.Point(912, 108);
-            this.fileContentTextBox.Multiline = true;
-            this.fileContentTextBox.Name = "fileContentTextBox";
-            this.fileContentTextBox.Size = new System.Drawing.Size(1339, 152);
-            this.fileContentTextBox.TabIndex = 35;
-            // 
             // GUIMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -1096,7 +1083,6 @@ namespace Termin4CSharp.View
 
         private System.Windows.Forms.TabControl rootContainer;
         private System.Windows.Forms.TabPage tabPKTrue;
-        private System.Windows.Forms.TabPage tabWS;
         private System.Windows.Forms.TabPage tabERP;
         private ComboBox webServiceComboBox;
         private ListView listView2;

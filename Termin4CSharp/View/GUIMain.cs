@@ -20,7 +20,6 @@ namespace Termin4CSharp.View
     public partial class GUIMain : Form
     {
         public GUIMainController Controller { get; set; }
-        private delegate bool IsBookableDelegate(object sender, EventArgs e);
         public AdminTabController AdminController { get; set; }
 
         public GUIMain()
@@ -232,25 +231,22 @@ namespace Termin4CSharp.View
             this.roomBookingResponseLabel.Text = text;
         }
 
-        private void ERPcomboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            // this.ERPcomboBox_SelectedIndexChanged(sender, e); 
-            this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
-
-        }
-        public void SetERPData(Dictionary<int, string[]> data)
+        public void SetWebserviceAndErpData(object[][] data)
         {
 
             listView2.Columns.Clear();
+            listView2.Items.Clear();
             listView2.View = System.Windows.Forms.View.Details;
-            
+
             // Index 0 in data is column headers
             foreach (string columnName in data[0])
-                listView2.Columns.Add(columnName, 80);
+                listView2.Columns.Add(columnName, listView2.Width / data[0].Length);
 
-            for (int i = 1; i < data.Count; i++)
-                listView2.Items.Add(new ListViewItem(data[i]));
+            for (int i = 1; i < data.Length; i++)
+            {
+                string[] objAsStrings = data[i].Select(x => x.ToString()).ToArray();
+                listView2.Items.Add(new ListViewItem(objAsStrings));
+            }
         }
 
         public void SetFocusOnFirstTab()
@@ -261,7 +257,7 @@ namespace Termin4CSharp.View
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
+            this.Controller.HandleWebServiceComboBoxSelectedIndexChanged(sender, e);
         }
 
         private void myProfileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -282,6 +278,27 @@ namespace Termin4CSharp.View
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             this.Controller.HandleFilterChange(FilterControl.ON_DATE_DATE_PICKER, sender, e);
+        }
+
+        private void erpComboBox_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            this.Controller.HandleERPComboBoxSelectedIndexChanged(sender, e);
+        }
+
+        public void SetWebserviceAndErpComboBoxValues(string[] wsMethods, string[] erpQueries)
+        {
+            this.erpComboBox.Items.AddRange(erpQueries);
+            this.webServiceComboBox.Items.AddRange(wsMethods);
+        }
+
+        private void chooseFileButtonWS_Click(object sender, EventArgs e)
+        {
+            this.Controller.HandleChooseFileWSClick(sender, e);
+        }
+
+        public void SetFileContentWS(string content)
+        {
+            this.fileContentTextBox.Text = content;
         }
     }
 }

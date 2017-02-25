@@ -10,6 +10,7 @@ using Termin4CSharp.DataAccessLayer;
 using Termin4CSharp.Model;
 using Termin4CSharp.View;
 using System.Text.RegularExpressions;
+using System.Web.Services;
 
 namespace Termin4CSharp.Controller
 {
@@ -39,6 +40,8 @@ namespace Termin4CSharp.Controller
             this.LoginUser("1", "1");
             this.AutosizeColumns();
             this.HandleAdminTabBasedOnUserRole();
+
+            this.LoadErpAndWsComboBoxes();
         }
 
         private void HandleAdminTabBasedOnUserRole()
@@ -252,6 +255,31 @@ namespace Termin4CSharp.Controller
 
         }
 
+        private void LoadErpAndWsComboBoxes()
+        {
+            localhost.WebService proxy = new localhost.WebService();
+            string[] wsMethods = proxy.GetTableNames();
+            string[] erpQueries = proxy.GetErpQueries();
+            this.GUIMain.SetWebserviceAndErpComboBoxValues(wsMethods, erpQueries);
+        }
+
+        public void HandleChooseFileWSClick(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            localhost.WebService proxy = new localhost.WebService();
+
+            ofd.Filter = "Text Fil (.txt)|*.txt";
+            ofd.Multiselect = false;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string content = proxy.GetFileContent(ofd.FileName).Replace("\n", "\r\n");
+                this.GUIMain.SetFileContentWS(content);
+            }
+        }
+
         private void AutosizeColumns()
         {
             foreach (ColumnHeader col in this.GUIMain.GetRoomHolder().Columns)
@@ -276,28 +304,75 @@ namespace Termin4CSharp.Controller
             this.GUIMain.UpdateRoomBookingLabel(text);
         }
 
+        public enum SELECTED_COMBOBOX
+        {
+            ERP, WEBSERVICE
+        }
+
+        public void HandleWebServiceComboBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX.WEBSERVICE, sender);
+        }
         public void HandleERPComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedItem = ((ComboBox)sender).SelectedItem as string;
-            {
-                DALCronus dal = new DALCronus();
-                Dictionary<int, string[]> erpData = null;
+            this.HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX.ERP, sender);
+        }
 
+        public void HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX selectedComboBox, object sender)
+        {
+            string selectedItem = ((ComboBox)sender).SelectedItem as string;
+            object[][] data = null;
+            localhost.WebService proxy = new localhost.WebService();
+
+            if (selectedComboBox == SELECTED_COMBOBOX.ERP)
+            {
                 switch (selectedItem)
                 {
                     case "Personalanhörig":
-                        erpData = dal.GetRelatives();
+                        data = proxy.GetRelatives();
                         break;
                     case "Personal":
-                        erpData = dal.GetEmployees();
+                        data = proxy.GetEmployees();
                         break;
                     case "Personalfrånvaro 2004":
-                        erpData = dal.GetEmployeeAbsence();
+                        data = proxy.GetEmployeeAbsence();
+                        break;
+                    case "Personal med flest antal sjukdagar":
+                        data = proxy.GetSickestEmployee();
+                        break;
+                    case "METADATA - Nycklar":
+                        data = proxy.GetKeys();
+                        break;
+                    case "METADATA - Indexes":
+                        data = proxy.GetIndexes();
+                        break;
+                    case "METADATA - Constraints ":
+                        data = proxy.GetConstraints();
+                        break;
+                    case "METADATA - Tabeller":
+                        data = proxy.GetTables();
+                        break;
+                    case "METADATA - Tabeller2":
+                        data = proxy.GetTables2();
+                        break;
+                    case "METADATA - Kolumner":
+                        data = proxy.GetMetaEmployees();
+                        break;
+                    case "METADATA - Kolumner2":
+                        data = proxy.GetMetaEmployees2();
+                        break;
+                    default:
+                        data = null;
                         break;
                 }
-                if (erpData != null)
-                    this.GUIMain.SetERPData(erpData);
             }
+            else if (selectedComboBox == SELECTED_COMBOBOX.WEBSERVICE)
+            {
+                data = proxy.GetList(selectedItem, true);
+            }
+
+            if (data != null)
+                this.GUIMain.SetWebserviceAndErpData(data);
         }
 
         public void HandleLogOUtMenuStripClick()

@@ -39,9 +39,9 @@ namespace Termin4CSharp.View
             this.ComboBoxERP = new System.Windows.Forms.ComboBox();
             this.ScrollBarERP = new System.Windows.Forms.VScrollBar();
             this.ListViewERP = new System.Windows.Forms.ListView();
-            this.label13 = new System.Windows.Forms.Label();
             this.rootContainer = new System.Windows.Forms.TabControl();
             this.tabPKTrue = new System.Windows.Forms.TabPage();
+            this.responseLabelPK = new System.Windows.Forms.Label();
             this.tabPK = new System.Windows.Forms.TabControl();
             this.loginTab = new System.Windows.Forms.TabPage();
             this.responseLabelLoginTab = new System.Windows.Forms.Label();
@@ -112,16 +112,19 @@ namespace Termin4CSharp.View
             this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabWS = new System.Windows.Forms.TabPage();
             this.tabERP = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.erpComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.searchERPButton = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.webServiceComboBox = new System.Windows.Forms.ComboBox();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.responseLabelPK = new System.Windows.Forms.Label();
+            this.chooseFileButtonWS = new System.Windows.Forms.Button();
+            this.fileContentTextBox = new System.Windows.Forms.TextBox();
             this.tabPage3.SuspendLayout();
             this.rootContainer.SuspendLayout();
             this.tabPKTrue.SuspendLayout();
@@ -172,20 +175,6 @@ namespace Termin4CSharp.View
             // ComboBoxERP
             // 
             this.ComboBoxERP.FormattingEnabled = true;
-            this.ComboBoxERP.Items.AddRange(new object[] {
-            "Personal",
-            "Personalanhörig",
-            "Personalfrånvaro 2004",
-            "Personal med flest antal sjukdagar",
-            "Avdelningsinformation",
-            "Personal med högst lön",
-            "METADATA - Nycklar",
-            "METADATA - Indexes",
-            "METADATA - Constraints ",
-            "METADATA - Tabeller",
-            "METADATA - Tabeller2",
-            "METADATA - Kolumner",
-            "METADATA - Kolumner2"});
             this.ComboBoxERP.Location = new System.Drawing.Point(32, 124);
             this.ComboBoxERP.Name = "ComboBoxERP";
             this.ComboBoxERP.Size = new System.Drawing.Size(121, 32);
@@ -206,17 +195,6 @@ namespace Termin4CSharp.View
             this.ListViewERP.TabIndex = 21;
             this.ListViewERP.UseCompatibleStateImageBehavior = false;
             this.ListViewERP.View = System.Windows.Forms.View.Details;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(53, 96);
-            this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(136, 32);
-            this.label13.TabIndex = 26;
-            this.label13.Text = "CRONUS\r\n";
             // 
             // rootContainer
             // 
@@ -245,6 +223,16 @@ namespace Termin4CSharp.View
             this.tabPKTrue.TabIndex = 0;
             this.tabPKTrue.Text = "Programkonstruktion";
             this.tabPKTrue.UseVisualStyleBackColor = true;
+            // 
+            // responseLabelPK
+            // 
+            this.responseLabelPK.AutoSize = true;
+            this.responseLabelPK.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.142858F);
+            this.responseLabelPK.Location = new System.Drawing.Point(1526, 23);
+            this.responseLabelPK.Name = "responseLabelPK";
+            this.responseLabelPK.Size = new System.Drawing.Size(86, 26);
+            this.responseLabelPK.TabIndex = 24;
+            this.responseLabelPK.Text = "Status: ";
             // 
             // tabPK
             // 
@@ -937,10 +925,13 @@ namespace Termin4CSharp.View
             // 
             // tabERP
             // 
-            this.tabERP.Controls.Add(this.label13);
+            this.tabERP.Controls.Add(this.fileContentTextBox);
+            this.tabERP.Controls.Add(this.chooseFileButtonWS);
+            this.tabERP.Controls.Add(this.label2);
+            this.tabERP.Controls.Add(this.erpComboBox);
+            this.tabERP.Controls.Add(this.label1);
             this.tabERP.Controls.Add(this.label12);
-            this.tabERP.Controls.Add(this.searchERPButton);
-            this.tabERP.Controls.Add(this.comboBox1);
+            this.tabERP.Controls.Add(this.webServiceComboBox);
             this.tabERP.Controls.Add(this.listView2);
             this.tabERP.Location = new System.Drawing.Point(4, 33);
             this.tabERP.Margin = new System.Windows.Forms.Padding(6);
@@ -948,58 +939,62 @@ namespace Termin4CSharp.View
             this.tabERP.Padding = new System.Windows.Forms.Padding(6);
             this.tabERP.Size = new System.Drawing.Size(2429, 1279);
             this.tabERP.TabIndex = 2;
-            this.tabERP.Text = "ERP";
+            this.tabERP.Text = "ERP och Webbservice";
             this.tabERP.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(118, 197);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(125, 25);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "ERP Queries";
+            // 
+            // erpComboBox
+            // 
+            this.erpComboBox.Location = new System.Drawing.Point(123, 228);
+            this.erpComboBox.Margin = new System.Windows.Forms.Padding(6);
+            this.erpComboBox.Name = "erpComboBox";
+            this.erpComboBox.Size = new System.Drawing.Size(541, 32);
+            this.erpComboBox.TabIndex = 32;
+            this.erpComboBox.SelectedIndexChanged += new System.EventHandler(this.erpComboBox_SelectedIndexChanged_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(118, 112);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(127, 25);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "Webbservice";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(53, 44);
+            this.label12.Location = new System.Drawing.Point(116, 43);
             this.label12.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(759, 84);
+            this.label12.Size = new System.Drawing.Size(231, 42);
             this.label12.TabIndex = 25;
-            this.label12.Text = "Integrering och konfigurering av ERP-system\r\n\r\n";
+            this.label12.Text = "Välj funktion:";
             // 
-            // searchERPButton
+            // webServiceComboBox
             // 
-            this.searchERPButton.Location = new System.Drawing.Point(123, 258);
-            this.searchERPButton.Margin = new System.Windows.Forms.Padding(6);
-            this.searchERPButton.Name = "searchERPButton";
-            this.searchERPButton.Size = new System.Drawing.Size(138, 42);
-            this.searchERPButton.TabIndex = 27;
-            this.searchERPButton.Text = "Visa";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Items.AddRange(new object[] {
-            "Personal",
-            "Personalanhörig",
-            "Personalfrånvaro 2004",
-            "Personal med flest antal sjukdagar",
-            "Avdelningsinformation",
-            "Personal med högst lön",
-            "METADATA - Nycklar",
-            "METADATA - Indexes",
-            "METADATA - Constraints ",
-            "METADATA - Tabeller",
-            "METADATA - Tabeller2",
-            "METADATA - Kolumner",
-            "METADATA - Kolumner2"});
-            this.comboBox1.Location = new System.Drawing.Point(123, 214);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(6);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(541, 32);
-            this.comboBox1.TabIndex = 28;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.webServiceComboBox.Location = new System.Drawing.Point(123, 143);
+            this.webServiceComboBox.Margin = new System.Windows.Forms.Padding(6);
+            this.webServiceComboBox.Name = "webServiceComboBox";
+            this.webServiceComboBox.Size = new System.Drawing.Size(541, 32);
+            this.webServiceComboBox.TabIndex = 28;
+            this.webServiceComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // listView2
             // 
             this.listView2.Location = new System.Drawing.Point(123, 314);
             this.listView2.Margin = new System.Windows.Forms.Padding(6);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(1579, 610);
+            this.listView2.Size = new System.Drawing.Size(2128, 610);
             this.listView2.TabIndex = 30;
             this.listView2.UseCompatibleStateImageBehavior = false;
             // 
@@ -1033,15 +1028,23 @@ namespace Termin4CSharp.View
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // responseLabelPK
+            // chooseFileButtonWS
             // 
-            this.responseLabelPK.AutoSize = true;
-            this.responseLabelPK.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.142858F);
-            this.responseLabelPK.Location = new System.Drawing.Point(1526, 23);
-            this.responseLabelPK.Name = "responseLabelPK";
-            this.responseLabelPK.Size = new System.Drawing.Size(86, 26);
-            this.responseLabelPK.TabIndex = 24;
-            this.responseLabelPK.Text = "Status: ";
+            this.chooseFileButtonWS.Location = new System.Drawing.Point(912, 57);
+            this.chooseFileButtonWS.Name = "chooseFileButtonWS";
+            this.chooseFileButtonWS.Size = new System.Drawing.Size(75, 45);
+            this.chooseFileButtonWS.TabIndex = 34;
+            this.chooseFileButtonWS.Text = "Välj fil";
+            this.chooseFileButtonWS.UseVisualStyleBackColor = true;
+            this.chooseFileButtonWS.Click += new System.EventHandler(this.chooseFileButtonWS_Click);
+            // 
+            // fileContentTextBox
+            // 
+            this.fileContentTextBox.Location = new System.Drawing.Point(912, 108);
+            this.fileContentTextBox.Multiline = true;
+            this.fileContentTextBox.Name = "fileContentTextBox";
+            this.fileContentTextBox.Size = new System.Drawing.Size(1339, 152);
+            this.fileContentTextBox.TabIndex = 35;
             // 
             // GUIMain
             // 
@@ -1095,9 +1098,8 @@ namespace Termin4CSharp.View
         private System.Windows.Forms.TabPage tabPKTrue;
         private System.Windows.Forms.TabPage tabWS;
         private System.Windows.Forms.TabPage tabERP;
-        private ComboBox comboBox1;
+        private ComboBox webServiceComboBox;
         private ListView listView2;
-        private Button searchERPButton;
         private TabControl tabPK;
         private TabPage loginTab;
         private Label mainLabelLoginTab;
@@ -1133,7 +1135,6 @@ namespace Termin4CSharp.View
         private Label label12;
         private Button editObjectButton;
         private Button clearFiltersButtonRoomBookingTab;
-        private Label label13;
         private Label HeaderERP;
         private Label editLabelAdminTab;
         private Label createLabelAdminTab;
@@ -1181,5 +1182,10 @@ namespace Termin4CSharp.View
         private DateTimePicker onDateRoomBookingDatePicker;
         private Label freeTextSearchLabel;
         private Label responseLabelPK;
+        private Label label1;
+        private Label label2;
+        private ComboBox erpComboBox;
+        private TextBox fileContentTextBox;
+        private Button chooseFileButtonWS;
     }
 }

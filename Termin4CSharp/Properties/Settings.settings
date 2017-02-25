@@ -26,5 +26,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=DESKTOP-STUECFJ;Initial Catalog="Demo Database NAV (5-0)";Persist Security Info=True;User ID=admin;Password=admin</Value>
     </Setting>
+    <Setting Name="Termin4CSharp_localhost_WebService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:1623/WebService.asmx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -571,10 +571,10 @@ namespace Termin4CSharp
                         retName = "Adress";
                         break;
                     case "avail_end":
-                        retName = "Öppningstid";
+                        retName = "Stängningstid";
                         break;
                     case "avail_start":
-                        retName = "Stängningstid";
+                        retName = "Öppningstid";
                         break;
                     case "name":
                         retName = "Namn";

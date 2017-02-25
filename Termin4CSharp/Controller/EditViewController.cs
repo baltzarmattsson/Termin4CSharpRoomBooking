@@ -62,7 +62,8 @@ namespace Termin4CSharp.Controller
             int affectedRows = dal.Remove(model);
             if (affectedRows > 0)
             {
-                this.ClearFields(EditView.GetControls());
+                //this.ClearFields(EditView.GetControls());
+                this.SetAllControlsDisabledExceptClose();
                 this.UpdateResponseLabel(string.Format("{0} borttagen", model.GetType().Name));
             }
             else
@@ -70,6 +71,14 @@ namespace Termin4CSharp.Controller
                 this.UpdateResponseLabel(string.Format("Ingen {0} borttagen", model.GetType().Name));
             }
             return affectedRows;
+        }
+
+        private void SetAllControlsDisabledExceptClose()
+        {
+            foreach (Control c in this.EditView.GetControls())
+                if (c.Text.Equals("Stäng") == false)
+                    c.Enabled = false;
+            
         }
 
         private void UpdateResponseLabel(string message, bool concat = false)
@@ -155,6 +164,7 @@ namespace Termin4CSharp.Controller
                         {
                             this.UpdateResponseLabel(string.Format("{0} {1}", displayName, dbMethod));
                             this.isExistingObjectInDatabase = true;
+                            this.SetAllControlsDisabledExceptClose();
                         }
                         else if (affectedRows != -1)
                         { //-1 is error from DAL

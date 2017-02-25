@@ -317,11 +317,18 @@ namespace Termin4CSharp.DataAccessLayer
                     //Getting column name
                     var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //Finds columnname within ' ', like 'name' or 'bName'
                     string column = columnRegmatch.Captures[0].ToString();
-                    column = Utils.GenericDbValuesToDisplayValue(column);
+                    //column = Utils.GenericDbValuesToDisplayValue(column);
+                    column = Utils.ConvertAttributeNameToDisplayName(model, column);
                     message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
                     break;
                 case SqlCodes.DataWouldBeTruncated:
                     message = "Ett värde är för långt, vänligen försök igen";
+                    break;
+                case SqlCodes.SomethingIsNull:
+                    columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')");
+                    column = columnRegmatch.Captures[0].ToString();
+                    column = Utils.ConvertAttributeNameToDisplayName(model, column);
+                    message = String.Format("Fältet \"{0}\" fält är tomt, vänligen fyll i fältet och försök igen", column);
                     break;
                 default:
                     throw sqle;

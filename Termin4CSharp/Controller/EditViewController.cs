@@ -120,6 +120,11 @@ namespace Termin4CSharp.Controller
                     if (model != null && model.GetIdentifyingAttributes().First().Value != null)
                     {
 
+                        if (model is Resource && String.IsNullOrEmpty(((Resource)model).Type))
+                        {
+                            this.UpdateResponseLabel("Vänligen fyll i alla fält");
+                        }
+
                         //Special case for booking, since it cannot overlap another booking
                         //But if it's an update to an existing item, we're not doing the check
                         if (model is Booking)

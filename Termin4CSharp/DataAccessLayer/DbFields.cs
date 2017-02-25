@@ -29,6 +29,7 @@ namespace Termin4CSharp.DataAccessLayer
         public const int PrimaryKey = 2627;
         public const int ForeignKey = 547;
         public const int DataWouldBeTruncated = 8152;
+        public const int SomethingIsNull = 515;
     }
 
 

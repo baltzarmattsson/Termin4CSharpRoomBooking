@@ -125,6 +125,11 @@ namespace Termin4CSharp.Controller
                         if (model is Booking)
                         {
                             Booking parsedBooking = (Booking)model;
+                            if (parsedBooking.RoomId == null || parsedBooking.PersonId == null || parsedBooking.Start_time == default(DateTime) || parsedBooking.End_time == default(DateTime))
+                            {
+                                this.UpdateResponseLabel("Något av följande fält är tomt, vänligen fyll i alla obligatoriska fält (Person, Rum, Starttid, Sluttid");
+                                return;
+                            }
                             if (isExistingObjectInDatabase == false)
                             {
                                 DAL dal = new DAL(this);
@@ -145,8 +150,8 @@ namespace Termin4CSharp.Controller
                         }
 
 
-                        this.Save(model, oldIdentifyingAttributes);
-                        if (this.ViewHasListOfIModels)
+                        int affectedRows = this.Save(model, oldIdentifyingAttributes);
+                        if (affectedRows > 0 && this.ViewHasListOfIModels)
                         {
                             // Foreach the keys in the originalvalues (there can be multiple lists/checklistboxes)
                             foreach (var changedStatusForType in this.changedStatusOnReferencingModels)

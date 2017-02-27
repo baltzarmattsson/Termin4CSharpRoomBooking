@@ -320,52 +320,13 @@ namespace Termin4CSharp.Controller
             try
             {
                 proxy = new localhost.WebService();
+
                 if (selectedComboBox == SELECTED_COMBOBOX.ERP)
-                {
-                    switch (selectedItem)
-                    {
-                        case "Personalanhörig":
-                            data = proxy.GetRelatives();
-                            break;
-                        case "Personal":
-                            data = proxy.GetEmployees();
-                            break;
-                        case "Personalfrånvaro 2004":
-                            data = proxy.GetEmployeeAbsence();
-                            break;
-                        case "Personal med flest antal sjukdagar":
-                            data = proxy.GetSickestEmployee();
-                            break;
-                        case "METADATA - Nycklar":
-                            data = proxy.GetKeys();
-                            break;
-                        case "METADATA - Indexes":
-                            data = proxy.GetIndexes();
-                            break;
-                        case "METADATA - Constraints ":
-                            data = proxy.GetConstraints();
-                            break;
-                        case "METADATA - Tabeller":
-                            data = proxy.GetTables();
-                            break;
-                        case "METADATA - Tabeller2":
-                            data = proxy.GetTables2();
-                            break;
-                        case "METADATA - Kolumner":
-                            data = proxy.GetMetaEmployees();
-                            break;
-                        case "METADATA - Kolumner2":
-                            data = proxy.GetMetaEmployees2();
-                            break;
-                        default:
-                            data = null;
-                            break;
-                    }
-                }
+                    data = proxy.GetERPMethodBasedOnDescriptionString(selectedItem);
+
                 else if (selectedComboBox == SELECTED_COMBOBOX.WEBSERVICE)
-                {
                     data = proxy.GetList(selectedItem, true);
-                }
+
             } catch (WebException we)
             {
                 this.HandleWebserviceException(we);
@@ -409,9 +370,3 @@ namespace Termin4CSharp.Controller
         }
     }
 }
-
-
-
-
-
-

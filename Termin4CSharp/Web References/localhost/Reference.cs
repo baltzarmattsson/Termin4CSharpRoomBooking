@@ -63,6 +63,8 @@ namespace Termin4CSharp.localhost {
         
         private System.Threading.SendOrPostCallback GetErpQueriesOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetERPMethodBasedOnDescriptionStringOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -151,6 +153,9 @@ namespace Termin4CSharp.localhost {
         
         /// <remarks/>
         public event GetErpQueriesCompletedEventHandler GetErpQueriesCompleted;
+        
+        /// <remarks/>
+        public event GetERPMethodBasedOnDescriptionStringCompletedEventHandler GetERPMethodBasedOnDescriptionStringCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetEmployees", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -646,6 +651,37 @@ namespace Termin4CSharp.localhost {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetERPMethodBasedOnDescriptionString", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute("ArrayOfString")]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(NestingLevel=1)]
+        public string[][] GetERPMethodBasedOnDescriptionString(string description) {
+            object[] results = this.Invoke("GetERPMethodBasedOnDescriptionString", new object[] {
+                        description});
+            return ((string[][])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetERPMethodBasedOnDescriptionStringAsync(string description) {
+            this.GetERPMethodBasedOnDescriptionStringAsync(description, null);
+        }
+        
+        /// <remarks/>
+        public void GetERPMethodBasedOnDescriptionStringAsync(string description, object userState) {
+            if ((this.GetERPMethodBasedOnDescriptionStringOperationCompleted == null)) {
+                this.GetERPMethodBasedOnDescriptionStringOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetERPMethodBasedOnDescriptionStringOperationCompleted);
+            }
+            this.InvokeAsync("GetERPMethodBasedOnDescriptionString", new object[] {
+                        description}, this.GetERPMethodBasedOnDescriptionStringOperationCompleted, userState);
+        }
+        
+        private void OnGetERPMethodBasedOnDescriptionStringOperationCompleted(object arg) {
+            if ((this.GetERPMethodBasedOnDescriptionStringCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetERPMethodBasedOnDescriptionStringCompleted(this, new GetERPMethodBasedOnDescriptionStringCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -1102,6 +1138,32 @@ namespace Termin4CSharp.localhost {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    public delegate void GetERPMethodBasedOnDescriptionStringCompletedEventHandler(object sender, GetERPMethodBasedOnDescriptionStringCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetERPMethodBasedOnDescriptionStringCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetERPMethodBasedOnDescriptionStringCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[][] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[][])(this.results[0]));
             }
         }
     }

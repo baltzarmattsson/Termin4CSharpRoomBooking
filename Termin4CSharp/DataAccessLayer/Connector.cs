@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Termin4CSharp.DataAccessLayer
 {
@@ -29,15 +30,21 @@ namespace Termin4CSharp.DataAccessLayer
         {
             try
             {
-                SqlConnection conn = new SqlConnection(URL2);
+                SqlConnection conn = new SqlConnection(URL);
                 conn.Open();
                 return conn;
-
+            }
+            catch (SqlException sqle)
+            {
+                MessageBox.Show("Kunde inte ansluta till \"" + URL + "\", verifiera att databasen är startad och accepterar inkommande anslutningar.");
+                Environment.Exit(0);
             }
             catch (Exception e)
             {
-                throw e;
+                MessageBox.Show(e.StackTrace);
+                Environment.Exit(0);
             }
+            return null;
         }
     }
 }

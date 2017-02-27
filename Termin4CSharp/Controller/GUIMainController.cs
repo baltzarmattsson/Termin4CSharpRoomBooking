@@ -11,6 +11,7 @@ using Termin4CSharp.Model;
 using Termin4CSharp.View;
 using System.Text.RegularExpressions;
 using System.Web.Services;
+using System.Net;
 
 namespace Termin4CSharp.Controller
 {
@@ -242,10 +243,16 @@ namespace Termin4CSharp.Controller
 
         private void LoadErpAndWsComboBoxes()
         {
-            localhost.WebService proxy = new localhost.WebService();
-            string[] wsMethods = proxy.GetTableNames();
-            string[] erpQueries = proxy.GetErpQueries();
-            this.GUIMain.SetWebserviceAndErpComboBoxValues(wsMethods, erpQueries);
+            try
+            {
+                localhost.WebService proxy = new localhost.WebService();
+                string[] wsMethods = proxy.GetTableNames();
+                string[] erpQueries = proxy.GetErpQueries();
+                this.GUIMain.SetWebserviceAndErpComboBoxValues(wsMethods, erpQueries);
+            } catch (WebException we)
+            {
+                this.HandleWebserviceException(we);
+            }
         }
 
         public void HandleChooseFileWSClick(object sender, EventArgs e)
@@ -307,53 +314,61 @@ namespace Termin4CSharp.Controller
         {
             string selectedItem = ((ComboBox)sender).SelectedItem as string;
             object[][] data = null;
-            localhost.WebService proxy = new localhost.WebService();
 
-            if (selectedComboBox == SELECTED_COMBOBOX.ERP)
+            localhost.WebService proxy;
+
+            try
             {
-                switch (selectedItem)
+                proxy = new localhost.WebService();
+                if (selectedComboBox == SELECTED_COMBOBOX.ERP)
                 {
-                    case "Personalanhörig":
-                        data = proxy.GetRelatives();
-                        break;
-                    case "Personal":
-                        data = proxy.GetEmployees();
-                        break;
-                    case "Personalfrånvaro 2004":
-                        data = proxy.GetEmployeeAbsence();
-                        break;
-                    case "Personal med flest antal sjukdagar":
-                        data = proxy.GetSickestEmployee();
-                        break;
-                    case "METADATA - Nycklar":
-                        data = proxy.GetKeys();
-                        break;
-                    case "METADATA - Indexes":
-                        data = proxy.GetIndexes();
-                        break;
-                    case "METADATA - Constraints ":
-                        data = proxy.GetConstraints();
-                        break;
-                    case "METADATA - Tabeller":
-                        data = proxy.GetTables();
-                        break;
-                    case "METADATA - Tabeller2":
-                        data = proxy.GetTables2();
-                        break;
-                    case "METADATA - Kolumner":
-                        data = proxy.GetMetaEmployees();
-                        break;
-                    case "METADATA - Kolumner2":
-                        data = proxy.GetMetaEmployees2();
-                        break;
-                    default:
-                        data = null;
-                        break;
+                    switch (selectedItem)
+                    {
+                        case "Personalanhörig":
+                            data = proxy.GetRelatives();
+                            break;
+                        case "Personal":
+                            data = proxy.GetEmployees();
+                            break;
+                        case "Personalfrånvaro 2004":
+                            data = proxy.GetEmployeeAbsence();
+                            break;
+                        case "Personal med flest antal sjukdagar":
+                            data = proxy.GetSickestEmployee();
+                            break;
+                        case "METADATA - Nycklar":
+                            data = proxy.GetKeys();
+                            break;
+                        case "METADATA - Indexes":
+                            data = proxy.GetIndexes();
+                            break;
+                        case "METADATA - Constraints ":
+                            data = proxy.GetConstraints();
+                            break;
+                        case "METADATA - Tabeller":
+                            data = proxy.GetTables();
+                            break;
+                        case "METADATA - Tabeller2":
+                            data = proxy.GetTables2();
+                            break;
+                        case "METADATA - Kolumner":
+                            data = proxy.GetMetaEmployees();
+                            break;
+                        case "METADATA - Kolumner2":
+                            data = proxy.GetMetaEmployees2();
+                            break;
+                        default:
+                            data = null;
+                            break;
+                    }
                 }
-            }
-            else if (selectedComboBox == SELECTED_COMBOBOX.WEBSERVICE)
+                else if (selectedComboBox == SELECTED_COMBOBOX.WEBSERVICE)
+                {
+                    data = proxy.GetList(selectedItem, true);
+                }
+            } catch (WebException we)
             {
-                data = proxy.GetList(selectedItem, true);
+                this.HandleWebserviceException(we);
             }
 
             if (data != null)
@@ -375,6 +390,22 @@ namespace Termin4CSharp.Controller
                 EditViewController editController = new EditViewController(ev);
                 ev.Show();
             }
+        }
+
+        private void HandleWebserviceException(WebException we)
+        {
+            if (we.Message.Equals("Unable to connect to the remote server"))
+            {
+                var regMatch = Regex.Match(we.InnerException.Message, "(?<=actively refused it )(.*?)$").Groups[0]; //finds ip and port number
+                string ipAndPort = null;
+                if (regMatch.Captures[0] != null)
+                    ipAndPort = regMatch.Captures[0].ToString();
+                MessageBox.Show(String.Format("Kunde inte ansluta till Webservice{0}, kontrollera att tjänsten är igång och accepterar inkommande anslutningar", ipAndPort == null ? "" : " på adressen " + ipAndPort));
+            } else
+            {
+                MessageBox.Show("Fel: " + we.Message + "\n\r" + we.InnerException.Message);
+            }
+            Environment.Exit(0);
         }
     }
 }

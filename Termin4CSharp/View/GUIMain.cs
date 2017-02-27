@@ -244,7 +244,7 @@ namespace Termin4CSharp.View
 
             for (int i = 1; i < data.Length; i++)
             {
-                string[] objAsStrings = data[i].Select(x => x.ToString()).ToArray();
+                string[] objAsStrings = data[i].Select(x => x == null ? "" : x.ToString()).ToArray();
                 listView2.Items.Add(new ListViewItem(objAsStrings));
             }
         }

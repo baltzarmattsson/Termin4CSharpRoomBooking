@@ -69,15 +69,19 @@ namespace Termin4CSharp.Controller
         {
             if (this.LoggedInUser != null)
                 this.LoggedInUser = null;
-            Login login = new Login(username, password);
+
+
             DAL dal = new DAL(this);
+            Person tempHolder = new Person();
+            tempHolder.Id = username;
+            List<IModel> searchResult = dal.Get(tempHolder);
+
+            Login login = new Login(username, password);
             var whereParams = new Dictionary<string, object>();
             whereParams["password"] = password;
             List<IModel> result = dal.Get(login, whereParams);
-            if (result.Any())
+            if (result.Any() && searchResult.Any())
             {
-                Person tempHolder = new Person();
-                tempHolder.Id = username;
                 this.LoggedInUser = dal.Get(tempHolder).First() as Person;
 
                 this.GUIMain.SetLoginResponseLabelText("Inloggad som " + this.LoggedInUser.Name + " " + this.LoggedInUser.Id);
@@ -271,7 +275,7 @@ namespace Termin4CSharp.Controller
                         b.Start_time = startDate;
                         b.End_time = b.Start_time.AddHours(1);
                         EditView ev = new EditView(b, false);
-                        EditViewController editController = new EditViewController(ev, guiMainController: this);
+                        EditViewController editController = new EditViewController(ev, guiMainController: this, disableBookingTimePicker: true);
                         ev.Show();
                     }
                 }

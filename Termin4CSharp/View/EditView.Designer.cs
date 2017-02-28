@@ -172,10 +172,12 @@ namespace Termin4CSharp.View
                             {
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";
                                 datePicker.ValueChanged += DatePicker_ValueChanged;
+                                datePicker.Enabled = !this.Controller.DisableBookingTimePicker;
                                 if (kv.Key.Equals("Start_time"))
                                     this.Controller.BookingStartDatePicker = datePicker;
-                                else if (kv.Key.Equals("End_time"))
+                                else if (kv.Key.Equals("End_time"))                                    
                                     this.Controller.BookingEndDatePicker = datePicker;
+
                             }
                             else
                                 datePicker.CustomFormat = "yyyy-MM-dd \t HH:00";

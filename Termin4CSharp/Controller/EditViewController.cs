@@ -24,6 +24,7 @@ namespace Termin4CSharp.Controller
         private Dictionary<string, object> identifyingAttributesValues;
 
         public bool ViewHasListOfIModels = false;
+        public bool DisableBookingTimePicker { get; private set; }
 
         public Dictionary<Type, Dictionary<IModel, bool>> InitialStatusOnReferencingModels;
         private Dictionary<Type, Dictionary<IModel, bool>> changedStatusOnReferencingModels;
@@ -31,7 +32,7 @@ namespace Termin4CSharp.Controller
         public DateTimePicker BookingStartDatePicker { get; set; }
         public DateTimePicker BookingEndDatePicker { get; set; }
 
-        public EditViewController(EditView editView, AdminTabController adminController = null, EditViewController outerEditViewController = null, GUIMainController guiMainController = null)
+        public EditViewController(EditView editView, AdminTabController adminController = null, EditViewController outerEditViewController = null, GUIMainController guiMainController = null, bool disableBookingTimePicker = false)
         {
             this.EditView = editView;
             this.EditView.Controller = this;
@@ -40,6 +41,8 @@ namespace Termin4CSharp.Controller
             this.OuterEditViewController = outerEditViewController;
             this.GuiMainController = guiMainController;
             this.identifyingAttributesValues = new Dictionary<string, object>();
+
+            this.DisableBookingTimePicker = disableBookingTimePicker;
 
             this.InitialStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();
             this.changedStatusOnReferencingModels = new Dictionary<Type, Dictionary<IModel, bool>>();

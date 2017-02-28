@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.Model.DbHelpers
 {
+    /// <summary>
+    /// A holder object for a room and its buildings opening and closing hour
+    /// </summary>
     class RoomAndOpeningHoursHolder
     {
 

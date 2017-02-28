@@ -46,6 +46,11 @@ namespace Termin4CSharp.Controller
 
             this.EditView.InitializeLoad();
         }
+        /// <summary>
+        /// Called when the user clicks Close. Calls the AdminTabController to update its combobox values. If this EditView (inner) is created from within another EditView (outer), 
+        /// the outer controller is called to update its values inside that EditView. For example a Person that edits their list of Bookings, and when the editing of the Bookings are complete, the
+        /// list are updated.
+        /// </summary>
         public void Close()
         {
             EditView.Close();
@@ -56,13 +61,17 @@ namespace Termin4CSharp.Controller
             if (this.GuiMainController != null)
                 this.GuiMainController.LoadRooms(this.GuiMainController.OnDateFilter);
         }
+        /// <summary>
+        /// Deletes an IModel
+        /// </summary>
+        /// <param name="model">IModel to be deleted</param>
+        /// <returns></returns>
         public int Delete(IModel model)
         {
             DAL dal = new DAL(this);
             int affectedRows = dal.Remove(model);
             if (affectedRows > 0)
             {
-                //this.ClearFields(EditView.GetControls());
                 this.SetAllControlsDisabledExceptClose();
                 this.UpdateResponseLabel(string.Format("{0} borttagen", model.GetType().Name));
             }
@@ -72,7 +81,9 @@ namespace Termin4CSharp.Controller
             }
             return affectedRows;
         }
-
+        /// <summary>
+        /// Called when the user presses Save or Add to disable all controls except the Close button
+        /// </summary>
         private void SetAllControlsDisabledExceptClose()
         {
             foreach (Control c in this.EditView.GetControls())
@@ -80,12 +91,19 @@ namespace Termin4CSharp.Controller
                     c.Enabled = false;
             
         }
-
+        /// <summary>
+        /// Updates the responselabel
+        /// </summary>
+        /// <param name="message">Message to be set</param>
+        /// <param name="concat">If the string should concat its previous text, or replace it</param>
         private void UpdateResponseLabel(string message, bool concat = false)
         {
             this.EditView.SetResponseLabel(message, concat);
         }
-
+        /// <summary>
+        /// Called when the user clicks the Save button. Parses the controls in the EditView to an IModel and saves/updates it in the database
+        /// </summary>
+        /// <param name="oldIdentifyingAttributes">If the IModel has changed their identifying attribute, these are the old/current identifying attributes</param>
         public void HandleSaveButtonClick(Dictionary<string, object> oldIdentifyingAttributes = null)
         {
             if (this.IdentifyingValuesAreNotEmpty())
@@ -233,21 +251,9 @@ namespace Termin4CSharp.Controller
                 }
             }
         }
-
-        private List<IModel> GetCheckListBoxByType(Type referencedType)
-        {
-            var controls = this.EditView.GetControls();
-            foreach (var control in controls)
-            {
-                if (control is CheckedListBox && ((CheckedListBox)control).Items?[0].GetType() == referencedType)
-                {
-                    List<IModel> ret = ((CheckedListBox)control).CheckedItems.OfType<object>().Cast<IModel>().ToList();
-                    return ret;
-                }
-            }
-            return null;
-        }
-
+        /// <summary>
+        /// Called when the user clicks Delete. The IModel is parsed from the controls in the EditView and is then attempted to be deleted from the database
+        /// </summary>
         public void HandleDeleteButtonClick()
         {
             IModel model = null;
@@ -264,26 +270,31 @@ namespace Termin4CSharp.Controller
         {
             SINGLE_IMODEL, LIST_OF_IMODELS
         }
-
-        // Gets a list of all values that can be referenced by the target-model. The bool-parameter tells us
-        // if it's a currently connected/referenced object or not. If it is, it's later marked as checked/selected in the
-        // EditView
-        public Dictionary<IModel, bool> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrList)
+        /// <summary>
+        /// Gets a list of all values that can be referenced by the target-model. The bool-parameter tells us
+        /// if it's a currently connected/referenced object or not. If it is, it's later marked as checked/selected in the
+        /// EditView
+        /// </summary>
+        /// <param name="target">The target IModel which references other IModels</param>
+        /// <param name="refModelType">What type the referenced IModels are, i.e. if the target IModel references a single IModel or multiple</param>
+        /// <param name="referencedIModelOrListToFetch">The IModel or list of IModels to fetch from the database</param>
+        /// <returns>A list of all referencable IModels to the target IModel</returns>
+        public Dictionary<IModel, bool> GetReferenceAbleIModels(IModel target, ReferencedIModelType refModelType, object referencedIModelOrListToFetch)
         {
 
             Dictionary<IModel, bool> fetchedIModelsFromDatabase = new Dictionary<IModel, bool>();
 
-            if (referencedIModelOrList != null)
+            if (referencedIModelOrListToFetch != null)
             {
                 DAL dal = new DAL(this);
                 IModel iModelToFetch = null;
                 if (refModelType == ReferencedIModelType.SINGLE_IMODEL)
                 {
-                    iModelToFetch = referencedIModelOrList as IModel;
+                    iModelToFetch = referencedIModelOrListToFetch as IModel;
                 }
                 else if (refModelType == ReferencedIModelType.LIST_OF_IMODELS)
                 {
-                    Type typeThatListHolds = referencedIModelOrList.GetType().GetGenericArguments()[0];
+                    Type typeThatListHolds = referencedIModelOrListToFetch.GetType().GetGenericArguments()[0];
                     iModelToFetch = Activator.CreateInstance(typeThatListHolds) as IModel;
                 }
 
@@ -323,7 +334,11 @@ namespace Termin4CSharp.Controller
 
             return fetchedIModelsFromDatabase;
         }
-
+        /// <summary>
+        /// Gets all bookings for a person
+        /// </summary>
+        /// <param name="model">The person to check bookings for</param>
+        /// <returns></returns>
         public List<Booking> GetBookingsForPerson(Person model)
         {
             DAL dal = new DAL(this);
@@ -333,7 +348,11 @@ namespace Termin4CSharp.Controller
 
             return results;
         }
-
+        /// <summary>
+        /// Called when the user checks or unchecks an item in a list of IModels. The values are then saved for when the user clicks Save to add or removes the connection between the IModel being edited and the referenced IModels in the CheckBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleListOfIModelsBoxCheck(object sender, EventArgs e)
         {
             CheckedListBox checkBox = (CheckedListBox)sender;
@@ -348,12 +367,18 @@ namespace Termin4CSharp.Controller
             this.changedStatusOnReferencingModels[modelType][selectedIModel] = check.NewValue == CheckState.Checked;
 
         }
-
+        /// <summary>
+        /// Calls the Close function
+        /// </summary>
         public void HandleCloseButtonClick()
         {
             this.Close();
         }
-
+        /// <summary>
+        /// Saves the values in the EditViews controls and returns them as a Dictionary with key = attributename, value = the value from the control
+        /// </summary>
+        /// <param name="controls">The list of controls in the EditView</param>
+        /// <returns>Key = attributename, value = the value from the control</returns>
         private Dictionary<string, object> ViewControlsToDictionary(Control.ControlCollection controls)
         {
             Dictionary<string, object> controlValues = new Dictionary<string, object>();
@@ -402,7 +427,10 @@ namespace Termin4CSharp.Controller
             }
             return controlValues;
         }
-
+        /// <summary>
+        /// Called when the user clicks the "Delete" from a right click of a Booking item when editing a person
+        /// </summary>
+        /// <param name="selectedBookingInRightClickMenu">The Booking to be deleted</param>
         public void HandleRightDeleteContextMenu(Booking selectedBookingInRightClickMenu)
         {
             DAL dal = new DAL(this);
@@ -418,14 +446,21 @@ namespace Termin4CSharp.Controller
                 this.UpdateResponseLabel("Ingen bokning borttagen");
             }
         }
-
+        /// <summary>
+        /// Shows a new EditView when the user edits a person and right clicks a booking item and clicks Edit
+        /// </summary>
+        /// <param name="selectedBookingInRightClickMenu">The Booking item to be edited</param>
         public void ShowNewEditView(Booking selectedBookingInRightClickMenu)
         {
             EditView innerEditView = new EditView(selectedBookingInRightClickMenu, true);
             EditViewController innerController = new EditViewController(innerEditView, outerEditViewController: this);
             innerEditView.Show();
         }
-
+        /// <summary>
+        /// Called when the user edits a control that is marked as the identifying attribute holder for that IModel, and updates this list of identifying attributes with the new value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleIdentifyingAttributesValueChange(object sender, EventArgs e)
         {
             if (sender is TextBox)
@@ -441,7 +476,10 @@ namespace Termin4CSharp.Controller
                 identifyingAttributesValues[((ComboBox)sender).Name] = ((IModel)((ComboBox)sender).SelectedItem).GetIdentifyingAttributes().First().Value;
             }
         }
-
+        /// <summary>
+        /// Checks if the identifying attributes are valid when clicking Save. Based on if the IModel is autoincrementing in the database and if the identifying attribute value is set in its holding control
+        /// </summary>
+        /// <returns></returns>
         private bool IdentifyingValuesAreNotEmpty()
         {
             if (Utils.IdIsAutoIncrementInDb(EditView.Model))
@@ -453,7 +491,9 @@ namespace Termin4CSharp.Controller
                     return false;
             return true;
         }
-
+        /// <summary>
+        /// Updates the list of bookings when editing a person
+        /// </summary>
         public void UpdateBookingListInPersonEditingView()
         {
             ObjectListView bookingView = this.OuterEditViewController.EditView.GetBookingObjectListView();
@@ -461,12 +501,19 @@ namespace Termin4CSharp.Controller
                 if (this.OuterEditViewController != null)
                     bookingView.SetObjects(this.OuterEditViewController.GetBookingsForPerson((Person)this.OuterEditViewController.EditView.Model));
         }
-
-        public void NotifyExceptionToView(string s)
+        /// <summary>
+        /// Updates the responselabel
+        /// </summary>
+        /// <param name="s"></param>
+        public void NotifyExceptionToView(string message)
         {
-            this.UpdateResponseLabel(s);
+            this.UpdateResponseLabel(message);
         }
-
+        /// <summary>
+        /// Called when the user is editing a Booking and changes the starting or ending hour for that booking. The other control is then incremented or decremented to one hour above or below the other.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleBookingDateTimePickerValueChanged(object sender, EventArgs e)
         {
             DateTimePicker datePicker = (DateTimePicker)sender;

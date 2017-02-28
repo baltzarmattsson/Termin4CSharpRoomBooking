@@ -43,7 +43,9 @@ namespace Termin4CSharp.Controller
 
             this.LoadErpAndWsComboBoxes();
         }
-
+        /// <summary>
+        /// Enables or disabled the admin tab based on what role the user has. If the user is Admin, the admin tab is enabled, else it's disabled.
+        /// </summary>
         private void HandleAdminTabBasedOnUserRole()
         {
             if (this.LoggedInUser != null && this.LoggedInUser.RoleName != null)
@@ -58,7 +60,11 @@ namespace Termin4CSharp.Controller
                 this.GUIMain.SetAdminTabEnabled(false);
             }
         }
-
+        /// <summary>
+        /// Logs in a user with the specified username and password combo
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         private void LoginUser(string username, string password)
         {
             if (this.LoggedInUser != null)
@@ -90,7 +96,9 @@ namespace Termin4CSharp.Controller
             }
             this.HandleAdminTabBasedOnUserRole();
         }
-
+        /// <summary>
+        /// Called when the user clicks a Logout-function (button or menuitem)
+        /// </summary>
         private void LogoutUser()
         {
             this.LoggedInUser = null;
@@ -105,7 +113,12 @@ namespace Termin4CSharp.Controller
         {
             this.GUIMain.SetLoginControlsToStatus(enabled);
         }
-
+        /// <summary>
+        /// Called when the user clicks the Login/Logout button, and based on the text on the button calls for a Login or Logout
+        /// </summary>
+        /// <param name="loginButton">The login/logout button</param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public void HandleLoginOrLogoutButtonClick(Button loginButton, string username, string password)
         {
             this.NotifyExceptionToView("");
@@ -118,14 +131,19 @@ namespace Termin4CSharp.Controller
                 this.LogoutUser();
             }
         }
-
+        /// <summary>
+        /// Loads all rooms in the main room booking view on the specified date
+        /// </summary>
+        /// <param name="onDate">The date on which to check for bookings</param>
         public void LoadRooms(DateTime onDate)
         {
             DAL dal = new DAL(this);
             List<Room> rooms = dal.FindRoomsWithOptionalFiltersOnDate(onDate);
             this.GUIMain.SetRooms(rooms);
         }
-
+        /// <summary>
+        /// Loads the filters in the main room booking view. The CheckedListBoxes are then filled with what values are in the database, and the capacity scrollbar max value is updated to the maxiumum capacity any room holds
+        /// </summary>
         public void LoadFilters()
         {
             DAL dal = new DAL(this);
@@ -141,11 +159,19 @@ namespace Termin4CSharp.Controller
             this.GUIMain.SetMinCapacityFilter(highestCapacity);
 
         }
-
+        /// <summary>
+        /// The different type of filters available, except for free text search
+        /// </summary>
         public enum FilterControl
         {
             BUILDING_BOX, ROOM_BOX, RESOURCE_BOX, MIN_CAPACITY_TRACKBAR, ON_DATE_DATE_PICKER
         }
+        /// <summary>
+        /// Called when the user changes a filter
+        /// </summary>
+        /// <param name="filterControl">What type of filter is being changed</param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleFilterChange(FilterControl filterControl, object sender, EventArgs e)
         {
 
@@ -184,7 +210,11 @@ namespace Termin4CSharp.Controller
             List<Room> filteredRooms = dal.FindRoomsWithOptionalFiltersOnDate(OnDateFilter, buildingFilters, roomFilters, resourceFilters, minCapacity: MinCapacity);
             this.GUIMain.SetRooms(filteredRooms);
         }
-
+        /// <summary>
+        /// Called when the user changes the text value in the free text search area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleFreeTextFilterChange(TextBox sender, EventArgs e)
         {
             DAL dal = new DAL(this);
@@ -194,7 +224,9 @@ namespace Termin4CSharp.Controller
             ObjectListView roomHolder = this.GUIMain.GetRoomHolder();
             roomHolder.ModelFilter = TextMatchFilter.Contains(roomHolder, sender.Text);
         }
-
+        /// <summary>
+        /// Clears all filters except for the freetext search area
+        /// </summary>
         public void ClearFilterSelections()
         {
             this.buildingFilters.Clear();
@@ -204,11 +236,20 @@ namespace Termin4CSharp.Controller
             this.GUIMain.ClearFilterSelections();
         }
 
-        public void NotifyExceptionToView(string s)
+        /// <summary>
+        /// Updates the responselabel to message
+        /// </summary>
+        /// <param name="message">The message to be displayed</param>
+        public void NotifyExceptionToView(string message)
         {
-            this.GUIMain.SetPKResponseLabelText(s);
+            this.GUIMain.SetPKResponseLabelText(message);
         }
 
+        /// <summary>
+        /// Called when the user double clicks a cell in the room booking view. If the cell matches the HH:mm-regex, a new EditView is opened on the specified hour, with the logged in person and on the room on that row. Else the cell is marked as yellow until un-hovered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleCellDoubleClick(object sender, CellClickEventArgs e)
         {
             if (e.ColumnIndex > 4)
@@ -241,6 +282,9 @@ namespace Termin4CSharp.Controller
             }
         }
 
+        /// <summary>
+        /// Loads the ERP and WebService comboboxes in the ERP and WS tab
+        /// </summary>
         private void LoadErpAndWsComboBoxes()
         {
             try
@@ -255,6 +299,11 @@ namespace Termin4CSharp.Controller
             }
         }
 
+        /// <summary>
+        /// Called when the user choses a file to be read through Webservice, creates a file picker dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleChooseFileWSClick(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -271,7 +320,10 @@ namespace Termin4CSharp.Controller
                 this.GUIMain.SetFileContentWS(content);
             }
         }
-
+        
+        /// <summary>
+        /// Resizes the column of main room holder
+        /// </summary>
         private void AutosizeColumns()
         {
             foreach (ColumnHeader col in this.GUIMain.GetRoomHolder().Columns)
@@ -291,9 +343,13 @@ namespace Termin4CSharp.Controller
             }
         }
 
-        private void UpdateRoomBookingLabel(string text)
+        /// <summary>
+        /// Updates the responselabel in the room booking view to message
+        /// </summary>
+        /// <param name="message">The message to be displayed</param>
+        private void UpdateRoomBookingLabel(string message)
         {
-            this.GUIMain.UpdateRoomBookingLabel(text);
+            this.GUIMain.UpdateRoomBookingLabel(message);
         }
 
         public enum SELECTED_COMBOBOX
@@ -301,16 +357,32 @@ namespace Termin4CSharp.Controller
             ERP, WEBSERVICE
         }
 
+        /// <summary>
+        /// Called when the user changes the selected item in the WebService combobox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleWebServiceComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             this.HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX.WEBSERVICE, sender);
         }
+
+        /// <summary>
+        /// Called when the user changes the selected value in the ERP combobox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void HandleERPComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             this.HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX.ERP, sender);
         }
 
-        public void HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX selectedComboBox, object sender)
+        /// <summary>
+        /// Called when either the WebService or ERP-combobox are called and updates the displayarea with the retrieved data from the corresponding function/query in the comboboxes
+        /// </summary>
+        /// <param name="selectedComboBox"></param>
+        /// <param name="sender"></param>
+        private void HandleComboBoxSelectedIndexChanged(SELECTED_COMBOBOX selectedComboBox, object sender)
         {
             string selectedItem = ((ComboBox)sender).SelectedItem as string;
             object[][] data = null;
@@ -336,11 +408,17 @@ namespace Termin4CSharp.Controller
                 this.GUIMain.SetWebserviceAndErpData(data);
         }
 
+        /// <summary>
+        /// Called when the user clicks Logout in the MenuStrip
+        /// </summary>
         public void HandleLogOUtMenuStripClick()
         {
             this.LogoutUser();
         }
 
+        /// <summary>
+        /// Called when the user clicks my profile in the MenuStrip
+        /// </summary>
         public void HandleMyProfileMenuStripClick()
         {
             if (this.LoggedInUser != null)
@@ -353,6 +431,10 @@ namespace Termin4CSharp.Controller
             }
         }
 
+        /// <summary>
+        /// Handles web service exceptions and exits the application when encountered
+        /// </summary>
+        /// <param name="we">The caught WebException</param>
         private void HandleWebserviceException(WebException we)
         {
             if (we.Message.Equals("Unable to connect to the remote server"))

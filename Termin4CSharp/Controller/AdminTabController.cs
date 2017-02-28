@@ -32,6 +32,9 @@ namespace Termin4CSharp.Controller
 
             this.LoadComboBoxes();
         }
+        /// <summary>
+        /// Loads the edit and create comboboxes in the Admin tab
+        /// </summary>
         private void LoadComboBoxes()
         {
             DAL dal = new DAL(this);
@@ -49,7 +52,9 @@ namespace Termin4CSharp.Controller
             this.SetEditTypes(types);
             this.SetCreateTypes(types);
         }
-
+        /// <summary>
+        /// Called when the user clicks the create new button and have a value selected in the "create new" combobox
+        /// </summary>
         public void HandleCreateNewIModelClick()
         {
             if (this.createTypeBox.SelectedItem != null)
@@ -61,6 +66,13 @@ namespace Termin4CSharp.Controller
             }
         }
 
+
+
+        /// <summary>
+        /// Show an EditView with the param IModel
+        /// </summary>
+        /// <param name="model">The model that sets the controls. Its attributes can be set or empty.</param>
+        /// <param name="isExistingItemInDatabase">If the IModel is an existing item in the database, to know if the ID should be updated or inserted when Save is clicked.</param>
         private void ShowEditView(IModel model, bool isExistingItemInDatabase)
         {
             if (model != null)
@@ -70,7 +82,9 @@ namespace Termin4CSharp.Controller
                 ev.Show();
             }
         }
-
+        /// <summary>
+        /// Called when the user clicks the edit button and have a value selected in the "edit" combobox
+        /// </summary>
         public void HandleEditIModelClick()
         {
             if (this.editArticleBox.SelectedItem != null)
@@ -83,18 +97,28 @@ namespace Termin4CSharp.Controller
                 }
             }
         }
-
+        /// <summary>
+        /// Fills the createcombo box with values that can be created
+        /// </summary>
+        /// <param name="creatableTypes"></param>
         private void SetCreateTypes(List<string> creatableTypes)
         {
             this.createTypeBox.Items.Clear();
             this.createTypeBox.Items.AddRange(creatableTypes.ToArray());
         }
-
+        /// <summary>
+        /// Fills the edit combobox with values that can be edited, based on what's in the database for each category/IModel
+        /// </summary>
+        /// <param name="editTypes"></param>
         private void SetEditTypes(List<string> editTypes)
         {
             this.editTypeBox.Items.Clear();
             this.editTypeBox.Items.AddRange(editTypes.ToArray());
         }
+        /// <summary>
+        /// Fills the edit combobox with values that can be edited, based on what category is chosen in the leftmost combobox
+        /// </summary>
+        /// <param name="editType">What type (IModel) that should be edited. The values in the rightmost combobox is fetched from the database</param>
         public void SetEditArticles(object editType)
         {
             DAL dal = new DAL(this);
@@ -115,7 +139,11 @@ namespace Termin4CSharp.Controller
                     this.editArticleBox.Text = null;
             }
         }
-
+        /// <summary>
+        /// Converting string to IModel
+        /// </summary>
+        /// <param name="modelString">String representation of the name of an IModel</param>
+        /// <returns></returns>
         private IModel ParseStringToIModel(string modelString)
         {
             IModel correspondingIModel = null;
@@ -148,6 +176,9 @@ namespace Termin4CSharp.Controller
             }
             return correspondingIModel;
         }
+        /// <summary>
+        /// Called when a created EditView is closed. Updates the rightmost edit combobox with updated values.
+        /// </summary>
         public void HandleEditViewClosed()
         {
             //Updating the articlebox
@@ -157,10 +188,13 @@ namespace Termin4CSharp.Controller
                 this.SetEditArticles(selectedEditType);
             }
         }
-
-        public void NotifyExceptionToView(string s)
+        /// <summary>
+        /// Updates the responselabel with a message
+        /// </summary>
+        /// <param name="message">The message in text to be displayed</param>
+        public void NotifyExceptionToView(string message)
         {
-            this.GUIMain.SetPKResponseLabelText(s);
+            this.GUIMain.SetPKResponseLabelText(message);
         }
     }
 

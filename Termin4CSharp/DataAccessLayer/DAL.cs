@@ -22,6 +22,11 @@ namespace Termin4CSharp.DataAccessLayer
             this.Controller = controller;
         }
 
+        /// <summary>
+        /// Gets a specified IModel of type Building or Room, based on its identifying attribute. Used for easier fetching of Buildings and Rooms since it automatically finds the referenced models
+        /// </summary>
+        /// <param name="model">The IModel with an identifying attribute whose values will be fetched</param>
+        /// <returns>An IModel of the same type as the param IModel, filled with values from the database</returns>
         public IModel GetIModel(IModel model)
         {
 
@@ -58,16 +63,26 @@ namespace Termin4CSharp.DataAccessLayer
             return returnModel;
         }
 
+        /// <summary>
+        /// Connects or nulls the reference to the targetModel for all the items in the referencedIModels based on the param connect
+        /// </summary>
+        /// <param name="referencedIModels">The list of IModels to be added or nulled</param>
+        /// <param name="targetModel">The target IModel that references or dereferences the list of IModels</param>
+        /// <param name="connect">If the list of IModels should be added or nulled</param>
+        /// <returns></returns>
         public int ConnectOrNullReferencedIModelsToIModelToQuery(List<IModel> referencedIModels, IModel targetModel, bool connect)
         {
             SqlCommand cmd = Utils.ConnectOrNullReferencedIModelsToIModelToQuery(referencedIModels, targetModel, connect);
             return this.PerformNonQuery(targetModel, cmd);
         }
 
-
-        // Finds all bookings for one date. Keys are RoomID and List<Booking> is the bookings for that room on the 
-        // specified date given in the parameter
-        public Dictionary<string, List<Booking>> FindAllBookingsOnDate(DateTime dateToSearch)
+        /// <summary>
+        /// Finds all bookings for one date. Keys are RoomID and the list of bookings are the bookings for that room on the specified date given in the parameter
+        /// </summary>
+        /// <param name="dateToSearch">The date to search for bookings on</param>
+        /// <returns>Key = roomID, value = list of all bookings on the specified date</returns>
+        // 
+        private Dictionary<string, List<Booking>> FindAllBookingsOnDate(DateTime dateToSearch)
         {
             Dictionary<string, List<Booking>> roomBookings = new Dictionary<string, List<Booking>>();
 
@@ -102,6 +117,13 @@ namespace Termin4CSharp.DataAccessLayer
             return roomBookings;
         }
 
+        /// <summary>
+        /// Returns if the room is bookable on the date and time
+        /// </summary>
+        /// <param name="roomId">The room that will be checked</param>
+        /// <param name="onDate">The starting time of the booking</param>
+        /// <param name="toDate">The ending time of the booking</param>
+        /// <returns>If the room is bookable</returns>
         public bool IsRoomBookableOnDate(string roomId, DateTime onDate, DateTime toDate)
         {
 
@@ -147,7 +169,14 @@ namespace Termin4CSharp.DataAccessLayer
             return isBookable;
         }
 
-        public List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate)
+        /// <summary>
+        /// Connects a list of rooms with its bookable times on a specified date. The bookable times are stored in the rooms RoomStateOnHour, based on what time the building opens and closes, and if there's
+        /// any bookings on the specified date
+        /// </summary>
+        /// <param name="rooms">The list of RoomAndOpeningHoursHolder that has connected each room with their buildings open and closing time, with the RoomID as key</param>
+        /// <param name="onDate">The specified date to search for bookings on</param>
+        /// <returns>A list of rooms whose RoomStateOnHour has been set</returns>
+        private List<Room> ConnectListOfRoomsWithTheirBookableTimes(Dictionary<string, RoomAndOpeningHoursHolder> rooms, DateTime onDate)
         {
             DAL dal = new DAL(null);
             Dictionary<string, List<Booking>> allBookingsForRoomOnDate = dal.FindAllBookingsOnDate(onDate);
@@ -186,6 +215,17 @@ namespace Termin4CSharp.DataAccessLayer
 
             return resultList;
         }
+
+        /// <summary>
+        /// Finds rooms with the specified optional filters on a specified date. If a freetext is specified the other filters wont be included.
+        /// </summary>
+        /// <param name="onDate">The date to search for bookings on</param>
+        /// <param name="buildingNames">The building names the rooms should be connected to</param>
+        /// <param name="roomIDs">The room ids the room should have</param>
+        /// <param name="resourceNames">The resources the rooms should be having</param>
+        /// <param name="freeText">A freetext that searches for buildingname, roomid and resourcename</param>
+        /// <param name="minCapacity">The minimum capacity the room should have</param>
+        /// <returns>A list filtered rooms based on the parameters</returns>
         public List<Room> FindRoomsWithOptionalFiltersOnDate(DateTime onDate, HashSet<string> buildingNames = null, HashSet<string> roomIDs = null, HashSet<string> resourceNames = null, string freeText = null, int minCapacity = 0)
         {
             SqlCommand cmd = Utils.FindRoomsWithFilters(buildingNames, roomIDs, resourceNames, freeText, minCapacity);
@@ -201,7 +241,7 @@ namespace Termin4CSharp.DataAccessLayer
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr, false) as Room;
+                    fetchedRoom = Utils.ParseDataReaderToIModel(new Room(), dr) as Room;
                     openingHour = (DateTime)dr["opening"];
                     closingHour = (DateTime)dr["closing"];
                     holder = new RoomAndOpeningHoursHolder(fetchedRoom, openingHour, closingHour);
@@ -221,6 +261,15 @@ namespace Termin4CSharp.DataAccessLayer
             return returnRooms;
         }
 
+        /// <summary>
+        /// Gets a single model based on the identifying attribute in the IModel, or selects all types of this IModel if the selectAll is true
+        /// </summary>
+        /// <param name="model">The IModel or type of IModel to be fetched</param>
+        /// <param name="whereParams">Optional where parameters. Key = columnname, value = that column names value</param>
+        /// <param name="tableName">Optional tablename</param>
+        /// <param name="optWhereCondition">If the WhereCondition should be an equal sign (=) or LIKE</param>
+        /// <param name="selectAll">Specifies if it should find all the IModels in the table or not</param>
+        /// <returns></returns>
         public List<IModel> Get(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL, bool selectAll = false)
         {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.GET, model, whereParams, tableName, optWhereCondition, selectAll);
@@ -247,24 +296,43 @@ namespace Termin4CSharp.DataAccessLayer
             return resultList;
         }
 
+        /// <summary>
+        /// Adds an IModel to the database
+        /// </summary>
+        /// <param name="model">IModel to be added</param>
+        /// <returns>Affected rows in the database</returns>
         public int Add(IModel model)
         {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.ADD, model);
             return this.PerformNonQuery(model, cmd);
         }
 
+        /// <summary>
+        /// Removes an IModel to the database
+        /// </summary>
+        /// <param name="model">IModel to be removed</param>
+        /// <returns>Affected rows in the database</returns>
         public int Remove(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL)
         {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.REMOVE, model, whereParams, tableName, optWhereCondition);
             return this.PerformNonQuery(model, cmd);
         }
 
+        /// <summary>
+        /// Updates an IModel to the database
+        /// </summary>
+        /// <param name="model">IModel to be updated</param>
+        /// <returns>Affected rows in the database</returns>
         public int Update(IModel model, Dictionary<string, object> whereParams = null, string tableName = null, WhereCondition optWhereCondition = WhereCondition.EQUAL)
         {
             SqlCommand cmd = Utils.IModelToQuery(QueryType.UPDATE, model, whereParams, tableName, optWhereCondition);
             return this.PerformNonQuery(model, cmd);
         }
-
+        /// <summary>
+        /// Performs a NonQuery of an IModel
+        /// </summary>
+        /// <param name="model">IModel to be modified</param>
+        /// <returns>Affected rows in the database</returns>
         private int PerformNonQuery(IModel model, SqlCommand cmd)
         {
             int affectedRows = -1;
@@ -284,6 +352,11 @@ namespace Termin4CSharp.DataAccessLayer
             return affectedRows;
         }
 
+        /// <summary>
+        /// Handles the SQL exceptions when using the methods in this class. Updates the calling controllers responselabel with the regex-parsed message.
+        /// </summary>
+        /// <param name="model">The type of IModel that has been attempted to be modified</param>
+        /// <param name="sqle">The caught exception</param>
         private void HandleSqlException(IModel model, SqlException sqle)
         {
             string message = null;
@@ -309,8 +382,8 @@ namespace Termin4CSharp.DataAccessLayer
                     //Getting column name
                     var columnRegmatch = Regex.Match(sqle.Message, "(?<=column ')(.*?)(?=')"); //Finds columnname within ' ', like 'name' or 'bName'
                     string column = columnRegmatch.Captures[0].ToString();
-                    column = Utils.ConvertAttributeNameToDisplayName(model, column);
-                    message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table, column);
+                    column = Utils.GenericDbValuesToDisplayValue(column);
+                    message = string.Format("Kunde inte hitta {0} med {1}, vänligen försök igen", table.ToLower(), column.ToLower());
                     break;
                 case SqlCodes.DataWouldBeTruncated:
                     message = "Ett värde är för långt, vänligen försök igen";

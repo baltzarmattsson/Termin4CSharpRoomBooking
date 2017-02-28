@@ -9,7 +9,6 @@ namespace Termin4CSharp.DataAccessLayer
 
     public abstract class DbFields
     {
-
         public const string PersonRoleTable = "Role";
         public const string RoomTypeTable = "RoomType";
         public const string PersonTable = "Person";

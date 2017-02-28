@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Termin4CSharp.DataAccessLayer
 {
-
-
+    
     enum QueryType
     {
         ADD, REMOVE, UPDATE, GET
@@ -16,10 +15,5 @@ namespace Termin4CSharp.DataAccessLayer
     enum WhereCondition
     {
         EQUAL, LIKE
-    }
-
-    enum SqlExceptionCode
-    {
-        PK_RESTRAINT, FK_RESTRAINT
     }
 }
